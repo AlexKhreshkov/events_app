@@ -1,0 +1,10 @@
+.authInput {
+    padding: 10px 10px 10px 20px;
+    border: 2px solid black;
+    border-radius: 12px;
+    flex: 1 1 auto;
+}
+
+.authInput:focus {
+    border: 2px solid green;
+}

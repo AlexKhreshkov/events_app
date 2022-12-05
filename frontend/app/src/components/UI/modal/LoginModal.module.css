@@ -1,0 +1,73 @@
+.popup__loginTitle {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.popup__loginContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup__loginContent input {
+    margin-bottom: 20px;
+}
+
+.login__title {
+    font-size: 24px;
+    margin: 10px 5px;
+}
+
+.authFieldError {
+    color: red;
+    font-size: 16px;
+    margin: -3px 0 7px 5px;
+}
+
+.authOrText {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0 0;
+}
+
+.centerContent {
+    display: flex;
+    justify-content: center;
+}
+
+.authSignUpText {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0;
+}
+
+.authSignUpLink {
+    margin-left: 5px;
+    cursor: pointer;
+    text-decoration: underline;
+    color: red;
+}
+
+.auth__password {
+    display: flex;
+}
+
+.auth__passwordVisble {
+    background: url('../../../img/icons/eyeOutline.svg') 0 0 no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    right: 12%;
+    z-index: 2;
+}
+
+.auth__passwordNotVisible {
+    background: url('../../../img/icons/eyeOffOutline.svg') 0 0 no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    right: 12%;
+    z-index: 2;
+}

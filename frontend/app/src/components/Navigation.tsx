@@ -3,7 +3,8 @@ import { NavLink, Link } from 'react-router-dom';
 import { IoPersonOutline, IoHeartOutline } from "react-icons/io5";
 import { LoginModal } from './UI/modal/LoginModal';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { changeSignInVisibility, changeSignOutVisibility } from '../store/authModalSlice';
+import { changeSignInVisibility, changeSignUpVisibility } from '../store/authModalSlice';
+import { RegisterModal } from './UI/modal/RegisterModal';
 
 
 
@@ -29,6 +30,7 @@ export const Navigation = () => {
                 </div>
             </div>
             <LoginModal />
+            <RegisterModal/>
         </div>
     )
 }

@@ -3,7 +3,7 @@ import { IoClose } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 import { useInput } from '../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
-import { changeSignInVisibility } from '../../../store/authModalSlice'
+import { changeSignInVisibility, changeSignUpVisibility } from '../../../store/authModalSlice'
 import { MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from '../../../utils/constants'
 import { checkLogin, checkPassword } from '../../../utils/utils'
 import { AnitmatedBtn } from '../button/AnitmatedBtn'
@@ -59,6 +59,11 @@ export const LoginModal = () => {
         setPasswordVisible(!isPasswordVisible)
     }
 
+    const openSignUpForm = () => {
+        dispatch(changeSignInVisibility(false))
+        dispatch(changeSignUpVisibility(true))
+    }
+
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
@@ -102,13 +107,15 @@ export const LoginModal = () => {
                                 </div>
                             </div>
                             <AnitmatedBtn>Sign In</AnitmatedBtn>
-                            <div className={cl.authOrText}>OR</div>
                             <div className="authSignUpText">
                                 <div className={cl.authSignUpText}>
                                     No account?
-                                    <Link to=''>
-                                        <div className={cl.authSignUpLink}>Sign Up</div>
-                                    </Link>
+                                    <div
+                                        className={cl.authSignUpLink}
+                                        onClick={() => openSignUpForm()}
+                                    >
+                                        Sign Up
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -38,7 +38,7 @@
 .authSignUpText {
     display: flex;
     justify-content: center;
-    margin: 15px 0 5px 0;
+    margin: 5px 0;
 }
 
 .authSignUpLink {

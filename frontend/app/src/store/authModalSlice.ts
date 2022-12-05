@@ -14,12 +14,12 @@ const authModalSlice = createSlice({
         changeSignInVisibility(state, action) {
             state.isSignIn = !state.isSignIn
         },
-        changeSignOutVisibility(state, action) {
+        changeSignUpVisibility(state, action) {
             state.isSignUp = !state.isSignUp
         },
     }
 })
 
-export const { changeSignInVisibility, changeSignOutVisibility } = authModalSlice.actions
+export const { changeSignInVisibility, changeSignUpVisibility } = authModalSlice.actions
 
 export default authModalSlice.reducer     

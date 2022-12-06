@@ -4,9 +4,10 @@ import classes from './AnitmatedBtn.module.css'
 interface AnitmatedBtnProps extends PropsWithChildren {
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
     color?: string
+    disabled?: boolean
 }
 
-export const AnitmatedBtn: FC<AnitmatedBtnProps> = ({ children, onClick, color }) => {
+export const AnitmatedBtn: FC<AnitmatedBtnProps> = ({ children, onClick, color, disabled }) => {
 
     const btnBackgroundColor = color
 
@@ -15,6 +16,7 @@ export const AnitmatedBtn: FC<AnitmatedBtnProps> = ({ children, onClick, color }
             <button
                 className={classes.btn}
                 onClick={event => onClick?.(event)}
+                disabled={disabled}
                 style={{ backgroundColor: btnBackgroundColor }}
             >
                 <span>
@@ -27,6 +29,7 @@ export const AnitmatedBtn: FC<AnitmatedBtnProps> = ({ children, onClick, color }
         <button
             className={classes.btn}
             onClick={event => onClick?.(event)}
+            disabled={disabled}
         >
             <span>
                 {children}

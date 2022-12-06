@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoClose } from 'react-icons/io5'
-import { Link } from 'react-router-dom'
 import { useInput } from '../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
 import { changeSignInVisibility, changeSignUpVisibility } from '../../../store/authModalSlice'
-import { MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from '../../../utils/constants'
-import { checkLogin, checkPassword } from '../../../utils/utils'
+import { AuthErrors, MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from '../../../utils/constants'
 import { AnitmatedBtn } from '../button/AnitmatedBtn'
 import { AuthInput } from '../input/AuthInput'
 import cl from './LoginModal.module.css'
@@ -15,79 +13,35 @@ export const RegisterModal = () => {
     const isOpen = useAppSelector(state => state.authModal.isSignUp)
     const dispatch = useAppDispatch()
 
-    const login = useInput('')
-    const password1 = useInput('')
-    const password2 = useInput('')
+    const loginValidationProps = {
+        isEmpty: true,
+        minLength: MIN_LOGIN_LENGTH,
+        maxLength: MAX_LOGIN_LENGTH
+    }
+    const passwordValidationProps = {
+        isEmpty: true,
+        minLength: MIN_PASSWORD_LENGTH,
+        maxLength: MAX_PASSWORD_LENGTH
+    }
+
+    const login = useInput('', loginValidationProps)
+    const password1 = useInput('', passwordValidationProps)
+    const password2 = useInput('', passwordValidationProps)
+    const [isBtnDisabled, setBtnDisabled] = useState<boolean>(false)
     const [isPassword1Visible, setPassword1Visible] = useState<boolean>(false)
     const [isPassword2Visible, setPassword2Visible] = useState<boolean>(false)
 
-    const [formErrors, setFormErrors] = useState({
-        loginError: '',
-        password1Error: '',
-        password2Error: '',
-        passwordEqualError: ''
-    })
+    useEffect(() => {
+        const isDisabled =
+            login.isDirty && (login.isEmtpy || login.lengthError)
+            ||
+            password1.isDirty && (password1.isEmtpy || password1.lengthError)
+            ||
+            password2.isDirty && (password2.isEmtpy || password2.lengthError)
 
+        setBtnDisabled(isDisabled)
+    }, [login, password1, password2])
 
-
-    const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        if (!checkLogin(login.value)) {
-            setFormErrors(prev => ({
-                ...prev,
-                loginError: `Login must be from ${MIN_LOGIN_LENGTH} to ${MAX_LOGIN_LENGTH} symbols`
-            }))
-        } else {
-            setFormErrors(prev => ({
-                ...prev,
-                loginError: ''
-            }))
-        }
-        if (!checkPassword(password1.value)) {
-            setFormErrors(prev => ({
-                ...prev,
-                password1Error: `Password must be from ${MIN_PASSWORD_LENGTH} to ${MAX_PASSWORD_LENGTH} symbols`
-            }))
-        } else {
-            setFormErrors(prev => ({
-                ...prev,
-                password1Error: ''
-            }))
-        }
-        if (!checkPassword(password2.value)) {
-            setFormErrors(prev => ({
-                ...prev,
-                password2Error: `Password must be from ${MIN_PASSWORD_LENGTH} to ${MAX_PASSWORD_LENGTH} symbols`
-            }))
-        } else {
-            setFormErrors(prev => ({
-                ...prev,
-                password2Error: ''
-            }))
-        }
-        if (password1.value !== password2.value) {
-            setFormErrors(prev => ({
-                ...prev,
-                passwordEqualError: `Passwords don't match`
-            }))
-        }
-        if (checkLogin(login.value)
-            && checkPassword(password1.value)
-            && checkPassword(password2.value)
-            && (password1.value === password2.value)) {
-
-            setFormErrors(prev => ({
-                loginError: '',
-                password1Error: '',
-                password2Error: '',
-                passwordEqualError: '',
-            }))
-            login.setValue('')
-            password1.setValue('')
-            password2.setValue('')
-            console.log('done');
-        }
-    }
 
     const changeVisibilityHandler1 = () => {
         setPassword1Visible(!isPassword1Visible)
@@ -96,10 +50,16 @@ export const RegisterModal = () => {
         setPassword2Visible(!isPassword2Visible)
     }
 
-    const openSignUpForm = () => {
+    const openSignInForm = () => {
         dispatch(changeSignInVisibility(true))
         dispatch(changeSignUpVisibility(false))
     }
+
+    const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        //do smth
+    }
+
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
@@ -123,16 +83,41 @@ export const RegisterModal = () => {
                         <div className={cl.popup__loginContent}>
                             <AnitmatedBtn color='red'>Google</AnitmatedBtn>
                             <div className={cl.authOrText}>OR</div>
-                            <div className={cl.login__title}>
-                                Login
-                            </div>
-                            <div className={cl.authFieldError}>{formErrors.loginError}</div>
-                            <AuthInput onChange={login.onChange} placeholder='Your login...' />
+                            <div className={cl.login__title}>Login</div>
+                            {login.isDirty && login.isEmtpy
+                                ?
+                                <div className={cl.authFieldError}>{AuthErrors.emptyLogin}</div>
+                                :
+                                <></>
+                            }
+                            {login.isDirty && !login.isEmtpy && login.lengthError
+                                ?
+                                <div className={cl.authFieldError}>{AuthErrors.invalidLogin}</div>
+                                :
+                                <></>
+                            }
+                            <AuthInput
+                                onChange={e => login.onChange(e)}
+                                onBlur={() => login.onBlur()}
+                                placeholder='Your login...'
+                            />
                             <div className={cl.login__title}>Password</div>
-                            <div className={cl.authFieldError}>{formErrors.password1Error}</div>
+                            {password1.isDirty && password1.isEmtpy
+                                ?
+                                <div className={cl.authFieldError}>{AuthErrors.emptyPassword}</div>
+                                :
+                                <></>
+                            }
+                            {password1.isDirty && !password1.isEmtpy && password1.lengthError
+                                ?
+                                <div className={cl.authFieldError}>{AuthErrors.invalidPassword}</div>
+                                :
+                                <></>
+                            }
                             <div className={cl.auth__password}>
                                 <AuthInput
-                                    onChange={password1.onChange}
+                                    onChange={e => password1.onChange(e)}
+                                    onBlur={() => password1.onBlur()}
                                     type={isPassword1Visible ? 'text' : 'password'}
                                     placeholder='Your password...'
                                 />
@@ -142,11 +127,23 @@ export const RegisterModal = () => {
                                 >
                                 </div>
                             </div>
-                            <div className={cl.login__title}>Reapeat Password</div>
-                            <div className={cl.authFieldError}>{formErrors.password2Error}</div>
+                            <div className={cl.login__title}>Repeat password</div>
+                            {password2.isDirty && password2.isEmtpy
+                                ?
+                                <div className={cl.authFieldError}>{AuthErrors.emptyPassword}</div>
+                                :
+                                <></>
+                            }
+                            {password2.isDirty && !password2.isEmtpy && password2.lengthError
+                                ?
+                                <div className={cl.authFieldError}>{AuthErrors.invalidPassword}</div>
+                                :
+                                <></>
+                            }
                             <div className={cl.auth__password}>
                                 <AuthInput
-                                    onChange={password2.onChange}
+                                    onChange={e => password2.onChange(e)}
+                                    onBlur={() => password2.onBlur()}
                                     type={isPassword2Visible ? 'text' : 'password'}
                                     placeholder='Your password...'
                                 />
@@ -156,15 +153,13 @@ export const RegisterModal = () => {
                                 >
                                 </div>
                             </div>
-                            <div className={cl.authFieldError}>{formErrors.passwordEqualError}</div>
-                            <AnitmatedBtn>Sign Un</AnitmatedBtn>
+                            <AnitmatedBtn disabled={isBtnDisabled} >Sign In</AnitmatedBtn>
                             <div className="authSignUpText">
-                                <div
-                                    className={cl.authSignUpText}>
+                                <div className={cl.authSignUpText}>
                                     Have an account?
                                     <div
                                         className={cl.authSignUpLink}
-                                        onClick={() => openSignUpForm()}
+                                        onClick={() => openSignInForm()}
                                     >
                                         Sign In
                                     </div>
@@ -177,3 +172,5 @@ export const RegisterModal = () => {
         </div>
     )
 }
+
+

@@ -29,6 +29,7 @@ export const LoginModal = () => {
     const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false)
     const [isBtnDisabled, setBtnDisabled] = useState<boolean>(false)
 
+
     useEffect(() => {
         const isDisabled =
             login.isDirty && (login.isEmtpy || login.lengthError)
@@ -36,6 +37,7 @@ export const LoginModal = () => {
             password.isDirty && (password.isEmtpy || password.lengthError)
 
         setBtnDisabled(isDisabled)
+
     }, [login, password])
 
 
@@ -83,7 +85,7 @@ export const LoginModal = () => {
                                 :
                                 <></>
                             }
-                            {login.isDirty && !login.isEmtpy && login.lengthError
+                            {login.isDirty && !login.isEmtpy && login.lengthError && login.value.length !== 0
                                 ?
                                 <div className={cl.authFieldError}>{AuthErrors.invalidLogin}</div>
                                 :

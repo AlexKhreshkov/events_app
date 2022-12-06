@@ -21,7 +21,15 @@
 .authFieldError {
     color: red;
     font-size: 16px;
-    margin: -3px 0 7px 5px;
+    margin: -5px 0 7px 5px;
+    height: 10px;
+}
+
+.authFieldErrorHeight0 {
+    color: red;
+    font-size: 16px;
+    margin: -5px 0 7px 5px;
+    height: 0;
 }
 
 .authOrText {

@@ -3,6 +3,7 @@ import { IoClose } from 'react-icons/io5'
 import { useInput } from '../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
 import { changeSignInVisibility, changeSignUpVisibility } from '../../../store/authModalSlice'
+import { checkPassword } from '../../../utils/auth_utils'
 import { AuthErrors, MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from '../../../utils/constants'
 import { AnitmatedBtn } from '../button/AnitmatedBtn'
 import { AuthInput } from '../input/AuthInput'
@@ -30,6 +31,7 @@ export const RegisterModal = () => {
     const [isBtnDisabled, setBtnDisabled] = useState<boolean>(false)
     const [isPassword1Visible, setPassword1Visible] = useState<boolean>(false)
     const [isPassword2Visible, setPassword2Visible] = useState<boolean>(false)
+    const [isPasswordsEqual, setPasswordsEqual] = useState<boolean>(false)
 
     useEffect(() => {
         const isDisabled =
@@ -38,8 +40,12 @@ export const RegisterModal = () => {
             password1.isDirty && (password1.isEmtpy || password1.lengthError)
             ||
             password2.isDirty && (password2.isEmtpy || password2.lengthError)
+            ||
+            !isPasswordsEqual
 
         setBtnDisabled(isDisabled)
+        setPasswordsEqual(password1.value === password2.value)
+
     }, [login, password1, password2])
 
 
@@ -153,6 +159,12 @@ export const RegisterModal = () => {
                                 >
                                 </div>
                             </div>
+                            {!isPasswordsEqual && password1.isDirty && password2.isDirty
+                                ?
+                                <div className={cl.authFieldError}>{AuthErrors.passwordsNotEqual}</div>
+                                :
+                                <></>
+                            }
                             <AnitmatedBtn disabled={isBtnDisabled} >Sign In</AnitmatedBtn>
                             <div className="authSignUpText">
                                 <div className={cl.authSignUpText}>

@@ -7,7 +7,7 @@ import { checkPassword } from '../../../utils/auth_utils'
 import { AuthErrors, MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from '../../../utils/constants'
 import { AnitmatedBtn } from '../button/AnitmatedBtn'
 import { AuthInput } from '../input/AuthInput'
-import cl from './LoginModal.module.css'
+import cl from './RegisterModal.module.css'
 
 export const RegisterModal = () => {
 
@@ -73,53 +73,55 @@ export const RegisterModal = () => {
                 className="popup__body"
             >
                 <form
-                    className="popup__content"
+                    className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
                     onSubmit={(event) => formSubmitHandler(event)}
                 >
-                    <div
+                    <button
                         onClick={() => dispatch(changeSignUpVisibility(false))}
                         className="popup__close"
-                    >
-                        <IoClose />
-                    </div>
+                    />
                     <div className="popup__title">
                         <div className={cl.popup__loginTitle}>Sign Up</div>
                     </div>
                     <div className="popup__text">
                         <div className={cl.popup__loginContent}>
-                            <AnitmatedBtn color='red'>Google</AnitmatedBtn>
-                            <div className={cl.authOrText}>OR</div>
+                            <AnitmatedBtn color='red'>With Google</AnitmatedBtn>
+                            <div className={cl.authGreenLine}></div>
                             <div className={cl.login__title}>Login</div>
-                            {login.isDirty && login.isEmtpy
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.emptyLogin}</div>
-                                :
-                                <></>
-                            }
-                            {login.isDirty && !login.isEmtpy && login.lengthError
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.invalidLogin}</div>
-                                :
-                                <></>
-                            }
+                            <div className={cl.authFieldErrorContainer}>
+                                {login.isDirty && login.isEmtpy
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.emptyLogin}</div>
+                                    :
+                                    <></>
+                                }
+                                {login.isDirty && !login.isEmtpy && login.lengthError
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.invalidLogin}</div>
+                                    :
+                                    <></>
+                                }
+                            </div>
                             <AuthInput
                                 onChange={e => login.onChange(e)}
                                 onBlur={() => login.onBlur()}
                                 placeholder='Your login...'
                             />
                             <div className={cl.login__title}>Password</div>
-                            {password1.isDirty && password1.isEmtpy
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.emptyPassword}</div>
-                                :
-                                <></>
-                            }
-                            {password1.isDirty && !password1.isEmtpy && password1.lengthError
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.invalidPassword}</div>
-                                :
-                                <></>
-                            }
+                            <div className={cl.authFieldErrorContainer}>
+                                {password1.isDirty && password1.isEmtpy
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.emptyPassword}</div>
+                                    :
+                                    <></>
+                                }
+                                {password1.isDirty && !password1.isEmtpy && password1.lengthError
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.invalidPassword}</div>
+                                    :
+                                    <></>
+                                }
+                            </div>
                             <div className={cl.auth__password}>
                                 <AuthInput
                                     onChange={e => password1.onChange(e)}
@@ -134,18 +136,20 @@ export const RegisterModal = () => {
                                 </div>
                             </div>
                             <div className={cl.login__title}>Repeat password</div>
-                            {password2.isDirty && password2.isEmtpy
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.emptyPassword}</div>
-                                :
-                                <></>
-                            }
-                            {password2.isDirty && !password2.isEmtpy && password2.lengthError
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.invalidPassword}</div>
-                                :
-                                <></>
-                            }
+                            <div className={cl.authFieldErrorContainer}>
+                                {password2.isDirty && password2.isEmtpy
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.emptyPassword}</div>
+                                    :
+                                    <></>
+                                }
+                                {password2.isDirty && !password2.isEmtpy && password2.lengthError
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.invalidPassword}</div>
+                                    :
+                                    <></>
+                                }
+                            </div>
                             <div className={cl.auth__password}>
                                 <AuthInput
                                     onChange={e => password2.onChange(e)}
@@ -159,12 +163,14 @@ export const RegisterModal = () => {
                                 >
                                 </div>
                             </div>
-                            {!isPasswordsEqual && password1.isDirty && password2.isDirty
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.passwordsNotEqual}</div>
-                                :
-                                <></>
-                            }
+                            <div className={cl.authFieldErrorContainer}>
+                                {!isPasswordsEqual && password1.isDirty && password2.isDirty
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.passwordsNotEqual}</div>
+                                    :
+                                    <></>
+                                }
+                            </div>
                             <AnitmatedBtn disabled={isBtnDisabled} >Sign In</AnitmatedBtn>
                             <div className="authSignUpText">
                                 <div className={cl.authSignUpText}>

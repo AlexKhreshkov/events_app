@@ -207,8 +207,9 @@ h6 {
   visibility: hidden;
   overflow-x: hidden;
   overflow-y: auto;
-  transition: all 0.4s ease 0s;
+  transition: all 0.5s ease 0s;
 }
+
 
 .popupAcitve {
   opacity: 1;
@@ -229,7 +230,14 @@ h6 {
   max-width: 800px;
   padding: 30px;
   position: relative;
+  transition: all 0.5s ease 0s;
+  transform: translate(0px, -200px);
 }
+
+.popup__contentActive {
+  transform: translate(0px, 0px);
+}
+
 
 .popup__close {
   position: absolute;
@@ -237,7 +245,10 @@ h6 {
   top: 10px;
   font-size: 20px;
   text-decoration: none;
+  width: 20px;
+  height: 20px;
   color: black;
+  background: url('./img/icons/close-outline.svg') 0 0 no-repeat;
 }
 
 .popup__title {

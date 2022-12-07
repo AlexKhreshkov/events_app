@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { IoClose } from 'react-icons/io5'
+import { IoClose, IoLogoGoogle } from 'react-icons/io5'
 import { useInput } from '../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
 import { changeSignInVisibility, changeSignUpVisibility } from '../../../store/authModalSlice'
@@ -55,6 +55,14 @@ export const LoginModal = () => {
         dispatch(changeSignUpVisibility(true))
     }
 
+    const closeModalBtnHandler = () => {
+        dispatch(changeSignInVisibility(false))
+    }
+
+    const resetPasswordHandler = () => {
+
+    }
+
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
@@ -62,53 +70,57 @@ export const LoginModal = () => {
                 className="popup__body"
             >
                 <form
-                    className="popup__content"
+                    className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
                     onSubmit={(event) => formSubmitHandler(event)}
                 >
-                    <div
-                        onClick={() => dispatch(changeSignInVisibility(false))}
+                    <button
+                        onClick={() => closeModalBtnHandler()}
                         className="popup__close"
-                    >
-                        <IoClose />
-                    </div>
+                    />
                     <div className="popup__title">
                         <div className={cl.popup__loginTitle}>Sign In</div>
                     </div>
                     <div className="popup__text">
                         <div className={cl.popup__loginContent}>
-                            <AnitmatedBtn color='red'>Google</AnitmatedBtn>
-                            <div className={cl.authOrText}>OR</div>
+                            <AnitmatedBtn color='red'>
+                                <span>With Google</span>
+                            </AnitmatedBtn>
+                            <div className={cl.authGreenLine}></div>
                             <div className={cl.login__title}>Login</div>
-                            {login.isDirty && login.isEmtpy
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.emptyLogin}</div>
-                                :
-                                <></>
-                            }
-                            {login.isDirty && !login.isEmtpy && login.lengthError && login.value.length !== 0
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.invalidLogin}</div>
-                                :
-                                <></>
-                            }
+                            <div className={cl.authFieldErrorContainer}>
+                                {login.isDirty && login.isEmtpy
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.emptyLogin}</div>
+                                    :
+                                    <></>
+                                }
+                                {login.isDirty && !login.isEmtpy && login.lengthError && login.value.length !== 0
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.invalidLogin}</div>
+                                    :
+                                    <></>
+                                }
+                            </div>
                             <AuthInput
                                 onChange={e => login.onChange(e)}
                                 onBlur={() => login.onBlur()}
                                 placeholder='Your login...'
                             />
                             <div className={cl.login__title}>Password</div>
-                            {password.isDirty && password.isEmtpy
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.emptyPassword}</div>
-                                :
-                                <></>
-                            }
-                            {password.isDirty && !password.isEmtpy && password.lengthError
-                                ?
-                                <div className={cl.authFieldError}>{AuthErrors.invalidPassword}</div>
-                                :
-                                <></>
-                            }
+                            <div className={cl.authFieldErrorContainer}>
+                                {password.isDirty && password.isEmtpy
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.emptyPassword}</div>
+                                    :
+                                    <></>
+                                }
+                                {password.isDirty && !password.isEmtpy && password.lengthError
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.invalidPassword}</div>
+                                    :
+                                    <></>
+                                }
+                            </div>
                             <div className={cl.auth__password}>
                                 <AuthInput
                                     onChange={e => password.onChange(e)}
@@ -131,6 +143,17 @@ export const LoginModal = () => {
                                         onClick={() => openSignUpForm()}
                                     >
                                         Sign Up
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="authSignUpText">
+                                <div className={cl.authSignUpText}>
+                                    Forgot your password?
+                                    <div
+                                        className={cl.authSignUpLink}
+                                        onClick={() => resetPasswordHandler()}
+                                    >
+                                        Reset
                                     </div>
                                 </div>
                             </div>

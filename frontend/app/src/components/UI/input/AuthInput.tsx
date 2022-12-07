@@ -18,7 +18,6 @@ export const AuthInput: FC<AuthInputProps> = ({ type, value, placeholder, onChan
             placeholder={placeholder}
             onChange={event => onChange?.(event)}
             onBlur={() => onBlur?.()}
-            required
         >
         </input>
     )

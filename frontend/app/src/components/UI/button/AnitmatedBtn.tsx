@@ -19,9 +19,7 @@ export const AnitmatedBtn: FC<AnitmatedBtnProps> = ({ children, onClick, color, 
                 disabled={disabled}
                 style={{ backgroundColor: btnBackgroundColor }}
             >
-                <span>
-                    {children}
-                </span>
+                {children}
             </button>
         )
     }

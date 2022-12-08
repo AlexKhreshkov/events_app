@@ -43,7 +43,7 @@ export const LoginModal = () => {
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        console.log(1);
+        
     }
 
     const changeVisibilityHandler = () => {

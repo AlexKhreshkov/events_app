@@ -4,9 +4,9 @@ export interface IAuthModalState {
     isOpen: boolean
 }
 export interface IUser {
-    id: number,
     username: string,
     email?: string,
+    authToken: string
 }
 
 export interface IValidations {
@@ -19,4 +19,28 @@ export enum EAvaliableValidators {
     isEmpty = 'isEmpty',
     minLength = 'minLength',
     maxLength = 'maxLength'
+}
+export interface ISignInInfo {
+    username: string,
+    password: string,
+}
+export interface ISignUpInfo {
+    username: string,
+    password: string,
+}
+
+export interface ISignUpResponse {
+    email: string,
+    username: string,
+    id: number,
+}
+
+export interface IResponseAuthError{
+    password?: string,
+    username?: string,
+    globalError?: string
+}
+
+export interface IAuthToken{
+    authToken: string
 }

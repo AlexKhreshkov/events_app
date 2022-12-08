@@ -1,24 +1,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { IUser } from '../types/types'
 
-type UsersState = {
-    list: IUser[]
+interface UserState {
+    user: IUser,
 }
 
-const initialState: UsersState = {
-    list: []
+const initialState: UserState = {
+    user: {
+        username: '',
+        authToken: ''
+    },
 }
 
 const authSlice = createSlice({
-    name: 'users',
+    name: 'user',
     initialState,
     reducers: {
         addUser(state, action: PayloadAction<IUser>) {
-            state.list.push({
-                id: action.payload.id,
+            state.user = {
                 username: action.payload.username,
-                email: action.payload.email
-            })
+                authToken: action.payload.authToken
+            }
         },
     }
 })

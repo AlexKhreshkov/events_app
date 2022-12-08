@@ -43,6 +43,10 @@
     opacity: .75;
 }
 
+.red {
+    background-color: red;
+}
+
 button:disabled,
 button[disabled] {
     border: 1px solid #999999;

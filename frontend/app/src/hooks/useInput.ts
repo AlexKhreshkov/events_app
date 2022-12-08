@@ -3,8 +3,8 @@ import { IValidations } from "../types/types"
 import { useInputValidation } from "./useInputValidation"
 
 
-export const useInput = (initialValue: string, validations?: IValidations) => {
-    const [value, setValue] = useState<string>(initialValue)
+export const useInput = (initialValue?: string, validations?: IValidations) => {
+    const [value, setValue] = useState<string>('')
     const [isDirty, setDirty] = useState<boolean>(false)
     const valid = useInputValidation(value, validations)
 
@@ -15,7 +15,7 @@ export const useInput = (initialValue: string, validations?: IValidations) => {
     const onBlur = () => {
         setDirty(true)
     }
-
+    
     return {
         value, onChange, onBlur, setValue, isDirty, ...valid
     }

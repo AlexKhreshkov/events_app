@@ -5,11 +5,12 @@ interface AuthInputProps {
     type?: string
     value?: string
     placeholder?: string
+    required?: boolean
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
     onBlur?: () => void
 }
 
-export const AuthInput: FC<AuthInputProps> = ({ type, value, placeholder, onChange, onBlur }) => {
+export const AuthInput: FC<AuthInputProps> = ({ type, value, placeholder, required, onChange, onBlur }) => {
     return (
         <input
             className={classes.authInput}
@@ -18,6 +19,7 @@ export const AuthInput: FC<AuthInputProps> = ({ type, value, placeholder, onChan
             placeholder={placeholder}
             onChange={event => onChange?.(event)}
             onBlur={() => onBlur?.()}
+            required={required}
         >
         </input>
     )

@@ -1,11 +1,12 @@
+import { Button } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { IoClose } from 'react-icons/io5'
+import { getAuthToken, postSignUpDetails } from '../../../api/authApi'
 import { useInput } from '../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
 import { changeSignInVisibility, changeSignUpVisibility } from '../../../store/authModalSlice'
-import { checkPassword } from '../../../utils/auth_utils'
+import { addUser } from '../../../store/authSlice'
+import { IResponseAuthError } from '../../../types/types'
 import { AuthErrors, MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from '../../../utils/constants'
-import { AnitmatedBtn } from '../button/AnitmatedBtn'
 import { AuthInput } from '../input/AuthInput'
 import cl from './RegisterModal.module.css'
 
@@ -32,16 +33,26 @@ export const RegisterModal = () => {
     const [isPassword1Visible, setPassword1Visible] = useState<boolean>(false)
     const [isPassword2Visible, setPassword2Visible] = useState<boolean>(false)
     const [isPasswordsEqual, setPasswordsEqual] = useState<boolean>(false)
+    const userAuthData = {
+        username: login.value,
+        password: password1.value
+    }
+    const [responseAuthError, setResponseAuthError] = useState<IResponseAuthError>({})
+    const [wasRequest, setWasReqeust] = useState(false)
+
 
     useEffect(() => {
-        const isDisabled =
+        let isDisabled =
             login.isDirty && (login.isEmtpy || login.lengthError)
             ||
             password1.isDirty && (password1.isEmtpy || password1.lengthError)
             ||
             password2.isDirty && (password2.isEmtpy || password2.lengthError)
             ||
-            !isPasswordsEqual
+            !
+            isPasswordsEqual
+            ||
+            wasRequest
 
         setBtnDisabled(isDisabled)
         setPasswordsEqual(password1.value === password2.value)
@@ -63,8 +74,29 @@ export const RegisterModal = () => {
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        //do smth
+        postSignUpDetails(userAuthData)
+            .then(response => response.data)
+            .catch(error => {
+                setWasReqeust(true)
+                setResponseAuthError(error.response.data)
+                throw error
+            })
+            .then(() =>
+                getAuthToken(userAuthData)
+                    .then(response => response.data.authToken)
+                    .then(authToken => dispatch(addUser({ ...userAuthData, authToken })))
+                    .then(() => {
+                        dispatch(changeSignUpVisibility(false))
+                        login.setValue('')
+                        password1.setValue('')
+                        password2.setValue('')
+                    })
+                    .catch(error => setResponseAuthError(
+                        { ...responseAuthError, globalError: 'Something went wrong' }
+                    ))
+            )
     }
+
 
 
     return (
@@ -77,6 +109,7 @@ export const RegisterModal = () => {
                     onSubmit={(event) => formSubmitHandler(event)}
                 >
                     <button
+                        type='button'
                         onClick={() => dispatch(changeSignUpVisibility(false))}
                         className="popup__close"
                     />
@@ -85,7 +118,7 @@ export const RegisterModal = () => {
                     </div>
                     <div className="popup__text">
                         <div className={cl.popup__loginContent}>
-                            <AnitmatedBtn color='red'>With Google</AnitmatedBtn>
+                            <Button danger type='primary'>With Google</Button>
                             <div className={cl.authGreenLine}></div>
                             <div className={cl.login__title}>Login</div>
                             <div className={cl.authFieldErrorContainer}>
@@ -103,9 +136,14 @@ export const RegisterModal = () => {
                                 }
                             </div>
                             <AuthInput
-                                onChange={e => login.onChange(e)}
+                                value={login.value}
+                                onChange={e => {
+                                    login.onChange(e)
+                                    setWasReqeust(false)
+                                }}
                                 onBlur={() => login.onBlur()}
                                 placeholder='Your login...'
+                                required={true}
                             />
                             <div className={cl.login__title}>Password</div>
                             <div className={cl.authFieldErrorContainer}>
@@ -124,10 +162,15 @@ export const RegisterModal = () => {
                             </div>
                             <div className={cl.auth__password}>
                                 <AuthInput
-                                    onChange={e => password1.onChange(e)}
+                                    value={password1.value}
+                                    onChange={e => {
+                                        password1.onChange(e)
+                                        setWasReqeust(false)
+                                    }}
                                     onBlur={() => password1.onBlur()}
                                     type={isPassword1Visible ? 'text' : 'password'}
                                     placeholder='Your password...'
+                                    required={true}
                                 />
                                 <div
                                     className={isPassword1Visible ? cl.auth__passwordNotVisible : cl.auth__passwordVisble}
@@ -152,7 +195,11 @@ export const RegisterModal = () => {
                             </div>
                             <div className={cl.auth__password}>
                                 <AuthInput
-                                    onChange={e => password2.onChange(e)}
+                                    value={password2.value}
+                                    onChange={e => {
+                                        password2.onChange(e)
+                                        setWasReqeust(false)
+                                    }}
                                     onBlur={() => password2.onBlur()}
                                     type={isPassword2Visible ? 'text' : 'password'}
                                     placeholder='Your password...'
@@ -163,15 +210,46 @@ export const RegisterModal = () => {
                                 >
                                 </div>
                             </div>
-                            <div className={cl.authFieldErrorContainer}>
+                            <div className={cl.authFieldGlobalErrorContainer}>
                                 {!isPasswordsEqual && password1.isDirty && password2.isDirty
                                     ?
                                     <div className={cl.authFieldError}>{AuthErrors.passwordsNotEqual}</div>
                                     :
                                     <></>
                                 }
+                                {responseAuthError.password
+                                    ?
+                                    <div className={cl.authFieldError}>
+                                        {responseAuthError.password}
+                                    </div>
+                                    :
+                                    <></>
+                                }
+                                {responseAuthError.username
+                                    ?
+                                    <div className={cl.authFieldError}>
+                                        {responseAuthError.username}
+                                    </div>
+                                    :
+                                    <></>
+                                }
+                                {responseAuthError.globalError
+                                    ?
+                                    <div className={cl.authFieldError}>
+                                        {responseAuthError.globalError}
+                                    </div>
+                                    :
+                                    <></>
+                                }
                             </div>
-                            <AnitmatedBtn disabled={isBtnDisabled} >Sign In</AnitmatedBtn>
+                            <Button
+                                // onClick={e => formSubmitHandler(e)}
+                                type='primary'
+                                htmlType={'submit'}
+                                disabled={isBtnDisabled}>
+
+                                Sign In
+                            </Button>
                             <div className="authSignUpText">
                                 <div className={cl.authSignUpText}>
                                     Have an account?

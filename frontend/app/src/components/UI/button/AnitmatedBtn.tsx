@@ -28,6 +28,7 @@ export const AnitmatedBtn: FC<AnitmatedBtnProps> = ({ children, onClick, color, 
             className={classes.btn}
             onClick={event => onClick?.(event)}
             disabled={disabled}
+            type={'button'}
         >
             <span>
                 {children}

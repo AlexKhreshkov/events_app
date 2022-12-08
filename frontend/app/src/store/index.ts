@@ -5,7 +5,7 @@ import authModalReduser from './authModalSlice'
 
 const store = configureStore({
     reducer: {
-        users: authReduser,
+        user: authReduser,
         authModal: authModalReduser
     }
 })

@@ -227,7 +227,7 @@ h6 {
 .popup__content {
   background-color: white;
   color: black;
-  max-width: 800px;
+  max-width: 300px;
   padding: 30px;
   position: relative;
   transition: all 0.5s ease 0s;

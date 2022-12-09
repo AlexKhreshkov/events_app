@@ -3,6 +3,7 @@
     border: 2px solid black;
     border-radius: 12px;
     flex: 1 1 auto;
+    margin-top: 10px;
 }
 
 .authInput:focus {

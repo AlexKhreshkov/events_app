@@ -15,18 +15,24 @@
 
 .login__title {
     font-size: 24px;
-    margin: 10px 5px;
+    margin: 9px 0 4px 0;
 }
 
 .authFieldErrorContainer {
-    height: 16px;
+    min-height: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.authFieldGlobalErrorContainer {
+    min-height: 32px;
 }
 
 .authFieldError {
     color: red;
-    font-size: 16px;
-    margin: -5px 0 7px 5px;
-    height: 10px;
+    font-size: 14px;
+    /* margin: -5px 0 12px 0px; */
+    min-height: 10px;
     font-style: italic;
 }
 
@@ -37,16 +43,6 @@
     margin: 10px 0 0 0;
 }
 
-.authGreenLine {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    background-color: #6fe21d;
-    height: 3px;
-    margin: 10px 0 0 0;
-    border-radius: 12px;
-}
 
 .centerContent {
     display: flex;
@@ -75,7 +71,7 @@
     position: absolute;
     width: 30px;
     height: 30px;
-    margin-top: 7px;
+    margin-top: 18px;
     right: 12%;
     z-index: 2;
 }
@@ -85,7 +81,7 @@
     position: absolute;
     width: 30px;
     height: 30px;
-    margin-top: 7px;
+    margin-top: 18px;
     right: 12%;
     z-index: 2;
 }

@@ -7,6 +7,13 @@ import { AuthErrors, MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MI
 import { AnitmatedBtn } from '../button/AnitmatedBtn'
 import { AuthInput } from '../input/AuthInput'
 import cl from './LoginModal.module.css'
+import { Button } from 'antd'
+import { getAuthToken, postSignUpDetails, signIn } from '../../../api/authApi'
+import { IResponseAuthError } from '../../../types/types'
+import { addUser } from '../../../store/authSlice'
+
+
+
 
 export const LoginModal = () => {
 
@@ -28,6 +35,13 @@ export const LoginModal = () => {
     const password = useInput('', passwordValidationProps)
     const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false)
     const [isBtnDisabled, setBtnDisabled] = useState<boolean>(false)
+    const [responseAuthError, setResponseAuthError] = useState<IResponseAuthError>({})
+    const [wasRequest, setWasReqeust] = useState(false)
+
+    const userAuthData = {
+        username: login.value,
+        password: password.value
+    }
 
 
     useEffect(() => {
@@ -35,6 +49,8 @@ export const LoginModal = () => {
             login.isDirty && (login.isEmtpy || login.lengthError)
             ||
             password.isDirty && (password.isEmtpy || password.lengthError)
+            ||
+            wasRequest
 
         setBtnDisabled(isDisabled)
 
@@ -43,7 +59,33 @@ export const LoginModal = () => {
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        
+        signIn(userAuthData)
+            .then(response => response.data)
+            .catch(error => {
+                setWasReqeust(true)
+                setResponseAuthError(error.response.data)
+                console.log(error.response.data)
+                throw error
+            })
+            .then(() =>
+                getAuthToken(userAuthData)
+                    .then(response => {
+                        const authToken = response.data.auth_token
+                        dispatch(addUser({
+                            username: userAuthData.username.trim(),
+                            authToken
+                        }))
+                        localStorage.setItem('authToken', authToken)
+                    })
+                    .then(() => {
+                        dispatch(changeSignInVisibility(false))
+                        login.setValue('')
+                        password.setValue('')
+                    })
+                    .catch(error => setResponseAuthError(
+                        { ...responseAuthError, globalError: 'Something went wrong' }
+                    ))
+            )
     }
 
     const changeVisibilityHandler = () => {
@@ -74,18 +116,17 @@ export const LoginModal = () => {
                     onSubmit={(event) => formSubmitHandler(event)}
                 >
                     <button
-                        onClick={() => closeModalBtnHandler()}
+                        type='button'
+                        onClick={() => dispatch(changeSignInVisibility(false))}
                         className="popup__close"
                     />
                     <div className="popup__title">
-                        <div className={cl.popup__loginTitle}>Sign In</div>
+                        <div className={cl.popup__loginTitle}>Sign Up</div>
                     </div>
                     <div className="popup__text">
                         <div className={cl.popup__loginContent}>
-                            <AnitmatedBtn color='red'>
-                                <span>With Google</span>
-                            </AnitmatedBtn>
-                            <div className={cl.authGreenLine}></div>
+                            <Button danger type='primary'>With Google</Button>
+                            <div className='blackLine'></div>
                             <div className={cl.login__title}>Login</div>
                             <div className={cl.authFieldErrorContainer}>
                                 {login.isDirty && login.isEmtpy
@@ -94,7 +135,7 @@ export const LoginModal = () => {
                                     :
                                     <></>
                                 }
-                                {login.isDirty && !login.isEmtpy && login.lengthError && login.value.length !== 0
+                                {login.isDirty && !login.isEmtpy && login.lengthError
                                     ?
                                     <div className={cl.authFieldError}>{AuthErrors.invalidLogin}</div>
                                     :
@@ -102,9 +143,14 @@ export const LoginModal = () => {
                                 }
                             </div>
                             <AuthInput
-                                onChange={e => login.onChange(e)}
+                                value={login.value}
+                                onChange={e => {
+                                    login.onChange(e)
+                                    setWasReqeust(false)
+                                }}
                                 onBlur={() => login.onBlur()}
                                 placeholder='Your login...'
+                                required={true}
                             />
                             <div className={cl.login__title}>Password</div>
                             <div className={cl.authFieldErrorContainer}>
@@ -123,10 +169,15 @@ export const LoginModal = () => {
                             </div>
                             <div className={cl.auth__password}>
                                 <AuthInput
-                                    onChange={e => password.onChange(e)}
+                                    value={password.value}
+                                    onChange={e => {
+                                        password.onChange(e)
+                                        setWasReqeust(false)
+                                    }}
                                     onBlur={() => password.onBlur()}
                                     type={isPasswordVisible ? 'text' : 'password'}
                                     placeholder='Your password...'
+                                    required={true}
                                 />
                                 <div
                                     className={isPasswordVisible ? cl.auth__passwordNotVisible : cl.auth__passwordVisble}
@@ -134,10 +185,51 @@ export const LoginModal = () => {
                                 >
                                 </div>
                             </div>
-                            <AnitmatedBtn disabled={isBtnDisabled} >Sign In</AnitmatedBtn>
+
+                            <div className={cl.authFieldGlobalErrorContainer}>
+                                {responseAuthError.password
+                                    ?
+                                    <div className={cl.authFieldError}>
+                                        {responseAuthError.password}
+                                    </div>
+                                    :
+                                    <></>
+                                }
+                                {responseAuthError.username
+                                    ?
+                                    <div className={cl.authFieldError}>
+                                        {responseAuthError.username}
+                                    </div>
+                                    :
+                                    <></>
+                                }
+                                {responseAuthError.globalError
+                                    ?
+                                    <div className={cl.authFieldError}>
+                                        {responseAuthError.globalError}
+                                    </div>
+                                    :
+                                    <></>
+                                }
+                                {responseAuthError.non_field_errors
+                                    ?
+                                    <div className={cl.authFieldError}>
+                                        {responseAuthError.non_field_errors}
+                                    </div>
+                                    :
+                                    <></>
+                                }
+                            </div>
+                            <Button
+                                type='primary'
+                                htmlType={'submit'}
+                                disabled={isBtnDisabled}
+                            >
+                                Sign In
+                            </Button>
                             <div className="authSignUpText">
                                 <div className={cl.authSignUpText}>
-                                    No account?
+                                    Haven't registered?
                                     <div
                                         className={cl.authSignUpLink}
                                         onClick={() => openSignUpForm()}
@@ -151,7 +243,7 @@ export const LoginModal = () => {
                                     Forgot your password?
                                     <div
                                         className={cl.authSignUpLink}
-                                        onClick={() => resetPasswordHandler()}
+                                        onClick={() => openSignUpForm()}
                                     >
                                         Reset
                                     </div>

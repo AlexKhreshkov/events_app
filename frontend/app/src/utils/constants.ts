@@ -1,7 +1,7 @@
 export const LOGIN_ROUTE = '/login'
 export const MIN_LOGIN_LENGTH = 3
 export const MAX_LOGIN_LENGTH = 20
-export const MIN_PASSWORD_LENGTH = 5
+export const MIN_PASSWORD_LENGTH = 8
 export const MAX_PASSWORD_LENGTH = 20
 export const AuthErrors = {
     emptyPassword: `Pasword can't be empty`,
@@ -12,3 +12,7 @@ export const AuthErrors = {
 }
 export const BASE_URL = 'http://127.0.0.1:8000/api/v1'
 export const TOKEN_URL = 'http://127.0.0.1:8000/api/auth'
+export const REGISTER_USER_URL = 'http://127.0.0.1:8000/api/v1/auth/users/'
+export const RECIEVE_TOKEN_URL = 'http://127.0.0.1:8000/auth/token/login/'
+export const DEFINE_USER_URL = 'http://127.0.0.1:8000/api/v1/auth/users/me/'
+export const DELETE_TOKEN_URL = 'http://127.0.0.1:8000/auth/token/logout/'

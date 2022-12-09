@@ -5,7 +5,6 @@
   padding: 0;
   margin: 0;
   border: 0;
-  font-family: 'Roboto';
   font-size: 18px;
 }
 
@@ -110,6 +109,7 @@ h6 {
   min-height: 100vh;
   background-color: rgb(255, 255, 255);
   overflow: hidden;
+  font-family: 'Roboto';
 }
 
 .centerContainer {
@@ -123,6 +123,15 @@ h6 {
   position: relative;
 }
 
+.loaderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
 
 .nav__container {
   background-color: black;
@@ -134,7 +143,6 @@ h6 {
 
 .nav {
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 80%;
 }
@@ -148,10 +156,13 @@ h6 {
   display: flex;
   flex: 1 1 auto;
   justify-content: right;
+  width: 100%;
 }
 
 .nav__item {
   margin-right: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .liked {
@@ -165,6 +176,17 @@ h6 {
 }
 
 .nav__item .active {}
+
+.blackLine {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: black;
+  height: 1px;
+  margin: 10px 0 0 0;
+  border-radius: 12px;
+}
 
 .main {}
 

@@ -5,7 +5,7 @@ import { Error } from './pages/Error';
 import { Main } from './pages/Main';
 
 const router = createBrowserRouter(createRoutesFromElements(
-    <Route path='/' element={<Layout />}>
+    <Route path='/' element={<Layout /> }>
         <Route index element={<Main />} />
         <Route path='*' element={<Error />} />
     </Route>

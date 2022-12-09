@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReduser from './authSlice'
 import authModalReduser from './authModalSlice'
-
+import isLoadingReduser from './isLoadingSlice'
 
 const store = configureStore({
     reducer: {
         user: authReduser,
-        authModal: authModalReduser
+        authModal: authModalReduser,
+        isLoading: isLoadingReduser,
     }
 })
 

@@ -43,11 +43,11 @@ export const RegisterModal = () => {
 
     useEffect(() => {
         let isDisabled =
-            login.isDirty && (login.isEmtpy || login.lengthError)
+            (login.isDirty && (login.isEmtpy || login.lengthError))
             ||
-            password1.isDirty && (password1.isEmtpy || password1.lengthError)
+            (password1.isDirty && (password1.isEmtpy || password1.lengthError))
             ||
-            password2.isDirty && (password2.isEmtpy || password2.lengthError)
+            (password2.isDirty && (password2.isEmtpy || password2.lengthError))
             ||
             !
             isPasswordsEqual
@@ -72,6 +72,7 @@ export const RegisterModal = () => {
         dispatch(changeSignUpVisibility(false))
     }
 
+
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         postSignUpDetails(userAuthData)
@@ -83,8 +84,14 @@ export const RegisterModal = () => {
             })
             .then(() =>
                 getAuthToken(userAuthData)
-                    .then(response => response.data.authToken)
-                    .then(authToken => dispatch(addUser({ ...userAuthData, authToken })))
+                    .then(response => {
+                        const authToken = response.data.auth_token
+                        dispatch(addUser({
+                            username: userAuthData.username.trim(),
+                            authToken
+                        }))
+                        localStorage.setItem('authToken', authToken)
+                    })
                     .then(() => {
                         dispatch(changeSignUpVisibility(false))
                         login.setValue('')
@@ -119,7 +126,7 @@ export const RegisterModal = () => {
                     <div className="popup__text">
                         <div className={cl.popup__loginContent}>
                             <Button danger type='primary'>With Google</Button>
-                            <div className={cl.authGreenLine}></div>
+                            <div className='blackLine'></div>
                             <div className={cl.login__title}>Login</div>
                             <div className={cl.authFieldErrorContainer}>
                                 {login.isDirty && login.isEmtpy
@@ -243,11 +250,10 @@ export const RegisterModal = () => {
                                 }
                             </div>
                             <Button
-                                // onClick={e => formSubmitHandler(e)}
                                 type='primary'
                                 htmlType={'submit'}
-                                disabled={isBtnDisabled}>
-
+                                disabled={isBtnDisabled}
+                            >
                                 Sign In
                             </Button>
                             <div className="authSignUpText">
@@ -268,5 +274,3 @@ export const RegisterModal = () => {
         </div>
     )
 }
-
-

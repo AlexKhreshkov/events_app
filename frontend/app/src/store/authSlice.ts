@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IUser } from '../types/types'
+import { useEffect } from 'react'
+import { useAppSelector } from '../hooks/useRedux'
+import { useRequest } from '../hooks/useRequest'
+import { IAuthToken, IUser } from '../types/types'
 
 interface UserState {
     user: IUser,
@@ -8,9 +11,10 @@ interface UserState {
 const initialState: UserState = {
     user: {
         username: '',
-        authToken: ''
-    },
+        authToken: '',
+    }
 }
+
 
 const authSlice = createSlice({
     name: 'user',
@@ -18,13 +22,21 @@ const authSlice = createSlice({
     reducers: {
         addUser(state, action: PayloadAction<IUser>) {
             state.user = {
+                id: action.payload.id,
+                email: action.payload.email,
                 username: action.payload.username,
                 authToken: action.payload.authToken
+            }
+        },
+        deleteTokenFromUser(state) {
+            state.user = {
+                ...state.user,
+                authToken: '',
             }
         },
     }
 })
 
-export const { addUser } = authSlice.actions
+export const { addUser, deleteTokenFromUser } = authSlice.actions
 
 export default authSlice.reducer     

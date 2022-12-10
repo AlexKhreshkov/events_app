@@ -10,7 +10,7 @@
 }
 
 .popup__loginContent input {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .login__title {
@@ -71,7 +71,7 @@
     position: absolute;
     width: 30px;
     height: 30px;
-    margin-top: 18px;
+    margin-top: 8px;
     right: 12%;
     z-index: 2;
 }
@@ -81,7 +81,7 @@
     position: absolute;
     width: 30px;
     height: 30px;
-    margin-top: 18px;
+    margin-top: 8px;
     right: 12%;
     z-index: 2;
 }

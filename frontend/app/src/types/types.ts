@@ -23,6 +23,7 @@ export enum EAvaliableValidators {
 }
 
 export interface ISignUpInfo {
+    email?: string,
     username: string,
     password: string,
 }
@@ -49,4 +50,9 @@ export interface IAuthToken{
 }
 export interface IResponseStatus{
     status: number
+}
+
+export interface IActivateAccount{
+    uid: string,
+    token: string
 }

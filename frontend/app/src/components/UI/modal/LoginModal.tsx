@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { IoClose, IoLogoGoogle } from 'react-icons/io5'
 import { useInput } from '../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
-import { changeSignInVisibility, changeSignUpVisibility } from '../../../store/authModalSlice'
+import { changeResetPasswordVisibility, changeSignInVisibility, changeSignUpVisibility } from '../../../store/authModalSlice'
 import { AuthErrors, MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from '../../../utils/constants'
-import { AnitmatedBtn } from '../button/AnitmatedBtn'
 import { AuthInput } from '../input/AuthInput'
 import cl from './LoginModal.module.css'
 import { Button } from 'antd'
-import { getAuthToken, postSignUpDetails, signIn } from '../../../api/authApi'
+import { getAuthToken, signIn } from '../../../api/authApi'
 import { IResponseAuthError } from '../../../types/types'
 import { addUser } from '../../../store/authSlice'
 
@@ -97,12 +95,13 @@ export const LoginModal = () => {
         dispatch(changeSignUpVisibility(true))
     }
 
-    const closeModalBtnHandler = () => {
+    const openResetPasswordForm = () => {
         dispatch(changeSignInVisibility(false))
+        dispatch(changeResetPasswordVisibility(true))
     }
 
-    const resetPasswordHandler = () => {
-
+    const closeModalBtnHandler = () => {
+        dispatch(changeSignInVisibility(false))
     }
 
 
@@ -229,7 +228,7 @@ export const LoginModal = () => {
                             </Button>
                             <div className="authSignUpText">
                                 <div className={cl.authSignUpText}>
-                                    Haven't registered?
+                                    Don't have an account?
                                     <div
                                         className={cl.authSignUpLink}
                                         onClick={() => openSignUpForm()}
@@ -243,7 +242,7 @@ export const LoginModal = () => {
                                     Forgot your password?
                                     <div
                                         className={cl.authSignUpLink}
-                                        onClick={() => openSignUpForm()}
+                                        onClick={() => openResetPasswordForm()}
                                     >
                                         Reset
                                     </div>

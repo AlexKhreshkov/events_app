@@ -1,12 +1,12 @@
 import { Button } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { getAuthToken, postSignUpDetails } from '../../../api/authApi'
+import { postSignUpDetails } from '../../../api/authApi'
 import { useInput } from '../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
-import { changeSignInVisibility, changeSignUpVisibility } from '../../../store/authModalSlice'
+import { changeLoaderFullSizeVisibility, changeSignInVisibility, changeSignUpVisibility, changeSuccesRegistrationVisibility } from '../../../store/authModalSlice'
 import { addUser } from '../../../store/authSlice'
-import { IResponseAuthError } from '../../../types/types'
-import { AuthErrors, MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from '../../../utils/constants'
+import { IResponseAuthError, ISignUpResponse } from '../../../types/types'
+import { AuthErrors, emailValidationProps, loginValidationProps, passwordValidationProps } from '../../../utils/constants'
 import { AuthInput } from '../input/AuthInput'
 import cl from './RegisterModal.module.css'
 
@@ -15,17 +15,7 @@ export const RegisterModal = () => {
     const isOpen = useAppSelector(state => state.authModal.isSignUp)
     const dispatch = useAppDispatch()
 
-    const loginValidationProps = {
-        isEmpty: true,
-        minLength: MIN_LOGIN_LENGTH,
-        maxLength: MAX_LOGIN_LENGTH
-    }
-    const passwordValidationProps = {
-        isEmpty: true,
-        minLength: MIN_PASSWORD_LENGTH,
-        maxLength: MAX_PASSWORD_LENGTH
-    }
-
+    const email = useInput('', emailValidationProps)
     const login = useInput('', loginValidationProps)
     const password1 = useInput('', passwordValidationProps)
     const password2 = useInput('', passwordValidationProps)
@@ -34,6 +24,8 @@ export const RegisterModal = () => {
     const [isPassword2Visible, setPassword2Visible] = useState<boolean>(false)
     const [isPasswordsEqual, setPasswordsEqual] = useState<boolean>(false)
     const userAuthData = {
+        id: '',
+        email: email.value,
         username: login.value,
         password: password1.value
     }
@@ -43,21 +35,22 @@ export const RegisterModal = () => {
 
     useEffect(() => {
         let isDisabled =
+            (email.isDirty && email.isEmtpy)
+            ||
             (login.isDirty && (login.isEmtpy || login.lengthError))
             ||
             (password1.isDirty && (password1.isEmtpy || password1.lengthError))
             ||
             (password2.isDirty && (password2.isEmtpy || password2.lengthError))
             ||
-            !
-            isPasswordsEqual
+            !isPasswordsEqual
             ||
             wasRequest
 
         setBtnDisabled(isDisabled)
         setPasswordsEqual(password1.value === password2.value)
 
-    }, [login, password1, password2])
+    }, [email, login, password1, password2])
 
 
     const changeVisibilityHandler1 = () => {
@@ -75,36 +68,59 @@ export const RegisterModal = () => {
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        dispatch(changeLoaderFullSizeVisibility(true))
         postSignUpDetails(userAuthData)
-            .then(response => response.data)
+            .then(response => {
+                return response.data
+            })
             .catch(error => {
                 setWasReqeust(true)
                 setResponseAuthError(error.response.data)
                 throw error
             })
-            .then(() =>
-                getAuthToken(userAuthData)
-                    .then(response => {
-                        const authToken = response.data.auth_token
-                        dispatch(addUser({
-                            username: userAuthData.username.trim(),
-                            authToken
-                        }))
-                        localStorage.setItem('authToken', authToken)
-                    })
-                    .then(() => {
-                        dispatch(changeSignUpVisibility(false))
-                        login.setValue('')
-                        password1.setValue('')
-                        password2.setValue('')
-                    })
-                    .catch(error => setResponseAuthError(
-                        { ...responseAuthError, globalError: 'Something went wrong' }
-                    ))
-            )
+            .then((data: ISignUpResponse) => {
+                dispatch(addUser({
+                    id: +data.id,
+                    username: userAuthData.username.trim(),
+                    email: userAuthData.email,
+                    authToken: '',
+                }))
+                dispatch(changeSignUpVisibility(false))
+                dispatch(changeSuccesRegistrationVisibility(true))
+                login.setValue('')
+                password1.setValue('')
+                password2.setValue('')
+                login.setDirty(false)
+                password1.setDirty(false)
+                password2.setDirty(false)
+            })
+            .finally(() => dispatch(changeLoaderFullSizeVisibility(false)))
+
+        // .then(() =>
+        //     getAuthToken(userAuthData)
+        //         .then(response => {
+        //             const authToken = response.data.auth_token
+        //             dispatch(addUser({
+        //                 username: userAuthData.username.trim(),
+        //                 email: userAuthData.email,
+        //                 authToken
+        //             }))
+        //             localStorage.setItem('authToken', authToken)
+        //         })
+        //         .then(() => {
+        //             dispatch(changeSignUpVisibility(false))
+        //             login.setValue('')
+        //             password1.setValue('')
+        //             password2.setValue('')
+        //             login.setDirty(false)
+        //             password1.setDirty(false)
+        //             password2.setDirty(false)
+        //         })
+        //         .catch(error => setResponseAuthError(
+        //             { ...responseAuthError, globalError: 'Something went wrong' }
+        //         ))
+        // )
     }
-
-
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
@@ -127,6 +143,26 @@ export const RegisterModal = () => {
                         <div className={cl.popup__loginContent}>
                             <Button danger type='primary'>With Google</Button>
                             <div className='blackLine'></div>
+                            <div className={cl.login__title}>Email</div>
+                            <div className={cl.authFieldErrorContainer}>
+                                {email.isDirty && email.isEmtpy
+                                    ?
+                                    <div className={cl.authFieldError}>{AuthErrors.emptyEmail}</div>
+                                    :
+                                    <></>
+                                }
+                            </div>
+                            <AuthInput
+                                value={email.value}
+                                onChange={e => {
+                                    email.onChange(e)
+                                    setWasReqeust(false)
+                                }}
+                                onBlur={() => email.onBlur()}
+                                placeholder='Your email...'
+                                required={true}
+                                type='email'
+                            />
                             <div className={cl.login__title}>Login</div>
                             <div className={cl.authFieldErrorContainer}>
                                 {login.isDirty && login.isEmtpy
@@ -254,7 +290,7 @@ export const RegisterModal = () => {
                                 htmlType={'submit'}
                                 disabled={isBtnDisabled}
                             >
-                                Sign In
+                                Sign Up
                             </Button>
                             <div className="authSignUpText">
                                 <div className={cl.authSignUpText}>

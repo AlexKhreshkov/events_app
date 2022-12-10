@@ -1,0 +1,26 @@
+.success__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.success__title {
+    font-size: 36px;
+    margin: 5px 0 20px 0;
+}
+
+.success__content {}
+
+.success__body {
+    text-align: center;
+}
+
+.success__text {
+    font-size: 18px;
+}
+.success__email{
+    margin-top: 10px;
+    color: red;
+    text-decoration: underline;
+}

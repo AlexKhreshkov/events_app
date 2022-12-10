@@ -15,8 +15,8 @@ export const useInput = (initialValue?: string, validations?: IValidations) => {
     const onBlur = () => {
         setDirty(true)
     }
-
+    
     return {
-        value, onChange, onBlur, setValue, isDirty, ...valid
+        value, onChange, onBlur, setValue, setDirty, isDirty, ...valid
     }
 }

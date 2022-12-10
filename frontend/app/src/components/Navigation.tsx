@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import { IoPersonOutline, IoHeartOutline, IoExitOutline } from "react-icons/io5";
 import { LoginModal } from './UI/modal/LoginModal';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { changeSignInVisibility } from '../store/authModalSlice';
+import { changeLoaderFullSizeVisibility, changeSignInVisibility } from '../store/authModalSlice';
 import { RegisterModal } from './UI/modal/RegisterModal';
 import { deleteTokenFromUser } from '../store/authSlice';
 import { deleteTokenFromLocalStorage } from '../utils/utils';
 import { deleteTokenFromServer } from '../api/authApi';
 import { Spin } from 'antd';
+import { EmailModal } from './UI/modal/EmailModal';
+import { SuccessRegisterModal } from './UI/modal/SuccessRegisterModal';
+import { LoadingModal } from './UI/modal/LoadingModal';
 
 export const Navigation = () => {
 
@@ -80,7 +83,10 @@ export const Navigation = () => {
                                 </div>
                                 <div className="nav__item liked">
                                     <IoHeartOutline />
-                                    <div className="liked_count">1</div>
+                                    <div
+                                        className="liked_count"
+                                    >
+                                        1</div>
                                 </div>
                             </>
                         }
@@ -89,6 +95,9 @@ export const Navigation = () => {
             </div>
             <LoginModal />
             <RegisterModal />
+            <EmailModal />
+            <SuccessRegisterModal />
+            <LoadingModal />
         </div>
     )
 }

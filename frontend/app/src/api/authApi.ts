@@ -1,6 +1,6 @@
 import axios from "axios";
-import { IAuthToken, IResponseAuthToken, IResponseStatus, ISignUpInfo, ISignUpResponse } from "../types/types";
-import { BASE_URL, DELETE_TOKEN_URL, REGISTER_USER_URL } from "../utils/constants";
+import { IActivateAccount, IAuthToken, IResponseAuthToken, IResponseStatus, ISignUpInfo, ISignUpResponse } from "../types/types";
+import { ACTIVATE_ACCOUNT_URL, BASE_URL, DELETE_TOKEN_URL, REGISTER_USER_URL } from "../utils/constants";
 
 
 
@@ -12,7 +12,6 @@ import { BASE_URL, DELETE_TOKEN_URL, REGISTER_USER_URL } from "../utils/constant
 
 export function postSignUpDetails(authInfo: ISignUpInfo) {
     return axios.post(
-        // `${BASE_URL}/auth/users/`,
         `${REGISTER_USER_URL}`,
         { ...authInfo },
         {
@@ -60,6 +59,18 @@ export function signIn(authInfo: ISignUpInfo) {
     return axios.post<IResponseAuthToken>(
         `http://127.0.0.1:8000/auth/token/login/`,
         { ...authInfo },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+        },
+    )
+}
+export function activeAccount(accountEmailInfo: IActivateAccount) {
+    return axios.post(
+        `${ACTIVATE_ACCOUNT_URL}`,
+        { ...accountEmailInfo },
         {
             headers: {
                 'Content-Type': 'application/json',

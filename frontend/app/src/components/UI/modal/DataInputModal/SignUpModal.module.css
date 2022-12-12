@@ -1,0 +1,87 @@
+.popup__loginTitle {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.popup__loginContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup__loginContent input {
+    margin-bottom: 5px;
+}
+
+.login__title {
+    font-size: 24px;
+    margin: 9px 0 4px 0;
+}
+
+.authFieldErrorContainer {
+    min-height: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.authFieldGlobalErrorContainer {
+    min-height: 32px;
+}
+
+.authFieldError {
+    color: red;
+    font-size: 14px;
+    /* margin: -5px 0 12px 0px; */
+    min-height: 10px;
+    font-style: italic;
+}
+
+
+.authOrText {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0 0;
+}
+
+
+.centerContent {
+    display: flex;
+    justify-content: center;
+}
+
+.authSignUpText {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0 5px 0;
+}
+
+.authSignUpLink {
+    margin-left: 5px;
+    cursor: pointer;
+    text-decoration: underline;
+    color: red;
+}
+
+.auth__password {
+    display: flex;
+}
+
+.auth__passwordVisble {
+    background: url('../../../../img/icons/eyeOutline.svg') 0 0 no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin-top: 8px;
+    right: 12%;
+    z-index: 2;
+}
+
+.auth__passwordNotVisible {
+    background: url('../../../../img/icons/eyeOffOutline.svg') 0 0 no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin-top: 8px;
+    right: 12%;
+    z-index: 2;
+}

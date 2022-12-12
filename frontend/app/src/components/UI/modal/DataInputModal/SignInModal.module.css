@@ -55,12 +55,6 @@
     margin: 15px 0 5px 0;
 }
 
-.authEmailText {
-    display: flex;
-    text-align: center;
-    margin: 15px 0 5px 0;
-}
-
 .authSignUpLink {
     margin-left: 5px;
     cursor: pointer;
@@ -73,21 +67,21 @@
 }
 
 .auth__passwordVisble {
-    background: url('../../../img/icons/eyeOutline.svg') 0 0 no-repeat;
+    background: url('../../../../img/icons/eyeOutline.svg') 0 0 no-repeat;
     position: absolute;
     width: 30px;
     height: 30px;
-    margin-top: 18px;
+    margin-top: 8px;
     right: 12%;
     z-index: 2;
 }
 
 .auth__passwordNotVisible {
-    background: url('../../../img/icons/eyeOffOutline.svg') 0 0 no-repeat;
+    background: url('../../../../img/icons/eyeOffOutline.svg') 0 0 no-repeat;
     position: absolute;
     width: 30px;
     height: 30px;
-    margin-top: 18px;
+    margin-top: 8px;
     right: 12%;
     z-index: 2;
 }

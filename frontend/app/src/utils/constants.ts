@@ -10,6 +10,7 @@ export const AuthErrors = {
     invalidPassword: `Password must be  ${MIN_PASSWORD_LENGTH} to ${MAX_PASSWORD_LENGTH} symbols`,
     invalidLogin: `Login must be from ${MIN_LOGIN_LENGTH} to ${MAX_LOGIN_LENGTH} symbols`,
     passwordsNotEqual: `Passwords don't match`,
+    accountNotActivated: `First, you need to activate your account. Please, check your email.`
 }
 export const emailValidationProps = {
     isEmpty: true,
@@ -31,3 +32,5 @@ export const RECIEVE_TOKEN_URL = 'http://127.0.0.1:8000/auth/token/login/'
 export const DEFINE_USER_URL = 'http://127.0.0.1:8000/api/v1/auth/users/me/'
 export const DELETE_TOKEN_URL = 'http://127.0.0.1:8000/auth/token/logout/'
 export const ACTIVATE_ACCOUNT_URL = `http://127.0.0.1:8000/api/v1/auth/users/activation/`
+export const RESET_PASSWORD_URL = `http://127.0.0.1:8000/api/v1/auth/users/reset_password/`
+export const RESET_PASSWORD_CONFIRMATION_URL = `http://127.0.0.1:8000/api/v1/auth/users/reset_password_confirm/`

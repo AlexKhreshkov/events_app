@@ -279,3 +279,103 @@ h6 {
 }
 
 .popup__text {}
+
+
+.content__container {
+  width: 80%;
+}
+
+.content__rightArea {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 10px 10px;
+}
+
+.content__makeАdvertising {
+  width: 300px;
+}
+
+.findOrSeracrh__container {
+  margin: 10px 0 20px 0;
+}
+
+.findOrSeracrh {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.findOrSeracrh__title {
+  font-size: 30px;
+  margin: 0 0 15px 0;
+}
+
+.findOrSeracrh__input {
+  margin: 0 0 15px 0;
+}
+
+.content__title {
+  font-size: 36px;
+}
+
+.content__subtitle {
+  margin: 10px 0;
+}
+
+.content__cities {
+  display: flex;
+}
+
+.content__citiy {
+  font-size: 18px;
+  color: #1677ff;
+  margin: 0 5px 0 0;
+}
+
+.citites__separeteIcon {
+  font-size: 18px;
+  margin: 0 5px 0 0;
+}
+
+.content__lostSearch__container {
+  margin: 5px 0;
+}
+
+.content__lostSearch {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.lostSearch__title {
+  font-size: 24px;
+  color: red;
+  margin: 0 0 10px 0;
+}
+
+.lostSearch__inputBlock {
+  width: 100%;
+  display: flex;
+}
+
+.lostSearch__items__container {
+  margin: 10px 0 0 0;
+  width: 100%;
+}
+
+.lostSearch__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0 15px;
+  margin: 0 -15px;
+}
+
+.lostSearch__item {
+  padding: 15px 0;
+  flex: 0 0 33.333%;
+  min-width: 300px;
+}

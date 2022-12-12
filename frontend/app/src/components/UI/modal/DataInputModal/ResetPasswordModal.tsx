@@ -1,32 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import { useInput } from '../../../hooks/useInput'
-import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
-import { changeResetPasswordVisibility, changeSignInVisibility, changeSignUpVisibility } from '../../../store/authModalSlice'
-import { AuthErrors } from '../../../utils/constants'
-import { AuthInput } from '../input/AuthInput'
-import cl from './EmailModal.module.css'
+import { useInput } from '../../../../hooks/useInput'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
+import { changePasswordResetEmail, changeLoaderFullSizeVisibility, changeResetPasswordVisibilityModal, changePasswordResetSuccsessModalVisibility } from '../../../../store/authModalSlice'
+import { AuthErrors, emailValidationProps } from '../../../../utils/constants'
+import { AuthInput } from '../../input/AuthInput'
 import { Button } from 'antd'
-import { IResponseAuthError } from '../../../types/types'
+import { resetPassword } from '../../../../api/authApi'
+import cl from './ResetPasswordModal.module.css'
 
+//RESET PASSWORD FORM WITH EMAIL INPUT
+export const ResetPasswordModal = () => {
 
-export const EmailModal = () => {
-
-    const isOpen = useAppSelector(state => state.authModal.isChangePassword)
+    const isOpen = useAppSelector(state => state.authModal.isResetPasswordModal)
     const dispatch = useAppDispatch()
 
-    const email = useInput()
+    const email = useInput('', emailValidationProps)
     const [isBtnDisabled, setBtnDisabled] = useState<boolean>(false)
-    const [responseAuthError, setResponseAuthError] = useState<IResponseAuthError>({})
+    const [responseAuthError, setResponseAuthError] = useState('')
     const [wasRequest, setWasReqeust] = useState(false)
-
-    const userAuthData = {
-        email: email.value
-    }
-
 
     useEffect(() => {
         const isDisabled =
-            email.isDirty || email.isEmtpy
+            email.isDirty && email.isEmtpy
             ||
             wasRequest
 
@@ -37,23 +32,16 @@ export const EmailModal = () => {
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-
+        dispatch(changeLoaderFullSizeVisibility(true))
+        resetPassword(email.value)
+            .catch(error => setResponseAuthError(error.response.data))
+            .then(() => {
+                dispatch(changePasswordResetEmail(email.value))
+                dispatch(changePasswordResetSuccsessModalVisibility(true))
+            })
+            .then(() => dispatch(changeResetPasswordVisibilityModal(false)))
+            .finally(() => dispatch(changeLoaderFullSizeVisibility(false)))
     }
-
-    const openSignUpForm = () => {
-        dispatch(changeSignInVisibility(false))
-        dispatch(changeSignUpVisibility(true))
-    }
-
-    const openResetPasswordForm = () => {
-        dispatch(changeSignInVisibility(false))
-        dispatch(changeSignUpVisibility(false))
-    }
-
-    const closeModalBtnHandler = () => {
-        dispatch(changeSignInVisibility(false))
-    }
-
 
 
     return (
@@ -67,7 +55,7 @@ export const EmailModal = () => {
                 >
                     <button
                         type='button'
-                        onClick={() => dispatch(changeResetPasswordVisibility(false))}
+                        onClick={() => dispatch(changeResetPasswordVisibilityModal(false))}
                         className="popup__close"
                     />
                     <div className="popup__title">
@@ -86,7 +74,7 @@ export const EmailModal = () => {
                             <div className={cl.authFieldErrorContainer}>
                                 {email.isDirty && email.isEmtpy
                                     ?
-                                    <div className={cl.authFieldError}>{AuthErrors.emptyLogin}</div>
+                                    <div className={cl.authFieldError}>{AuthErrors.emptyEmail}</div>
                                     :
                                     <></>
                                 }
@@ -104,52 +92,26 @@ export const EmailModal = () => {
                                     setWasReqeust(false)
                                 }}
                                 onBlur={() => email.onBlur()}
-                                placeholder='Your login...'
+                                placeholder='Your email...'
                                 required={true}
+                                type='email'
                             />
-
-                            <div className={cl.authFieldGlobalErrorContainer}>
-                                {responseAuthError.password
-                                    ?
-                                    <div className={cl.authFieldError}>
-                                        {responseAuthError.password}
-                                    </div>
-                                    :
-                                    <></>
-                                }
-                                {responseAuthError.username
-                                    ?
-                                    <div className={cl.authFieldError}>
-                                        {responseAuthError.username}
-                                    </div>
-                                    :
-                                    <></>
-                                }
-                                {responseAuthError.globalError
-                                    ?
-                                    <div className={cl.authFieldError}>
-                                        {responseAuthError.globalError}
-                                    </div>
-                                    :
-                                    <></>
-                                }
-                                {responseAuthError.non_field_errors
-                                    ?
-                                    <div className={cl.authFieldError}>
-                                        {responseAuthError.non_field_errors}
-                                    </div>
-                                    :
-                                    <></>
-                                }
-                            </div>
+                            {responseAuthError
+                                ?
+                                <div className={cl.authFieldGlobalErrorContainer}>
+                                    {AuthErrors.accountNotActivated}
+                                </div>
+                                :
+                                <div className={cl.authFieldGlobalErrorContainer}>
+                                </div>
+                            }
                             <Button
                                 type='primary'
                                 htmlType={'submit'}
                                 disabled={isBtnDisabled}
                             >
-                                Sign In
+                                Reset
                             </Button>
-
                         </div>
                     </div>
                 </form>

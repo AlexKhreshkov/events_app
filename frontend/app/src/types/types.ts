@@ -1,3 +1,4 @@
+import { type } from "os"
 import { MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from "../utils/constants"
 
 export interface IAuthModalState {
@@ -6,8 +7,9 @@ export interface IAuthModalState {
 export interface IUser {
     id?: number,
     username: string,
-    email?: string,
-    authToken: string
+    email: string,
+    authToken: string,
+    password: string,
 }
 
 export interface IValidations {
@@ -23,7 +25,11 @@ export enum EAvaliableValidators {
 }
 
 export interface ISignUpInfo {
-    email?: string,
+    email: string,
+    username: string,
+    password: string,
+}
+export interface ISignInInfo {
     username: string,
     password: string,
 }
@@ -34,25 +40,40 @@ export interface ISignUpResponse {
     id: number,
 }
 
-export interface IResponseAuthError{
+export interface IResponseAuthError {
     password?: string,
     username?: string,
+    email?: string,
     globalError?: string,
     non_field_errors?: string,
 }
 
-export interface IResponseAuthToken{
+export interface IResponseAuthToken {
     auth_token: string
 }
 
-export interface IAuthToken{
+export interface IAuthToken {
     authToken: string
 }
-export interface IResponseStatus{
+export interface IResponseStatus {
     status: number
 }
 
-export interface IActivateAccount{
-    uid: string,
-    token: string
+export type IActivateAccount = {
+    uid?: string,
+    token?: string
+}
+export type IAccountActivationError = {
+    detail?: string,
+    uid?: string,
+    token?: string,
+}
+export interface IEmail {
+    email: string
+}
+export interface IResetPasswordConfirmation {
+    uid?: string,
+    token?: string,
+    new_password: string,
+    re_new_password: string,
 }

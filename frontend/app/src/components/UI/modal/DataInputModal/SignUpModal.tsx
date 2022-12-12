@@ -1,18 +1,17 @@
 import { Button } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { postSignUpDetails } from '../../../api/authApi'
-import { useInput } from '../../../hooks/useInput'
-import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
-import { changeLoaderFullSizeVisibility, changeSignInVisibility, changeSignUpVisibility, changeSuccesRegistrationVisibility } from '../../../store/authModalSlice'
-import { addUser } from '../../../store/authSlice'
-import { IResponseAuthError, ISignUpResponse } from '../../../types/types'
-import { AuthErrors, emailValidationProps, loginValidationProps, passwordValidationProps } from '../../../utils/constants'
-import { AuthInput } from '../input/AuthInput'
-import cl from './RegisterModal.module.css'
+import { postSignUpDetails } from '../../../../api/authApi'
+import { useInput } from '../../../../hooks/useInput'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
+import { changeLoaderFullSizeVisibility, changeSignInVisibilityModal, changeSignUpVisibilityModal, changeSignUpSuccessModalVisibility, changePasswordResetEmail } from '../../../../store/authModalSlice'
+import { IResponseAuthError, ISignUpResponse } from '../../../../types/types'
+import { AuthErrors, emailValidationProps, loginValidationProps, passwordValidationProps } from '../../../../utils/constants'
+import { AuthInput } from '../../input/AuthInput'
+import cl from './SignUpModal.module.css'
 
-export const RegisterModal = () => {
+export const SignUpModal = () => {
 
-    const isOpen = useAppSelector(state => state.authModal.isSignUp)
+    const isOpen = useAppSelector(state => state.authModal.isSignUpModal)
     const dispatch = useAppDispatch()
 
     const email = useInput('', emailValidationProps)
@@ -61,8 +60,8 @@ export const RegisterModal = () => {
     }
 
     const openSignInForm = () => {
-        dispatch(changeSignInVisibility(true))
-        dispatch(changeSignUpVisibility(false))
+        dispatch(changeSignInVisibilityModal(true))
+        dispatch(changeSignUpVisibilityModal(false))
     }
 
 
@@ -79,47 +78,19 @@ export const RegisterModal = () => {
                 throw error
             })
             .then((data: ISignUpResponse) => {
-                dispatch(addUser({
-                    id: +data.id,
-                    username: userAuthData.username.trim(),
-                    email: userAuthData.email,
-                    authToken: '',
-                }))
-                dispatch(changeSignUpVisibility(false))
-                dispatch(changeSuccesRegistrationVisibility(true))
+                dispatch(changeSignUpVisibilityModal(false))
+                dispatch(changeSignUpSuccessModalVisibility(true))
+                dispatch(changePasswordResetEmail(email.value))
+                email.setValue('')
                 login.setValue('')
                 password1.setValue('')
                 password2.setValue('')
+                email.setDirty(false)
                 login.setDirty(false)
                 password1.setDirty(false)
                 password2.setDirty(false)
             })
             .finally(() => dispatch(changeLoaderFullSizeVisibility(false)))
-
-        // .then(() =>
-        //     getAuthToken(userAuthData)
-        //         .then(response => {
-        //             const authToken = response.data.auth_token
-        //             dispatch(addUser({
-        //                 username: userAuthData.username.trim(),
-        //                 email: userAuthData.email,
-        //                 authToken
-        //             }))
-        //             localStorage.setItem('authToken', authToken)
-        //         })
-        //         .then(() => {
-        //             dispatch(changeSignUpVisibility(false))
-        //             login.setValue('')
-        //             password1.setValue('')
-        //             password2.setValue('')
-        //             login.setDirty(false)
-        //             password1.setDirty(false)
-        //             password2.setDirty(false)
-        //         })
-        //         .catch(error => setResponseAuthError(
-        //             { ...responseAuthError, globalError: 'Something went wrong' }
-        //         ))
-        // )
     }
 
     return (
@@ -133,7 +104,7 @@ export const RegisterModal = () => {
                 >
                     <button
                         type='button'
-                        onClick={() => dispatch(changeSignUpVisibility(false))}
+                        onClick={() => dispatch(changeSignUpVisibilityModal(false))}
                         className="popup__close"
                     />
                     <div className="popup__title">
@@ -272,6 +243,14 @@ export const RegisterModal = () => {
                                     ?
                                     <div className={cl.authFieldError}>
                                         {responseAuthError.username}
+                                    </div>
+                                    :
+                                    <></>
+                                }
+                                {responseAuthError.email
+                                    ?
+                                    <div className={cl.authFieldError}>
+                                        {responseAuthError.email}
                                     </div>
                                     :
                                     <></>

@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+User._meta.get_field('email')._unique = True
 
 class Category(models.Model):
     name = models.CharField(max_length=255)

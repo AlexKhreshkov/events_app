@@ -1,34 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { useInput } from '../../../hooks/useInput'
-import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
-import { changeResetPasswordVisibility, changeSignInVisibility, changeSignUpVisibility } from '../../../store/authModalSlice'
-import { AuthErrors, MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from '../../../utils/constants'
-import { AuthInput } from '../input/AuthInput'
-import cl from './LoginModal.module.css'
 import { Button } from 'antd'
-import { getAuthToken, signIn } from '../../../api/authApi'
-import { IResponseAuthError } from '../../../types/types'
-import { addUser } from '../../../store/authSlice'
+import cl from './SignInModal.module.css'
+import { AuthErrors, loginValidationProps, passwordValidationProps } from '../../../../utils/constants'
+import { changeResetPasswordVisibilityModal, changeSignInVisibilityModal, changeSignUpVisibilityModal } from '../../../../store/authModalSlice'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
+import { IResponseAuthError } from '../../../../types/types'
+import { useInput } from '../../../../hooks/useInput'
+import { getAuthToken } from '../../../../api/authApi'
+import { addUser } from '../../../../store/authSlice'
+import { AuthInput } from '../../input/AuthInput'
 
 
+export const SignInModal = () => {
 
-
-export const LoginModal = () => {
-
-    const isOpen = useAppSelector(state => state.authModal.isSignIn)
+    const isOpen = useAppSelector(state => state.authModal.isSignInModal)
     const dispatch = useAppDispatch()
-
-    const loginValidationProps = {
-        isEmpty: true,
-        minLength: MIN_LOGIN_LENGTH,
-        maxLength: MAX_LOGIN_LENGTH
-    }
-    const passwordValidationProps = {
-        isEmpty: true,
-        minLength: MIN_PASSWORD_LENGTH,
-        maxLength: MAX_PASSWORD_LENGTH
-    }
-
     const login = useInput('', loginValidationProps)
     const password = useInput('', passwordValidationProps)
     const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false)
@@ -57,33 +43,31 @@ export const LoginModal = () => {
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        signIn(userAuthData)
-            .then(response => response.data)
+        const trimedData = {
+            username: userAuthData.username.trim(),
+            password: userAuthData.password.trim(),
+        }
+        getAuthToken(trimedData)
+            .then(response => {
+                const authToken = response.data.auth_token
+                dispatch(addUser({
+                    ...trimedData,
+                    email: '',
+                    authToken
+                }))
+                localStorage.setItem('authToken', authToken)
+            })
+            .then(() => {
+                dispatch(changeSignInVisibilityModal(false))
+                login.setValue('')
+                password.setValue('')
+                login.setDirty(false)
+                password.setDirty(false)
+            })
             .catch(error => {
                 setWasReqeust(true)
                 setResponseAuthError(error.response.data)
-                console.log(error.response.data)
-                throw error
             })
-            .then(() =>
-                getAuthToken(userAuthData)
-                    .then(response => {
-                        const authToken = response.data.auth_token
-                        dispatch(addUser({
-                            username: userAuthData.username.trim(),
-                            authToken
-                        }))
-                        localStorage.setItem('authToken', authToken)
-                    })
-                    .then(() => {
-                        dispatch(changeSignInVisibility(false))
-                        login.setValue('')
-                        password.setValue('')
-                    })
-                    .catch(error => setResponseAuthError(
-                        { ...responseAuthError, globalError: 'Something went wrong' }
-                    ))
-            )
     }
 
     const changeVisibilityHandler = () => {
@@ -91,18 +75,15 @@ export const LoginModal = () => {
     }
 
     const openSignUpForm = () => {
-        dispatch(changeSignInVisibility(false))
-        dispatch(changeSignUpVisibility(true))
+        dispatch(changeSignInVisibilityModal(false))
+        dispatch(changeSignUpVisibilityModal(true))
     }
 
     const openResetPasswordForm = () => {
-        dispatch(changeSignInVisibility(false))
-        dispatch(changeResetPasswordVisibility(true))
+        dispatch(changeSignInVisibilityModal(false))
+        dispatch(changeResetPasswordVisibilityModal(true))
     }
 
-    const closeModalBtnHandler = () => {
-        dispatch(changeSignInVisibility(false))
-    }
 
 
     return (
@@ -116,11 +97,11 @@ export const LoginModal = () => {
                 >
                     <button
                         type='button'
-                        onClick={() => dispatch(changeSignInVisibility(false))}
+                        onClick={() => dispatch(changeSignInVisibilityModal(false))}
                         className="popup__close"
                     />
                     <div className="popup__title">
-                        <div className={cl.popup__loginTitle}>Sign Up</div>
+                        <div className={cl.popup__loginTitle}>Sign In</div>
                     </div>
                     <div className="popup__text">
                         <div className={cl.popup__loginContent}>

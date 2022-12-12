@@ -1,13 +1,15 @@
-import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
-import { changeSuccesRegistrationVisibility } from '../../../store/authModalSlice'
-import cl from './SuccessRegisterModal.module.css'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
+import { changePasswordResetSuccsessModalVisibility } from '../../../../store/authModalSlice'
+import cl from './ResetPasswordSentSuccessModal.module.css'
 
+interface ResetPasswordSuccessModalModalProps {
+    customEmail?: string
+}
 
-export const SuccessRegisterModal = () => {
+export const ResetPasswordSuccessModal = ({ customEmail }: ResetPasswordSuccessModalModalProps) => {
 
-    const isOpen = useAppSelector(state => state.authModal.isSuccesRegistration)
+    const isOpen = useAppSelector(state => state.authModal.isPasswordResetSuccessModal)
     const dispatch = useAppDispatch()
-    const email = useAppSelector(state => state.user.user.email)
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
@@ -19,16 +21,16 @@ export const SuccessRegisterModal = () => {
                 >
                     <button
                         type='button'
-                        onClick={() => dispatch(changeSuccesRegistrationVisibility(false))}
+                        onClick={() => dispatch(changePasswordResetSuccsessModalVisibility(false))}
                         className="popup__close"
                     />
                     <div className={cl.success__content}>
                         <div className={cl.success__title}>Success!</div>
                         <div className={cl.success__body}>
                             <div className={cl.success__text}>
-                                <div className="">The link with account activation link has been sent on your email: </div>
+                                <div className="">The password reset link has been sent on your email: </div>
                                 <div className={cl.success__email}>
-                                    {email}
+                                    {customEmail}
                                 </div>
                             </div>
                         </div>

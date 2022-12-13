@@ -4,7 +4,7 @@ from app.serializers import CategorySerializer, UserSerializer, AdSerializer
 
 
 class CategoryAPIList(generics.ListAPIView):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('name')
     serializer_class = CategorySerializer
 
 

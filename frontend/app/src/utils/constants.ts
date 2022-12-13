@@ -34,3 +34,5 @@ export const DELETE_TOKEN_URL = 'http://127.0.0.1:8000/auth/token/logout/'
 export const ACTIVATE_ACCOUNT_URL = `http://127.0.0.1:8000/api/v1/auth/users/activation/`
 export const RESET_PASSWORD_URL = `http://127.0.0.1:8000/api/v1/auth/users/reset_password/`
 export const RESET_PASSWORD_CONFIRMATION_URL = `http://127.0.0.1:8000/api/v1/auth/users/reset_password_confirm/`
+export const CATEGORIES_URL = `http://127.0.0.1:8000/api/v1/categories/`
+export const ADS_URL = `http://127.0.0.1:8000/api/v1/announcements/`

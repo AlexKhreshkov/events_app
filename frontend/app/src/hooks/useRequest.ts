@@ -10,7 +10,7 @@ export function useRequest(callBack: () => Promise<any>) {
     useEffect(() => {
         setLoading(true)
         callBack()
-            .then(response => setData(response.data))
+            .then(response => response.data)
             .catch(error => setError(error))
             .finally(() => setLoading(false))
     }, [])

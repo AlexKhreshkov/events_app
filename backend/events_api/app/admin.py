@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, UserProfile
+from .models import Category, Comment, Ad, User
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -8,9 +8,22 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 
+class AdAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'category', 'text', 'image', 'created', 'updated')
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'item', 'name', 'text', 'created', 'updated')
+
+
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'phone', 'country', 'address', 'profile_pic')
 
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'username', 'email', 'is_active')
+
 
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(Ad, AdAdmin)
+admin.site.register(Comment, CommentAdmin)
+admin.site.register(User, UserAdmin)

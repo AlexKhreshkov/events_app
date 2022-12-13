@@ -77,3 +77,17 @@ export interface IResetPasswordConfirmation {
     new_password: string,
     re_new_password: string,
 }
+export interface ICategory {
+    id: number,
+    name: string,
+    slug: string,
+}
+export interface IAd {
+    id: number,
+    title: string,
+    text: string,
+    image: string,
+    category_id: string,
+    category_name: string,
+    category_slug: string,
+}

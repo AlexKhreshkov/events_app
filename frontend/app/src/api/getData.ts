@@ -1,7 +1,10 @@
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
+import { CATEGORIES_URL, ADS_URL } from "../utils/constants";
 
-export function getCategories(): Promise<any> {
-    return axios.get(`${BASE_URL}/categories/`)
+export function getCategories() {
+    return axios.get(`${CATEGORIES_URL}`)
 }
 
+export function getAds() {
+    return axios.get(`${ADS_URL}`)
+}

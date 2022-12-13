@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Category, UserProfile
-from app.serializers import CategorySerializer, ProfilesSerializer
+from .models import Category, User, Ad
+from app.serializers import CategorySerializer, UserSerializer, AdSerializer
 
 
 class CategoryAPIList(generics.ListAPIView):
@@ -8,6 +8,10 @@ class CategoryAPIList(generics.ListAPIView):
     serializer_class = CategorySerializer
 
 
-class UsersProfilesAPIList(generics.ListAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = ProfilesSerializer
+class UserAPIList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class AdAPIList(generics.ListAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdSerializer

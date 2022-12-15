@@ -9,7 +9,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class AdAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'category', 'text', 'image', 'created', 'updated')
+    list_display = ('id', 'title', 'slug', 'category', 'text', 'image', 'created', 'updated')
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class CommentAdmin(admin.ModelAdmin):
@@ -18,6 +19,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'phone', 'country', 'address', 'profile_pic')
+
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id', 'username', 'email', 'is_active')

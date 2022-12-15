@@ -1,5 +1,3 @@
-import { type } from "os"
-import { MAX_LOGIN_LENGTH, MAX_PASSWORD_LENGTH, MIN_LOGIN_LENGTH, MIN_PASSWORD_LENGTH } from "../utils/constants"
 
 export interface IAuthModalState {
     isOpen: boolean
@@ -10,6 +8,9 @@ export interface IUser {
     email: string,
     authToken: string,
     password: string,
+    first_name?: string,
+    last_name?: string,
+    phone?: string, 
 }
 
 export interface IValidations {
@@ -85,9 +86,14 @@ export interface ICategory {
 export interface IAd {
     id: number,
     title: string,
+    user_id: number,
+    phone: string
+    slug: string,
     text: string,
     image: string,
     category_id: string,
     category_name: string,
     category_slug: string,
+    created: string,
+    updated: string,
 }

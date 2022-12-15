@@ -25,6 +25,9 @@ export const passwordValidationProps = {
     minLength: MIN_PASSWORD_LENGTH,
     maxLength: MAX_PASSWORD_LENGTH
 }
+
+export const AD_PATH_NAME = 'announcement'
+
 export const BASE_URL = 'http://127.0.0.1:8000/api/v1'
 export const TOKEN_URL = 'http://127.0.0.1:8000/api/auth'
 export const REGISTER_USER_URL = 'http://127.0.0.1:8000/api/v1/auth/users/'
@@ -36,3 +39,4 @@ export const RESET_PASSWORD_URL = `http://127.0.0.1:8000/api/v1/auth/users/reset
 export const RESET_PASSWORD_CONFIRMATION_URL = `http://127.0.0.1:8000/api/v1/auth/users/reset_password_confirm/`
 export const CATEGORIES_URL = `http://127.0.0.1:8000/api/v1/categories/`
 export const ADS_URL = `http://127.0.0.1:8000/api/v1/announcements/`
+export const USERS_URL = `http://127.0.0.1:8000/api/v1/users/`

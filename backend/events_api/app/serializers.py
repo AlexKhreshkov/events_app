@@ -15,11 +15,17 @@ class CategorySerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'image')
+        fields = ('id', 'username', 'first_name', 'last_name', 'phone', 'image')
+
+
 class AdSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name')
     category_slug = serializers.CharField(source='category.slug')
     category_id = serializers.CharField(source='category.id')
+
     class Meta:
         model = Ad
-        fields = ('id', 'title','category_id','category_name', 'category_slug' ,'text', 'image')
+        fields = ('id', 'title', 'slug', 'user_id',
+                  'category_id', 'category_name',
+                  'category_slug', 'text',
+                  'image', 'created', 'updated')

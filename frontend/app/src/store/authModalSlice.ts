@@ -14,7 +14,7 @@ const initialState = {
     isPasswordResetSuccessModal: false,
     isSuccessModal: false, 
     //
-    isLoaderFullSize: true,
+    isLoaderFullSize: false,
     
     //USER EMAIL FOR PASSWORD RESET
     passwordResetEmail: '', 

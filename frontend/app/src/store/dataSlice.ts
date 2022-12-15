@@ -1,17 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ICategory, IAd } from '../types/types'
+import { ICategory, IAd, IUser } from '../types/types'
 
 interface DataState {
     data: {
         categories: ICategory[],
         ads: IAd[],
+        users: IUser[],
     },
 }
 
 const initialState: DataState = {
     data: {
         categories: [],
-        ads: []
+        ads: [],
+        users: [],
     }
 }
 
@@ -25,9 +27,12 @@ const dataSlice = createSlice({
         addAds(state, action: PayloadAction<IAd[]>) {
             state.data.ads = action.payload
         },
+        addUsers(state, action: PayloadAction<IUser[]>) {
+            state.data.users = action.payload
+        },
     }
 })
 
-export const { addCategories, addAds } = dataSlice.actions
+export const { addCategories, addAds, addUsers } = dataSlice.actions
 
 export default dataSlice.reducer     

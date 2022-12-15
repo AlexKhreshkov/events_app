@@ -12,6 +12,18 @@ class UserAPIList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
+class UserRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
 class AdAPIList(generics.ListAPIView):
     queryset = Ad.objects.all()
+    serializer_class = AdSerializer
+
+
+class AdRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Ad.objects.all()
+    lookup_field = 'slug'
     serializer_class = AdSerializer

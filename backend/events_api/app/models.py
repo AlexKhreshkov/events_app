@@ -1,17 +1,13 @@
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
-    email = models.EmailField(_('email address'), blank=True, unique=True)
+    email = models.EmailField(unique=True)
     image = models.ImageField(null=True, blank=True, upload_to="profiles_images/",
-                                    default="profiles_images/ava.png")
-    name = models.CharField(max_length=30, blank=True, default='')
-    surname = models.CharField(max_length=30, blank=True, default='')
+                              default="profiles_images/ava.png")
     phone = models.CharField(max_length=15, blank=True, default='')
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -22,10 +18,13 @@ class Category(models.Model):
 
 
 class Ad(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=50)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    slug = models.SlugField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    text = models.TextField(max_length=2000)
-    image = models.ImageField(null=True, blank=True)
+    text = models.TextField(max_length=1000)
+    image = models.ImageField(null=True, blank=True, upload_to="announcements_images/",
+                              default="announcements_images/noImage.jpeg")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -36,8 +35,8 @@ class Ad(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Ad, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    text = models.TextField(max_length=3000)
+    name = models.CharField(max_length=30)
+    text = models.TextField(max_length=1000)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

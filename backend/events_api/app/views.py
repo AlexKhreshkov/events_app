@@ -1,6 +1,11 @@
-from rest_framework import generics
-from .models import Category, User, Ad
-from app.serializers import CategorySerializer, UserSerializer, AdSerializer
+from rest_framework import generics, mixins
+from rest_framework.generics import GenericAPIView
+
+from .models import Category, User, Ad, Comment
+from app.serializers import CategorySerializer, UserSerializer, AdSerializer, CommentsSerializer, \
+    CommentsChangeSerializer
+from .permissions import IsOwner
+from rest_framework.permissions import IsAuthenticated
 
 
 class CategoryAPIList(generics.ListAPIView):
@@ -27,3 +32,20 @@ class AdRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Ad.objects.all()
     lookup_field = 'slug'
     serializer_class = AdSerializer
+
+
+class CommentsAPIList(generics.ListAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentsSerializer
+
+
+class CommentCreateAPI(generics.CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentsChangeSerializer
+    permission_classes = (IsAuthenticated,)
+
+
+class CommentChangeAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentsChangeSerializer
+    permission_classes = (IsAuthenticated, IsOwner)

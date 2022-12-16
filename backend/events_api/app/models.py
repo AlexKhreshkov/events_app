@@ -34,7 +34,7 @@ class Ad(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    item = models.ForeignKey(Ad, on_delete=models.CASCADE)
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     text = models.TextField(max_length=1000)
     created = models.DateTimeField(auto_now_add=True)

@@ -14,7 +14,7 @@ class AdAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'item', 'name', 'text', 'created', 'updated')
+    list_display = ('id', 'user', 'ad', 'name', 'text', 'created', 'updated')
 
 
 class UserProfileAdmin(admin.ModelAdmin):

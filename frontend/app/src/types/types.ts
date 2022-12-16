@@ -10,7 +10,8 @@ export interface IUser {
     password: string,
     first_name?: string,
     last_name?: string,
-    phone?: string, 
+    phone?: string,
+    image?: string,
 }
 
 export interface IValidations {
@@ -96,4 +97,13 @@ export interface IAd {
     category_slug: string,
     created: string,
     updated: string,
+}
+export interface IComment {
+    id?: number,
+    user_id?: number,
+    ad_id?: number,
+    name: string,
+    text: string,
+    created?: string,
+    updated?: string,
 }

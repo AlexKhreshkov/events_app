@@ -40,3 +40,5 @@ export const RESET_PASSWORD_CONFIRMATION_URL = `http://127.0.0.1:8000/api/v1/aut
 export const CATEGORIES_URL = `http://127.0.0.1:8000/api/v1/categories/`
 export const ADS_URL = `http://127.0.0.1:8000/api/v1/announcements/`
 export const USERS_URL = `http://127.0.0.1:8000/api/v1/users/`
+export const COMMENTS_URL = `http://127.0.0.1:8000/api/v1/comments/`
+export const ADD_COMMENT_URL = `http://127.0.0.1:8000/api/v1/comments/create/`

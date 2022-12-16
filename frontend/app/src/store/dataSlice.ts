@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ICategory, IAd, IUser } from '../types/types'
+import { ICategory, IAd, IUser, IComment } from '../types/types'
 
 interface DataState {
     data: {
         categories: ICategory[],
         ads: IAd[],
         users: IUser[],
+        comments: IComment[],
     },
 }
 
@@ -14,6 +15,7 @@ const initialState: DataState = {
         categories: [],
         ads: [],
         users: [],
+        comments: [],
     }
 }
 
@@ -30,9 +32,15 @@ const dataSlice = createSlice({
         addUsers(state, action: PayloadAction<IUser[]>) {
             state.data.users = action.payload
         },
+        addComments(state, action: PayloadAction<IComment[]>) {
+            state.data.comments = action.payload
+        },
+        addComment(state, action: PayloadAction<IComment>) {
+            state.data.comments.push(action.payload)
+        },
     }
 })
 
-export const { addCategories, addAds, addUsers } = dataSlice.actions
+export const { addCategories, addAds, addUsers, addComments, addComment } = dataSlice.actions
 
 export default dataSlice.reducer     

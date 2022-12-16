@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Category, Ad
+from .models import Category, Ad, Comment
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -29,3 +29,15 @@ class AdSerializer(serializers.ModelSerializer):
                   'category_id', 'category_name',
                   'category_slug', 'text',
                   'image', 'created', 'updated')
+
+
+class CommentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'user_id', 'ad_id', 'name', 'text', 'created', 'updated')
+
+
+class CommentsChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'user', 'ad', 'name', 'text', 'created', 'updated')

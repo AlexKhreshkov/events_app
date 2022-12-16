@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { LostSearch } from '../components/pagesComponents/main/LostSearch'
 import { PagesSubtitle } from '../components/PagesSubtitle'
 import { PagesTitle } from '../components/PagesTitle'

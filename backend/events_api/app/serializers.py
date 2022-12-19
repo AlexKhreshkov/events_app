@@ -15,7 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'phone', 'image')
+        fields = ('id', 'username', 'first_name', 'last_name', 'phone', 'email', 'image')
 
 
 class AdSerializer(serializers.ModelSerializer):
@@ -34,7 +34,7 @@ class AdSerializer(serializers.ModelSerializer):
 class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'user_id', 'ad_id', 'name', 'text', 'created', 'updated')
+        fields = ('id', 'user', 'ad', 'name', 'text', 'created', 'updated')
 
 
 class CommentsChangeSerializer(serializers.ModelSerializer):

@@ -1,46 +1,39 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IUser } from '../types/types'
+import { ICurrentUser } from '../types/types'
 
 interface UserState {
-    user: IUser,
+    currentUser: ICurrentUser,
 }
 
 const initialState: UserState = {
-    user: {
+    currentUser: {
         id: -1,
         email: '',
         username: '',
-        password: '',
-        authToken: '',
     }
 }
-
 
 const authSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        addUser(state, action: PayloadAction<IUser>) {
-            state.user = {
+        addCurrentUser(state, action: PayloadAction<ICurrentUser>) {
+            state.currentUser = {
                 id: action.payload.id,
                 email: action.payload.email,
                 username: action.payload.username,
-                password: action.payload.password,
-                authToken: action.payload.authToken
             }
         },
-        deleteTokenFromUser(state) {
-            state.user = {
-                ...state.user,
-                authToken: '',
+        logoutCurrentUser(state) {
+            state.currentUser = {
+                id: -1,
+                email: '',
+                username: '',
             }
         },
-        changeUserPassword(state, action: PayloadAction<string>) {
-            state.user.password = action.payload
-        }
     }
 })
 
-export const { addUser, deleteTokenFromUser, changeUserPassword } = authSlice.actions
+export const { addCurrentUser, logoutCurrentUser } = authSlice.actions
 
 export default authSlice.reducer     

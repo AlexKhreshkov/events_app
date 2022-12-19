@@ -58,14 +58,16 @@ export function defineUser(authToken: string) {
         },
     )
 }
-export function deleteTokenFromServer(authToken: string) {
-    return fetch(`${DELETE_TOKEN_URL}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${authToken}`,
-        },
-    })
+export function deleteTokenFromServer(authToken: string | null) {
+    if (authToken) {
+        return fetch(`${DELETE_TOKEN_URL}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${authToken}`,
+            },
+        })
+    }
 }
 export function activeAccount(accountEmailInfo: IActivateAccount) {
     return axios.post(

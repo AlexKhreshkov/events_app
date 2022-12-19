@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import { IoPersonOutline, IoHeartOutline, IoExitOutline } from "react-icons/io5";
 import { SignInModal } from './UI/modal/DataInputModal/SignInModal';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { changeLoaderFullSizeVisibility, changeSignInVisibilityModal } from '../store/authModalSlice';
+import { changeSignInVisibilityModal } from '../store/authModalSlice';
 import { SignUpModal } from './UI/modal/DataInputModal/SignUpModal';
-import { deleteTokenFromUser } from '../store/authSlice';
-import { deleteTokenFromLocalStorage } from '../utils/utils';
+import { deleteTokenFromLocalStorage, getTokenFromLocalStorage } from '../utils/utils';
 import { deleteTokenFromServer } from '../api/authApi';
 import { Spin } from 'antd';
 import { ResetPasswordModal } from './UI/modal/DataInputModal/ResetPasswordModal';
@@ -14,11 +13,12 @@ import { ResetPasswordSuccessModal } from './UI/modal/SuccessModal/ResetPassword
 import { LoadingModal } from './UI/modal/LoadingModal';
 import { SignUpSuccessModal } from './UI/modal/SuccessModal/SignUpSuccessModal';
 import { EmailConfirmedSuccessModal } from './UI/modal/SuccessModal/EmailConfirmedSuccessModal';
+import { logoutCurrentUser } from '../store/authSlice';
 
 export const Navigation = () => {
 
     const isOpen = useAppSelector(state => state.authModal.isSignInModal)
-    const user = useAppSelector(state => state.user.user)
+    const currentUser = useAppSelector(state => state.user.currentUser)
     const passwordResetEmail = useAppSelector(state => state.authModal.passwordResetEmail)
     const dispatch = useAppDispatch()
     const [isNavLoading, setNavLoading] = useState(false)
@@ -28,14 +28,14 @@ export const Navigation = () => {
             setNavLoading(true)
             resolve()
         })
-            .then(() => deleteTokenFromServer(user.authToken))
+            .then(() => deleteTokenFromServer(getTokenFromLocalStorage()))
             .catch(error => {
                 setNavLoading(false)
                 throw error
             })
             .then(() => {
-                dispatch(deleteTokenFromUser())
                 deleteTokenFromLocalStorage()
+                dispatch(logoutCurrentUser())
             })
             .finally(() => setNavLoading(false))
     }
@@ -53,11 +53,11 @@ export const Navigation = () => {
                     </div>
                     :
                     <div className="nav__items">
-                        {user.username && user.authToken
+                        {currentUser.username && getTokenFromLocalStorage()
                             ?
                             <>
                                 <div className="nav__item">
-                                    <div className="">{user.username}</div>
+                                    <div className="">{currentUser.username}</div>
                                 </div>
                                 <div
                                     className="nav__item"

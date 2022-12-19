@@ -2,16 +2,21 @@
 export interface IAuthModalState {
     isOpen: boolean
 }
+
 export interface IUser {
-    id?: number,
+    id: number,
+    username: string,
+    first_name: string,
+    last_name: string,
+    phone: string,
+    email: string,
+    image: string,
+}
+
+export interface ICurrentUser {
+    id: number,
     username: string,
     email: string,
-    authToken: string,
-    password: string,
-    first_name?: string,
-    last_name?: string,
-    phone?: string,
-    image?: string,
 }
 
 export interface IValidations {
@@ -45,7 +50,7 @@ export interface ISignUpResponse {
 export interface IResponseAuthError {
     password?: string,
     username?: string,
-    email?: string,
+    email?: string [],
     globalError?: string,
     non_field_errors?: string,
 }
@@ -99,11 +104,19 @@ export interface IAd {
     updated: string,
 }
 export interface IComment {
-    id?: number,
-    user_id?: number,
-    ad_id?: number,
+    id: number,
+    user: number,
+    ad: number,
     name: string,
     text: string,
-    created?: string,
-    updated?: string,
+    created: string,
+    updated: string,
+}
+export interface IAdAuthor {
+    id: number,
+    username: string,
+    first_name: string,
+    last_name: string,
+    phone: string,
+    image: string,
 }

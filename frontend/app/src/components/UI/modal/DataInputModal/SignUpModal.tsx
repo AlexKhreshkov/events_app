@@ -6,14 +6,15 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
 import { changeLoaderFullSizeVisibility, changeSignInVisibilityModal, changeSignUpVisibilityModal, changeSignUpSuccessModalVisibility, changePasswordResetEmail } from '../../../../store/authModalSlice'
 import { IResponseAuthError, ISignUpResponse } from '../../../../types/types'
 import { AuthErrors, emailValidationProps, loginValidationProps, passwordValidationProps } from '../../../../utils/constants'
+import { Loader } from '../../../Loader'
 import { AuthInput } from '../../input/AuthInput'
 import cl from './SignUpModal.module.css'
 
 export const SignUpModal = () => {
 
     const isOpen = useAppSelector(state => state.authModal.isSignUpModal)
+    const [isLoading, setLoading] = useState(false)
     const dispatch = useAppDispatch()
-
     const email = useInput('', emailValidationProps)
     const login = useInput('', loginValidationProps)
     const password1 = useInput('', passwordValidationProps)
@@ -30,7 +31,6 @@ export const SignUpModal = () => {
     }
     const [responseAuthError, setResponseAuthError] = useState<IResponseAuthError>({})
     const [wasRequest, setWasReqeust] = useState(false)
-
 
     useEffect(() => {
         let isDisabled =
@@ -67,7 +67,7 @@ export const SignUpModal = () => {
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        dispatch(changeLoaderFullSizeVisibility(true))
+        setLoading(true)
         postSignUpDetails(userAuthData)
             .then(response => {
                 return response.data
@@ -89,12 +89,14 @@ export const SignUpModal = () => {
                 login.setDirty(false)
                 password1.setDirty(false)
                 password2.setDirty(false)
+                setResponseAuthError({})
             })
-            .finally(() => dispatch(changeLoaderFullSizeVisibility(false)))
+            .finally(() => setLoading(false))
     }
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
+            {isLoading ? <Loader /> : <></>}
             <div
                 className="popup__body"
             >
@@ -247,18 +249,18 @@ export const SignUpModal = () => {
                                     :
                                     <></>
                                 }
-                                {responseAuthError.email
-                                    ?
-                                    <div className={cl.authFieldError}>
-                                        {responseAuthError.email}
-                                    </div>
-                                    :
-                                    <></>
-                                }
                                 {responseAuthError.globalError
                                     ?
                                     <div className={cl.authFieldError}>
                                         {responseAuthError.globalError}
+                                    </div>
+                                    :
+                                    <></>
+                                }
+                                {responseAuthError.email
+                                    ?
+                                    <div className={cl.authFieldError}>
+                                        {responseAuthError.email}
                                     </div>
                                     :
                                     <></>

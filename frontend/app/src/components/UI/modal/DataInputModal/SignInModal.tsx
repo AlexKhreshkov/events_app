@@ -6,14 +6,16 @@ import { changeResetPasswordVisibilityModal, changeSignInVisibilityModal, change
 import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
 import { IResponseAuthError } from '../../../../types/types'
 import { useInput } from '../../../../hooks/useInput'
-import { getAuthToken } from '../../../../api/authApi'
-import { addUser } from '../../../../store/authSlice'
+import { defineUser, getAuthToken } from '../../../../api/authApi'
+import { addCurrentUser } from '../../../../store/authSlice'
 import { AuthInput } from '../../input/AuthInput'
+import { Loader } from '../../../Loader'
 
 
 export const SignInModal = () => {
 
     const isOpen = useAppSelector(state => state.authModal.isSignInModal)
+    const [isLoading, setLoading] = useState(false)
     const dispatch = useAppDispatch()
     const login = useInput('', loginValidationProps)
     const password = useInput('', passwordValidationProps)
@@ -21,11 +23,6 @@ export const SignInModal = () => {
     const [isBtnDisabled, setBtnDisabled] = useState<boolean>(false)
     const [responseAuthError, setResponseAuthError] = useState<IResponseAuthError>({})
     const [wasRequest, setWasReqeust] = useState(false)
-
-    const userAuthData = {
-        username: login.value,
-        password: password.value
-    }
 
 
     useEffect(() => {
@@ -35,11 +32,13 @@ export const SignInModal = () => {
             password.isDirty && (password.isEmtpy || password.lengthError)
             ||
             wasRequest
-
         setBtnDisabled(isDisabled)
-
     }, [login, password])
 
+    const userAuthData = {
+        username: login.value,
+        password: password.value
+    }
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -47,15 +46,16 @@ export const SignInModal = () => {
             username: userAuthData.username.trim(),
             password: userAuthData.password.trim(),
         }
+        setLoading(true)
         getAuthToken(trimedData)
             .then(response => {
                 const authToken = response.data.auth_token
-                dispatch(addUser({
-                    ...trimedData,
-                    email: '',
-                    authToken
-                }))
                 localStorage.setItem('authToken', authToken)
+                return defineUser(authToken)
+            })
+            .then(response => {
+                const currentUserInfo = response.data
+                dispatch(addCurrentUser({ ...currentUserInfo }))
             })
             .then(() => {
                 dispatch(changeSignInVisibilityModal(false))
@@ -68,6 +68,7 @@ export const SignInModal = () => {
                 setWasReqeust(true)
                 setResponseAuthError(error.response.data)
             })
+            .finally(() => setLoading(false))
     }
 
     const changeVisibilityHandler = () => {
@@ -88,6 +89,7 @@ export const SignInModal = () => {
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
+            {isLoading ? <Loader /> : <></>}
             <div
                 className="popup__body"
             >

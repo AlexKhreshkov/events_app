@@ -24,7 +24,7 @@ export const AccountActivation = () => {
             .then(() => {
                 navigate('/')
             })
-            .then(() => dispatch(changeEmailConfirmedSuccessModalVisibility(true)))
+            .then(() => setTimeout(() => dispatch(changeEmailConfirmedSuccessModalVisibility(true)), 1000))
     }, [])
 
     return (

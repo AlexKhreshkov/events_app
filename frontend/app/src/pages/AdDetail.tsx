@@ -11,26 +11,21 @@ import { RigthArea } from '../components/RigthArea'
 import { CommentForm } from '../components/UI/forms/AddComment'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { changeSignUpVisibilityModal } from '../store/authModalSlice'
-import { addComments } from '../store/dataSlice'
-import { IAd, IComment, IUser } from '../types/types'
-import { makeDateReadable } from '../utils/utils'
+import { IAd, IAdAuthor, IComment, IUser } from '../types/types'
+import { getTokenFromLocalStorage, makeDateReadable } from '../utils/utils'
 
 export const AdDetail = () => {
 
     const navigate = useNavigate()
-    const { adSlug } = useParams<{ adSlug: string }>()
     const dispatch = useAppDispatch()
-    const users = useAppSelector(state => state.data.data.users)
-    const comments = useAppSelector(state => state.data.data.comments)
-    const [adComments, setAdComments] = useState<IComment[]>()
-    const [user, setUser] = useState<IUser>()
-    const currUser = useAppSelector(state => state.user.user)
-    const [ad, setAd] = useState<IAd>()
-    const [isLoading, setLoading] = useState(true)
-    const emptyAd: IAd = {
-        id: 0,
+    const { adSlug } = useParams<{ adSlug: string }>()
+    const allUsers = useAppSelector(state => state.data.data.users)
+    const currUser = useAppSelector(state => state.user.currentUser)
+    const [adComments, setAdComments] = useState<IComment[]>([])
+    const [ad, setAd] = useState<IAd>({
+        id: -1,
         title: '',
-        user_id: 0,
+        user_id: -1,
         phone: '',
         slug: '',
         text: '',
@@ -39,20 +34,20 @@ export const AdDetail = () => {
         category_name: '',
         category_slug: '',
         created: '',
-        updated: ''
-    }
+        updated: '',
+    })
+    const adInfo = ad
+    const [adAuthor, setAdAuthor] = useState<IAdAuthor>()
+    const [isLoading, setLoading] = useState(true)
 
     useEffect(() => {
         const getData = async () => {
             const adResponse = await getAdBySlug(adSlug)
             const ad = adResponse.data
             setAd(ad)
-            const foundUser = users.find(user => user.id === ad.user_id)
-            setUser(foundUser)
+            setAdAuthor(allUsers.find(user => user.id === ad.user_id))
             const commentsResponse = await getComments()
-            dispatch(addComments(commentsResponse.data))
-            setAdComments(commentsResponse.data.filter(comment => comment.ad_id === ad?.id))
-            dispatch(addComments(commentsResponse.data))
+            setAdComments(commentsResponse.data.filter(comment => comment.ad === ad?.id))
             setLoading(false)
         }
         getData()
@@ -89,11 +84,11 @@ export const AdDetail = () => {
                                         <div className="adDetail__contancts">
                                             <div className="adDetail__name">
                                                 <IoPerson />
-                                                Contacts: {user?.first_name} {user?.last_name}
+                                                Contacts: {adAuthor?.first_name} {adAuthor?.last_name}
                                             </div>
                                             <div className="adDetail__phone">
                                                 <IoPhonePortraitOutline />
-                                                Phone: {user?.phone ? user?.phone : <span>-</span>}
+                                                Phone: {adAuthor?.phone ? adAuthor?.phone : <span>-</span>}
                                             </div>
                                             <div className="adDetail__date">
                                                 <IoTimeOutline />
@@ -114,7 +109,7 @@ export const AdDetail = () => {
                                     <IoChatbubbleEllipsesOutline />
                                     Comments: {adComments?.length}
                                 </div>
-                                {currUser?.authToken
+                                {getTokenFromLocalStorage()
                                     ?
                                     <></>
                                     :
@@ -131,18 +126,22 @@ export const AdDetail = () => {
                                 {adComments?.map(comment =>
                                     <Comment
                                         key={comment.id}
-                                        user_id={comment.user_id}
-                                        users={users}
-                                        created={comment.created}
-                                        updated={comment.updated}
-                                        text={comment.text}
+                                        adComments={adComments}
+                                        setAdComments={setAdComments}
+                                        adInfo={adInfo}
+                                        {...comment}
                                     />
                                 )}
-                                <CommentForm
-                                    ad={ad}
-                                    adComments={adComments}
-                                    setAddComments={setAdComments}
-                                />
+                                {getTokenFromLocalStorage()
+                                    ?
+                                    <CommentForm
+                                        ad={ad}
+                                        adComments={adComments}
+                                        setAdComments={setAdComments}
+                                    />
+                                    :
+                                    <div>Login to add comment</div>
+                                }
                             </div>
                         </div>
                     </div>

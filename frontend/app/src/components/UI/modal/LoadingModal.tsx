@@ -1,5 +1,4 @@
 import { Spin } from 'antd'
-import React from 'react'
 import { useAppSelector } from '../../../hooks/useRedux'
 import cl from './LoadingModal.module.css'
 

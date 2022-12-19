@@ -5,7 +5,7 @@ import { defineUser } from '../api/authApi'
 import { getAds, getCategories, getUsers } from '../api/getData'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { changeLoaderFullSizeVisibility } from '../store/authModalSlice'
-import { addUser } from '../store/authSlice'
+import { addCurrentUser } from '../store/authSlice'
 import { addAds, addCategories, addUsers } from '../store/dataSlice'
 import { IAd, ICategory, IUser } from '../types/types'
 import { Footer } from './Footer'
@@ -35,14 +35,12 @@ export const Layout = () => {
                     defineUser(authToken)
                         .then(response => {
                             const userInfo = response.data
-                            dispatch(addUser({ ...userInfo, password: '', authToken }))
+                            dispatch(addCurrentUser({ ...userInfo }))
                         })
-                        .catch(error => dispatch(addUser({
+                        .catch(error => dispatch(addCurrentUser({
                             id: -1,
                             username: '',
                             email: '',
-                            password: '',
-                            authToken,
                         })))
                         .finally(() => dispatch(changeLoaderFullSizeVisibility(false)))
                 } else {

@@ -3,51 +3,47 @@ import React, { FC } from 'react'
 import { useState } from 'react'
 import { createComment } from '../../../api/sendData'
 import { useInput } from '../../../hooks/useInput'
-import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
-import { addComment } from '../../../store/dataSlice'
+import { useAppSelector } from '../../../hooks/useRedux'
 import { IAd, IComment } from '../../../types/types'
+import { getTokenFromLocalStorage } from '../../../utils/utils'
+import { Loader } from '../../Loader'
 
 interface CommentFormProps {
-    ad?: IAd,
-    adComments?: IComment[],
-    setAddComments?: React.Dispatch<React.SetStateAction<IComment[] | undefined>>
+    ad: IAd,
+    adComments: IComment[]
+    setAdComments: React.Dispatch<React.SetStateAction<IComment[]>>
 }
 
-export const CommentForm: FC<CommentFormProps> = ({ ad, adComments, setAddComments }) => {
+export const CommentForm: FC<CommentFormProps> = ({ ad, adComments, setAdComments }) => {
 
-    const dispatch = useAppDispatch()
-    const curUser = useAppSelector(state => state.user.user)
-    const name = useInput(curUser.username)
+    const currentUser = useAppSelector(state => state.user.currentUser)
+    const name = useInput(currentUser.username)
     const text = useInput('')
+    const [isLoading, setLoading] = useState(false)
     const [error, setError] = useState('')
-    const adCommentsArr = adComments ? adComments : []
 
 
     function sumbitCommentForm(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         const comment = {
+            user: currentUser.id,
+            ad: ad.id,
             name: name.value,
             text: text.value,
-            ad: ad?.id,
-            user: curUser.id,
-            authToken: curUser.authToken,
+            authToken: getTokenFromLocalStorage()
         }
+        setLoading(true)
         createComment(comment)
-            .catch(error => setError(error.response.data))
-            .then(() => {
-                text.setValue('')
-                dispatch(addComment({
-                    name: name.value,
-                    text: text.value,
-                    ad_id: ad?.id,
-                    user_id: curUser.id,
-                }))
-                return setAddComments ? ([...adCommentsArr, comment]) : []
+            .then(commentResponse => {
+                setAdComments([...adComments, commentResponse.data])
             })
+            .catch(error => setError(error.response.data))
+            .finally(() => setLoading(false))
     }
 
     return (
         <div className="comments__add-comment">
+            {isLoading ? <Loader /> : <></>}
             <div className="comments__add-comment-wrapp">
                 <form onSubmit={e => sumbitCommentForm(e)}>
                     <div className="comments__add-comment-title">

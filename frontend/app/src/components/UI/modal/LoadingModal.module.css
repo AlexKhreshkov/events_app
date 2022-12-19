@@ -8,7 +8,6 @@
     visibility: hidden;
     overflow-x: hidden;
     overflow-y: auto;
-    transition: all 0.5s ease 0s;
     opacity: 1;
     visibility: visible;
     z-index: 1000;

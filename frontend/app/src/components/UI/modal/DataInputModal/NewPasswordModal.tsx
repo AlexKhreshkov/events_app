@@ -8,7 +8,6 @@ import cl from './NewPasswordModal.module.css'
 import { Button } from 'antd'
 import { IResponseAuthError } from '../../../../types/types'
 import { resetPasswordConfirmation } from '../../../../api/authApi'
-import { changeUserPassword } from '../../../../store/authSlice'
 import { useNavigate } from 'react-router-dom'
 
 interface NewPasswordModalProps {
@@ -54,7 +53,6 @@ export const NewPasswordModal: FC<NewPasswordModalProps> = ({ uid, token }) => {
         }
         resetPasswordConfirmation(data)
             .catch((error) => setResponseAuthError(error))
-            .then(response => dispatch(changeUserPassword(password1.value)))
             .then(() => dispatch(changeSuccsessModalVisibility(true)))
             .then(() => navigate('/'))
     }

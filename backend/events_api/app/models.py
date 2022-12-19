@@ -41,7 +41,7 @@ class Comment(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Comment on: {self.item}"
+        return f"Comment on: {self.ad}"
 
 #
 # class UserProfile(models.Model):

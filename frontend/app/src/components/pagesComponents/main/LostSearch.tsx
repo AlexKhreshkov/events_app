@@ -63,7 +63,7 @@ export const LostSearch = () => {
                 </div>
                 <div className="lostSearch__items__container">
                     <div className="lostSearch__items">
-                        {searchedAds.length 
+                        {searchedAds.length
                             ?
                             <List
                                 items={searchedAds}

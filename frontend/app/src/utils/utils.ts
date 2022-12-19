@@ -1,6 +1,12 @@
 export function deleteTokenFromLocalStorage() {
     localStorage.removeItem('authToken')
 }
+export function getTokenFromLocalStorage() {
+    const authToken = localStorage.getItem('authToken')
+    if (authToken)
+        return authToken
+    return ''
+}
 export function makeDateReadable(date: string) {
     //DATE EXAMPLE 2022-12-15T10:05:07.105521Z
     const dateSlice = 19

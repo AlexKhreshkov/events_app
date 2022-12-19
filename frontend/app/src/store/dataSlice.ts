@@ -32,15 +32,9 @@ const dataSlice = createSlice({
         addUsers(state, action: PayloadAction<IUser[]>) {
             state.data.users = action.payload
         },
-        addComments(state, action: PayloadAction<IComment[]>) {
-            state.data.comments = action.payload
-        },
-        addComment(state, action: PayloadAction<IComment>) {
-            state.data.comments.push(action.payload)
-        },
     }
 })
 
-export const { addCategories, addAds, addUsers, addComments, addComment } = dataSlice.actions
+export const { addCategories, addAds, addUsers  } = dataSlice.actions
 
 export default dataSlice.reducer     

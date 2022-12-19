@@ -12,7 +12,7 @@ import { CommentForm } from '../components/UI/forms/AddComment'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { changeSignUpVisibilityModal } from '../store/authModalSlice'
 import { IAd, IAdAuthor, IComment, IUser } from '../types/types'
-import { getTokenFromLocalStorage, makeDateReadable } from '../utils/utils'
+import { getTokenFromLocalStorage, reformatDate } from '../utils/utils'
 
 export const AdDetail = () => {
 
@@ -20,7 +20,6 @@ export const AdDetail = () => {
     const dispatch = useAppDispatch()
     const { adSlug } = useParams<{ adSlug: string }>()
     const allUsers = useAppSelector(state => state.data.data.users)
-    const currUser = useAppSelector(state => state.user.currentUser)
     const [adComments, setAdComments] = useState<IComment[]>([])
     const [ad, setAd] = useState<IAd>({
         id: -1,
@@ -66,7 +65,7 @@ export const AdDetail = () => {
                     <PagesSubtitle />
                     <div className="content__lostSearch__container">
                         <div className="content__adDetail">
-                            <div className='back    '>
+                            <div className='back'>
                                 <Button onClick={e => navigate(-1)} type={'primary'}>
                                     <IoArrowUndoOutline />
                                     Back
@@ -92,7 +91,7 @@ export const AdDetail = () => {
                                             </div>
                                             <div className="adDetail__date">
                                                 <IoTimeOutline />
-                                                Published: {makeDateReadable(ad?.updated ? ad?.updated : 'F')}
+                                                Published: {reformatDate(ad?.updated ? ad?.updated : 'F')}
                                             </div>
                                             <div className="adDetail__textTittle">
                                                 Description
@@ -140,7 +139,7 @@ export const AdDetail = () => {
                                         setAdComments={setAdComments}
                                     />
                                     :
-                                    <div>Login to add comment</div>
+                                    <></>
                                 }
                             </div>
                         </div>

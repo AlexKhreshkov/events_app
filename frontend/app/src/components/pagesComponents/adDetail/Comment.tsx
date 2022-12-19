@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { changeComment, deleteComment } from '../../../api/sendData'
 import { useAppSelector } from '../../../hooks/useRedux'
 import { IAd, IComment, IUser } from '../../../types/types'
-import { getTokenFromLocalStorage, makeDateReadable } from '../../../utils/utils'
+import { getTokenFromLocalStorage, reformatDate } from '../../../utils/utils'
 import { Loader } from '../../Loader'
 
 interface CommentProps extends IComment {
@@ -24,16 +24,25 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
     const [isCommentChanging, setCommentChanging] = useState(false)
     const [commentChangeName, setCommentChangeName] = useState(name)
     const [commentChangeText, setCommentChangeText] = useState(text)
-    const authToken = getTokenFromLocalStorage()
+    const [commentDate, setCommentDate] = useState('')
+    const [isCommentUpdated, setCommentUpdated] = useState(false)
 
 
 
     useEffect(() => {
         setCommentAuthor(allUsers.find(usr => usr.id === user))
+        if (created === updated) {
+            setCommentDate(reformatDate(created))
+        } else {
+            setCommentDate(reformatDate(updated))
+            setCommentUpdated(true)
+        }
+
+
     }, [])
 
     const deleteCommentHandler = () => {
-        deleteComment(id, authToken)
+        deleteComment(id, getTokenFromLocalStorage())
             .then(() => setLoading(true))
             .then(() => setAdComments([...adComments.filter(comment => comment.id !== id)]))
             .finally(() => setLoading(false))
@@ -51,7 +60,7 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
                 id,
                 name: commentChangeName,
                 text: commentChangeText,
-                authToken
+                authToken: getTokenFromLocalStorage()
             }
             changeComment(changedComment)
                 .catch(error => {
@@ -59,6 +68,7 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
                 })
                 .then(() => {
                     setCommentChanging(false)
+                    setCommentUpdated(true)
                 })
         }
     }
@@ -72,7 +82,14 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
             <div className="comments__comment-content">
                 <div className="comments__comment-head">
                     <div className="comments__date">
-                        Published: {updated ? makeDateReadable(updated) : <div></div>}
+                        {isCommentUpdated
+                            ?
+                            <>
+                                Updated: {commentDate}
+                            </>
+                            :
+                            <>Created: {commentDate}</>
+                        }
                     </div>
                 </div>
                 {isCommentChanging
@@ -121,7 +138,7 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
                             <div className="comments__comment__delete">
                                 <Switch
                                     onClick={() => changeCommentTextStatus()}
-                                    defaultChecked
+                                    checked={!isCommentChanging}
                                     checkedChildren="Change comment"
                                     unCheckedChildren="Close"
                                 />

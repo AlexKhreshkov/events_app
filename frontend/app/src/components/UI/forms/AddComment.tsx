@@ -34,10 +34,15 @@ export const CommentForm: FC<CommentFormProps> = ({ ad, adComments, setAdComment
         }
         setLoading(true)
         createComment(comment)
+            .catch(error => {
+                setError(error.response.data)
+                throw error
+            })
             .then(commentResponse => {
                 setAdComments([...adComments, commentResponse.data])
+                name.setValue(currentUser.username)
+                text.setValue('')
             })
-            .catch(error => setError(error.response.data))
             .finally(() => setLoading(false))
     }
 

@@ -9,7 +9,12 @@ interface ICreateComment {
     user: number,
     authToken: string,
 }
-
+interface IUpdateComment {
+    id: number,
+    name?: string,
+    text?: string,
+    authToken: string,
+}
 export function createComment(comment: ICreateComment) {
     return axios.post<IComment>(`${ADD_COMMENT_URL}`,
         comment,
@@ -26,6 +31,16 @@ export function deleteComment(commentId: number, authToken: string) {
         {
             headers: {
                 Authorization: `Token ${authToken}`,
+            },
+        }
+    )
+}
+export function changeComment(newComment: IUpdateComment) {
+    return axios.patch(`${COMMENTS_URL}${newComment.id}/`,
+        newComment,
+        {
+            headers: {
+                Authorization: `Token ${newComment.authToken}`,
             },
         }
     )

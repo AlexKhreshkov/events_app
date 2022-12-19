@@ -100,7 +100,9 @@ h6 {
 
 /*--------------------*/
 
-
+.displayFlex {
+  display: flex;
+}
 
 .container {
   display: flex;
@@ -606,7 +608,7 @@ h6 {
   color: #999999;
 }
 
-.comments__comment-author-name {
+.comments__comment-author-name span {
   font-size: 16px;
   line-height: 24px;
   color: #1677ff;
@@ -665,26 +667,6 @@ h6 {
   flex-wrap: wrap;
 }
 
-.comments__add-comment-inputs input {
-  width: 380px;
-  height: 40px;
-  border: 1px solid #ebebeb;
-  margin-right: 30px;
-  margin-bottom: 20px;
-  padding: 10px;
-}
-
-.comments__add-comment-inputs input:last-child {
-  margin-right: 0px;
-}
-
-.comments__add-comment-inputs input:hover {
-  border: 2px solid #3cb878;
-}
-
-.comments__add-comment-inputs input:focus {
-  border: 2px solid #3cb878;
-}
 
 .comments__add-comment-subtitle {
   display: flex;

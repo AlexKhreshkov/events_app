@@ -1,4 +1,4 @@
-import { Button } from 'antd'
+import { Button, Input } from 'antd'
 import React, { FC } from 'react'
 import { useState } from 'react'
 import { createComment } from '../../../api/sendData'
@@ -53,22 +53,23 @@ export const CommentForm: FC<CommentFormProps> = ({ ad, adComments, setAdComment
                         Your name:
                     </div>
                     <div className="comments__add-comment-inputs">
-                        <input
-                            required
+                        <Input
+                            style={{ margin: '0 0 20px 0' }}
                             value={name.value}
                             onChange={e => name.setValue(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="comments__add-comment-subtitle">
                         <div className="comments__add-comment-your-comment">Your comment</div>
                     </div>
-                    <div className="comments__add-comment-textarea">
-                        <textarea
-                            required
-                            value={text.value}
-                            onChange={e => text.setValue(e.target.value)}
-                        />
-                    </div>
+                    <Input.TextArea
+                        style={{ resize: 'none', height: 120, margin: '20px 0' }}
+                        maxLength={1000}
+                        required
+                        value={text.value}
+                        onChange={e => text.setValue(e.target.value)}
+                    />
                     <Button htmlType='submit' type='primary'>ADD</Button>
                 </form>
             </div>

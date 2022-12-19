@@ -1,4 +1,4 @@
-import { Button } from 'antd'
+import { Button, Tag } from 'antd'
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IAd } from '../../../types/types'
@@ -14,7 +14,7 @@ export const LostSearchItem: FC<LostSearchItemProps> = ({ ad }) => {
     return (
         <div className="lostSearch__item">
             <div className="lostSearch__item__category">
-                Category: <span>{ad.category_name}</span>
+                Category: <Tag>{ad.category_name}</Tag>
             </div>
             <div className="lostSearch__item__title">
                 {ad.title}

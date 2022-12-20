@@ -12,7 +12,6 @@ export const Main = () => {
             <RigthArea />
             <div className="content__body">
                 <PagesTitle />
-                <PagesSubtitle />
                 <LostSearch />
             </div>
             <div>

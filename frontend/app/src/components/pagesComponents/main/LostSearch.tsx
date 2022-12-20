@@ -32,8 +32,6 @@ export const LostSearch = () => {
 
     const debouncedSearch = useDebounce(searchedAds, 500)
 
-
-
     return (
         <div className="content__lostSearch__container">
             <div className="content__lostSearch">

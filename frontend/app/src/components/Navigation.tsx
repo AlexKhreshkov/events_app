@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import { IoPersonOutline, IoHeartOutline, IoExitOutline } from "react-icons/io5";
+import { IoPersonOutline, IoHeartOutline, IoExitOutline, IoMoonOutline, IoMoon } from "react-icons/io5";
 import { SignInModal } from './UI/modal/DataInputModal/SignInModal';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { changeSignInVisibilityModal } from '../store/authModalSlice';
@@ -22,6 +22,13 @@ export const Navigation = () => {
     const passwordResetEmail = useAppSelector(state => state.authModal.passwordResetEmail)
     const dispatch = useAppDispatch()
     const [isNavLoading, setNavLoading] = useState(false)
+    const [theme, setTheme] = useState('ligth')
+
+    useEffect(() => {
+        document.body.setAttribute('data-theme', theme)
+    }, [theme])
+
+    const changeTheme = () => setTheme(theme === 'ligth' ? 'dark' : 'ligth')
 
     const signOut = () => {
         new Promise<void>((resolve) => {
@@ -53,6 +60,18 @@ export const Navigation = () => {
                     </div>
                     :
                     <div className="nav__items">
+                        <div
+                            className="nav__item"
+                            onClick={() => changeTheme()}
+                        >
+                            {
+                                theme === 'ligth'
+                                    ?
+                                    <IoMoonOutline />
+                                    :
+                                    <IoMoon />
+                            }
+                        </div>
                         {currentUser.username && getTokenFromLocalStorage()
                             ?
                             <>
@@ -99,8 +118,8 @@ export const Navigation = () => {
             <SignInModal />
             <SignUpModal />
             <ResetPasswordModal />
-            <SignUpSuccessModal/>
-            <EmailConfirmedSuccessModal/>
+            <SignUpSuccessModal />
+            <EmailConfirmedSuccessModal />
             <ResetPasswordSuccessModal customEmail={passwordResetEmail} />
             <LoadingModal />
         </div>

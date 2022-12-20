@@ -62,7 +62,6 @@ export const AdDetail = () => {
                 <div className='content__container'>
                     <RigthArea />
                     <PagesTitle />
-                    <PagesSubtitle />
                     <div className="content__lostSearch__container">
                         <div className="content__adDetail">
                             <div className='back'>

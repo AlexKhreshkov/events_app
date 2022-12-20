@@ -3,18 +3,30 @@ import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IAd } from '../../../types/types'
 import { AD_PATH_NAME } from '../../../utils/constants'
+import { reformatDate } from '../../../utils/utils'
 
 interface LostSearchItemProps {
-    ad: IAd
+    ad: IAd,
+    category: string,
+    setCategory: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const LostSearchItem: FC<LostSearchItemProps> = ({ ad }) => {
+export const LostSearchItem: FC<LostSearchItemProps> = ({ ad, category, setCategory }) => {
 
     const navigate = useNavigate()
     return (
         <div className="lostSearch__item">
+            <div className='lostSearch__item__created'>
+                {reformatDate(ad.created)}
+            </div>
             <div className="lostSearch__item__category">
-                Category: <Tag>{ad.category_name}</Tag>
+                <span className='lostSearch__item__category__text'>Category:</span>
+                <Tag
+                    className='lostSearch__item__category__tag'
+                    onClick={() => setCategory(ad.category_name)}
+                >
+                    {ad.category_name}
+                </Tag>
             </div>
             <div className="lostSearch__item__title">
                 {ad.title}

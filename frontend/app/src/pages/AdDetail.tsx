@@ -11,7 +11,7 @@ import { RigthArea } from '../components/RigthArea'
 import { CommentForm } from '../components/UI/forms/AddComment'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { changeSignUpVisibilityModal } from '../store/authModalSlice'
-import { IAd, IAdAuthor, IComment, IUser } from '../types/types'
+import { IAd, IAdAuthor, IComment } from '../types/types'
 import { getTokenFromLocalStorage, reformatDate } from '../utils/utils'
 
 export const AdDetail = () => {

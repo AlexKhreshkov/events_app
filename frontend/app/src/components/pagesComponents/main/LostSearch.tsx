@@ -1,5 +1,6 @@
 import { AutoComplete, Button, Cascader, Input, Select } from 'antd'
 import { useMemo, useState } from 'react';
+import { useDebounce } from '../../../hooks/useDebounse';
 import { useInput } from '../../../hooks/useInput';
 import { useAppSelector } from '../../../hooks/useRedux';
 import { IAd } from '../../../types/types';
@@ -15,7 +16,6 @@ export const LostSearch = () => {
     const search = useInput()
     const [category, setCategory] = useState('All')
 
-
     const adsWithCategory = useMemo(() => {
         if (category === 'All') {
             return ads
@@ -30,6 +30,9 @@ export const LostSearch = () => {
         })
     }, [adsWithCategory, search])
 
+    const debouncedSearch = useDebounce(searchedAds, 500)
+
+
 
     return (
         <div className="content__lostSearch__container">
@@ -42,6 +45,7 @@ export const LostSearch = () => {
                         <Select
                             defaultValue="All"
                             style={{ width: '30%' }}
+                            value={category}
                             onSelect={chosenSelect => setCategory(chosenSelect)}
                         >
                             {categories.map(category =>
@@ -63,11 +67,18 @@ export const LostSearch = () => {
                 </div>
                 <div className="lostSearch__items__container">
                     <div className="lostSearch__items">
-                        {searchedAds.length
+                        {debouncedSearch.length
                             ?
                             <List
-                                items={searchedAds}
-                                renderItem={(ad: IAd) => <LostSearchItem ad={ad} key={ad.id} />}
+                                items={debouncedSearch}
+                                renderItem={(ad: IAd) =>
+                                    <LostSearchItem
+                                        key={ad.id}
+                                        ad={ad}
+                                        category={category}
+                                        setCategory={setCategory}
+                                    />
+                                }
                             />
                             :
                             <div className='lostSearch__noAds'>No Ads :(</div>

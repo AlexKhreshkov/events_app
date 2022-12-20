@@ -27,6 +27,9 @@ export function reformatDate(date: string): string {
     if (diffrenseInMinutes < 1) {
         return `Now`
     }
+    if (diffrenseInMinutes === 60) {
+        return `1 hour ago`
+    }
     if (diffrenseInHours < 1) {
         const minutesAgo = 60 * diffrenseInHours
         return `${Math.round(minutesAgo)} minutes ago`

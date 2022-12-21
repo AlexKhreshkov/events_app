@@ -9,8 +9,8 @@ import { LostSearchItem } from './LostSearchItem';
 export const LostSearch = () => {
 
     const { Option } = Select
-    const categories = useAppSelector(state => state.data.data.categories)
-    const ads = useAppSelector(state => state.data.data.ads)
+    const categories = useAppSelector(state => state.categories.categories)
+    const ads = useAppSelector(state => state.ads.ads)
     const search = useInput()
     const [category, setCategory] = useState('All')
 

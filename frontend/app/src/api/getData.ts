@@ -2,6 +2,7 @@ import axios from "axios";
 import { IAd, ICategory, IComment, IUser } from "../types/types";
 import { CATEGORIES_URL, ADS_URL, USERS_URL, COMMENTS_URL } from "../utils/constants";
 
+
 export function getCategories() {
     return axios.get<ICategory[]>(`${CATEGORIES_URL}`)
 }

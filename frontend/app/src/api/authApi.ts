@@ -2,8 +2,6 @@ import axios from "axios";
 import { IActivateAccount, IAuthToken, IResponseAuthToken, IResponseStatus, ISignInInfo, ISignUpInfo, ISignUpResponse, IResetPasswordConfirmation } from "../types/types";
 import { ACTIVATE_ACCOUNT_URL, BASE_URL, DELETE_TOKEN_URL, REGISTER_USER_URL, RESET_PASSWORD_CONFIRMATION_URL, RESET_PASSWORD_URL } from "../utils/constants";
 
-
-
 // {
 //     "email": "",
 //     "username": "testuser100",
@@ -46,18 +44,7 @@ export function getAuthToken(authInfo: ISignInInfo) {
         },
     )
 }
-export function defineUser(authToken: string) {
-    return axios.get<ISignUpResponse>(
-        `${BASE_URL}/auth/users/me/`,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Token ${authToken}`,
-            },
-        },
-    )
-}
+
 export function deleteTokenFromServer(authToken: string | null) {
     if (authToken) {
         return fetch(`${DELETE_TOKEN_URL}`, {

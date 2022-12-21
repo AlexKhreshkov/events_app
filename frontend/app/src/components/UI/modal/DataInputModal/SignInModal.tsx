@@ -6,8 +6,8 @@ import { changeResetPasswordVisibilityModal, changeSignInVisibilityModal, change
 import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
 import { IResponseAuthError } from '../../../../types/types'
 import { useInput } from '../../../../hooks/useInput'
-import { defineUser, getAuthToken } from '../../../../api/authApi'
-import { addCurrentUser } from '../../../../store/authSlice'
+import { getAuthToken } from '../../../../api/authApi'
+import { addCurrentUser, addToken, defineCurrentUser } from '../../../../store/authSlice'
 import { AuthInput } from '../../input/AuthInput'
 import { Loader } from '../../../Loader'
 
@@ -50,13 +50,15 @@ export const SignInModal = () => {
         getAuthToken(trimedData)
             .then(response => {
                 const authToken = response.data.auth_token
+                dispatch(addToken(authToken))
                 localStorage.setItem('authToken', authToken)
-                return defineUser(authToken)
+                defineCurrentUser()
             })
-            .then(response => {
-                const currentUserInfo = response.data
-                dispatch(addCurrentUser({ ...currentUserInfo }))
-            })
+            // .then(response => {
+            //     const currentUserInfo = response.data
+            //     // dispatch(addCurrentUser({ ...currentUserInfo }))
+            //     dispatch(addCurrentUser())
+            // })
             .then(() => {
                 dispatch(changeSignInVisibilityModal(false))
                 login.setValue('')

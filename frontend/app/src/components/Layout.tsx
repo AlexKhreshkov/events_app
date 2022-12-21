@@ -1,13 +1,11 @@
-import { Spin } from 'antd'
 import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import { defineUser } from '../api/authApi'
-import { getAds, getCategories, getUsers } from '../api/getData'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
+import { fetchAds } from '../store/adsSlice'
 import { changeLoaderFullSizeVisibility } from '../store/authModalSlice'
-import { addCurrentUser } from '../store/authSlice'
-import { addAds, addCategories, addUsers } from '../store/dataSlice'
-import { IAd, ICategory, IUser } from '../types/types'
+import { addCurrentUser, addToken, defineCurrentUser } from '../store/authSlice'
+import { fetchCategories } from '../store/categoriesSlice'
+import { fetchUsers } from '../store/usersSlice'
 import { Footer } from './Footer'
 import { Loader } from './Loader'
 import { Navigation } from './Navigation'
@@ -18,35 +16,22 @@ export const Layout = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        const authToken = localStorage.getItem('authToken')
-        dispatch(changeLoaderFullSizeVisibility(true))
-
-        getCategories()
-            .then(respone => respone.data)
-            .then((data: ICategory[]) => dispatch(addCategories(data)))
-            .then(() => getAds())
-            .then(response => response.data)
-            .then((data: IAd[]) => dispatch(addAds(data)))
-            .then(() => getUsers())
-            .then(response => response.data)
-            .then((data: IUser[]) => dispatch(addUsers(data)))
-            .then(() => {
-                if (authToken) {
-                    defineUser(authToken)
-                        .then(response => {
-                            const userInfo = response.data
-                            dispatch(addCurrentUser({ ...userInfo }))
-                        })
-                        .catch(error => dispatch(addCurrentUser({
-                            id: -1,
-                            username: '',
-                            email: '',
-                        })))
-                        .finally(() => dispatch(changeLoaderFullSizeVisibility(false)))
-                } else {
-                    dispatch(changeLoaderFullSizeVisibility(false))
-                }
-            })
+        async function prepeareData() {
+            const authToken = localStorage.getItem('authToken')
+            dispatch(addToken(authToken))
+            dispatch(changeLoaderFullSizeVisibility(true))
+            await dispatch(fetchCategories())
+            await dispatch(fetchAds())
+            await dispatch(fetchUsers())
+            if (authToken) {
+                await dispatch(defineCurrentUser())
+                dispatch(changeLoaderFullSizeVisibility(false))
+            }
+            else {
+                dispatch(changeLoaderFullSizeVisibility(false))
+            }
+        }
+        prepeareData()
     }, [])
 
     return (

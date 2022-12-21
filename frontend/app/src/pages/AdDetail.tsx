@@ -5,7 +5,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { getAdBySlug, getComments } from '../api/getData'
 import { Loader } from '../components/Loader'
 import { Comment } from '../components/pagesComponents/adDetail/Comment'
-import { PagesSubtitle } from '../components/PagesSubtitle'
 import { PagesTitle } from '../components/PagesTitle'
 import { RigthArea } from '../components/RigthArea'
 import { CommentForm } from '../components/UI/forms/AddComment'
@@ -19,7 +18,8 @@ export const AdDetail = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const { adSlug } = useParams<{ adSlug: string }>()
-    const allUsers = useAppSelector(state => state.data.data.users)
+    const allUsers = useAppSelector(state => state.users.users)
+    const currentUser = useAppSelector(state => state.user.currentUser)
     const [adComments, setAdComments] = useState<IComment[]>([])
     const [ad, setAd] = useState<IAd>({
         id: -1,
@@ -107,7 +107,7 @@ export const AdDetail = () => {
                                     <IoChatbubbleEllipsesOutline />
                                     Comments: {adComments?.length}
                                 </div>
-                                {getTokenFromLocalStorage()
+                                {currentUser.username && getTokenFromLocalStorage()
                                     ?
                                     <></>
                                     :
@@ -130,7 +130,7 @@ export const AdDetail = () => {
                                         {...comment}
                                     />
                                 )}
-                                {getTokenFromLocalStorage()
+                                {currentUser.username && getTokenFromLocalStorage()
                                     ?
                                     <CommentForm
                                         ad={ad}

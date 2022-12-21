@@ -17,7 +17,7 @@ interface CommentProps extends IComment {
 export const Comment: FC<CommentProps> = (props: CommentProps) => {
 
     const { id, user, name, text, created, updated, adComments, setAdComments, ad } = props
-    const allUsers = useAppSelector(state => state.data.data.users)
+    const allUsers = useAppSelector(state => state.users.users)
     const currentUser = useAppSelector(state => state.user.currentUser)
     const [commentAuthor, setCommentAuthor] = useState<IUser>()
     const [isLoading, setLoading] = useState(false)

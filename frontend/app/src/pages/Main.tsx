@@ -1,5 +1,4 @@
 import { LostSearch } from '../components/pagesComponents/main/LostSearch'
-import { PagesSubtitle } from '../components/PagesSubtitle'
 import { PagesTitle } from '../components/PagesTitle'
 import { RigthArea } from '../components/RigthArea'
 import { EmailConfirmedSuccessModal } from '../components/UI/modal/SuccessModal/EmailConfirmedSuccessModal'

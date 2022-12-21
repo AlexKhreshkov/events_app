@@ -49,13 +49,14 @@
     justify-content: center;
 }
 
-.authSignUpText {
+.authSignInText {
     display: flex;
     justify-content: center;
     margin: 15px 0 5px 0;
+    font-size: 18px;
 }
 
-.authSignUpLink {
+.authSignInLink {
     margin-left: 5px;
     cursor: pointer;
     text-decoration: underline;

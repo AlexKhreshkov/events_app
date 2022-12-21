@@ -167,7 +167,6 @@ body[data-theme='ligth'] {
 
 .nav__title {
   padding: 10px 5px;
-  font-size: 2rem;
 }
 
 .nav__items {
@@ -317,7 +316,7 @@ body[data-theme='ligth'] {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin: 5px 0;
+  margin: 10px 0;
 }
 
 .content__body {
@@ -478,7 +477,7 @@ body[data-theme='ligth'] {
 
 .lostSearch__item__category__tag {
   cursor: pointer;
-  color: var(--main-blue-color);
+  color: var(--colors-text);
 }
 
 .lostSearch__item__category__tag:hover {

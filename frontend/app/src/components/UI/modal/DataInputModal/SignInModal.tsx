@@ -210,10 +210,10 @@ export const SignInModal = () => {
                                 Sign In
                             </Button>
                             <div className="authSignUpText">
-                                <div className={cl.authSignUpText}>
+                                <div className={cl.authSignInText}>
                                     Don't have an account?
                                     <div
-                                        className={cl.authSignUpLink}
+                                        className={cl.authSignInLink}
                                         onClick={() => openSignUpForm()}
                                     >
                                         Sign Up
@@ -221,10 +221,10 @@ export const SignInModal = () => {
                                 </div>
                             </div>
                             <div className="authSignUpText">
-                                <div className={cl.authSignUpText}>
+                                <div className={cl.authSignInText}>
                                     Forgot your password?
                                     <div
-                                        className={cl.authSignUpLink}
+                                        className={cl.authSignInLink}
                                         onClick={() => openResetPasswordForm()}
                                     >
                                         Reset

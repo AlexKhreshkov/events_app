@@ -1,12 +1,10 @@
-import { AutoComplete, Button, Cascader, Input, Select } from 'antd'
+import { Input, Select } from 'antd'
 import { useMemo, useState } from 'react';
-import { useDebounce } from '../../../hooks/useDebounse';
 import { useInput } from '../../../hooks/useInput';
 import { useAppSelector } from '../../../hooks/useRedux';
 import { IAd } from '../../../types/types';
 import { List } from '../../List';
 import { LostSearchItem } from './LostSearchItem';
-
 
 export const LostSearch = () => {
 
@@ -30,7 +28,6 @@ export const LostSearch = () => {
         })
     }, [adsWithCategory, search])
 
-    const debouncedSearch = useDebounce(searchedAds, 500)
 
     return (
         <div className="content__lostSearch__container">
@@ -65,10 +62,10 @@ export const LostSearch = () => {
                 </div>
                 <div className="lostSearch__items__container">
                     <div className="lostSearch__items">
-                        {debouncedSearch.length
+                        {searchedAds.length
                             ?
                             <List
-                                items={debouncedSearch}
+                                items={searchedAds}
                                 renderItem={(ad: IAd) =>
                                     <LostSearchItem
                                         key={ad.id}

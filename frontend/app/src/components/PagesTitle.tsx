@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const PagesTitle = () => {
     return (
         <div className="content__title">

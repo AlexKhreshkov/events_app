@@ -3,9 +3,10 @@ import { Outlet } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { fetchAds } from '../store/adsSlice'
 import { changeLoaderFullSizeVisibility } from '../store/authModalSlice'
-import { addCurrentUser, addToken, defineCurrentUser } from '../store/authSlice'
+import { addToken, defineCurrentUser } from '../store/authSlice'
 import { fetchCategories } from '../store/categoriesSlice'
 import { fetchUsers } from '../store/usersSlice'
+import { getTokenFromLocalStorage } from '../utils/utils'
 import { Footer } from './Footer'
 import { Loader } from './Loader'
 import { Navigation } from './Navigation'
@@ -17,7 +18,7 @@ export const Layout = () => {
 
     useEffect(() => {
         async function prepeareData() {
-            const authToken = localStorage.getItem('authToken')
+            const authToken = getTokenFromLocalStorage()
             dispatch(addToken(authToken))
             dispatch(changeLoaderFullSizeVisibility(true))
             await dispatch(fetchCategories())

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoPersonOutline, IoHeartOutline, IoExitOutline, IoMoonOutline, IoMoon } from "react-icons/io5";
 import { SignInModal } from './UI/modal/DataInputModal/SignInModal';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
@@ -19,10 +19,12 @@ export const Navigation = () => {
 
     const isOpen = useAppSelector(state => state.authModal.isSignInModal)
     const currentUser = useAppSelector(state => state.user.currentUser)
+    const authToken = useAppSelector(state => state.user.authToken)
     const passwordResetEmail = useAppSelector(state => state.authModal.passwordResetEmail)
     const dispatch = useAppDispatch()
     const [isNavLoading, setNavLoading] = useState(false)
     const [theme, setTheme] = useState('ligth')
+    const navigate = useNavigate()
 
     useEffect(() => {
         document.body.setAttribute('data-theme', theme)
@@ -31,20 +33,12 @@ export const Navigation = () => {
     const changeTheme = () => setTheme(theme === 'ligth' ? 'dark' : 'ligth')
 
     const signOut = () => {
-        new Promise<void>((resolve) => {
+        async function logout() {
             setNavLoading(true)
-            resolve()
-        })
-            .then(() => deleteTokenFromServer(getTokenFromLocalStorage()))
-            .catch(error => {
-                setNavLoading(false)
-                throw error
-            })
-            .then(() => {
-                deleteTokenFromLocalStorage()
-                dispatch(logoutCurrentUser())
-            })
-            .finally(() => setNavLoading(false))
+            await dispatch(logoutCurrentUser())
+            setNavLoading(false)
+        }
+        logout()
     }
 
     return (
@@ -72,7 +66,7 @@ export const Navigation = () => {
                                     <IoMoon />
                             }
                         </div>
-                        {currentUser.username && getTokenFromLocalStorage()
+                        {currentUser.username && authToken
                             ?
                             <>
                                 <div className="nav__item">
@@ -80,7 +74,7 @@ export const Navigation = () => {
                                 </div>
                                 <div
                                     className="nav__item"
-                                    onClick={e => console.log('GOTO PROFILE')}
+                                    onClick={e => navigate('/profile')}
                                 >
                                     <IoPersonOutline />
                                 </div>

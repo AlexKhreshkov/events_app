@@ -105,9 +105,11 @@ h6 {
 
 body[data-theme='dark'] {
   --colors-text: hsl(0, 0%, 100%);
-  --colors-bg: hsl(207, 26%, 17%);
+  /* --colors-bg: hsl(207, 26%, 17%); */
+  --colors-bg: #222;
   --colors-ui-base: hsl(209, 23%, 22%);
   --shadow: rgba(245, 245, 245, 0.2) 0 0 8px;
+  --profile-content-color: rgba(58, 62, 71, 0.5);
 }
 
 body[data-theme='ligth'] {
@@ -115,10 +117,16 @@ body[data-theme='ligth'] {
   --colors-bg: hsl(0, 0%, 98%);
   --colors-ui-base: hsl(0, 0%, 100%);
   --shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  --profile-content-color: rgba(205, 210, 222, 0.5);
 }
 
 .displayFlex {
   display: flex;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
 }
 
 .container {
@@ -758,4 +766,85 @@ body[data-theme='ligth'] {
   padding: 10px 40px;
   background-color: #3cb878;
   color: white;
+}
+
+/* rgba(58, 62, 71, 0.5) */
+.profile__container {
+  width: 80%;
+}
+
+.profile__content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.profile__header__container {
+  background: var(--profile-content-color);
+  padding: 20px;
+  width: 100%;
+  margin: 10px 0 10px 0;
+}
+
+.profile__header {
+  display: flex;
+  align-items: center;
+  color: var(--colors-text);
+}
+
+.profile__header__img {
+  margin-right: 10px;
+}
+
+.profile__header__username {
+  font-size: 2rem;
+}
+
+.profile__body__container {
+  width: 100%;
+}
+
+.profile__body {
+  width: 100%;
+}
+
+.profile__columns {
+  display: flex;
+}
+
+.profile__select__content {
+  min-width: 20%;
+  margin: 0 10px 0 0;
+}
+
+.profile__right__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: center;
+  color: var(--colors-text);
+  background: var(--profile-content-color);
+}
+
+.profile__right__content form {
+  width: 100%;
+}
+
+.profile__ads__tittle {
+  font-size: 1.5rem;
+  margin: 5px 0 0 0;
+}
+
+.profile__ads {
+  width: 100%;
+  position: relative;
+  padding: 0 30% 0 30%;
+}
+
+.profile__form label {
+  color: var(--colors-text) !important;
+}
+
+.ant-upload div {
+  color: var(--colors-text) !important;
 }

@@ -7,8 +7,8 @@ import { reformatDate } from '../../../utils/utils'
 
 interface LostSearchItemProps {
     ad: IAd,
-    category: string,
-    setCategory: React.Dispatch<React.SetStateAction<string>>
+    category?: string,
+    setCategory?: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const LostSearchItem: FC<LostSearchItemProps> = ({ ad, category, setCategory }) => {
@@ -23,7 +23,7 @@ export const LostSearchItem: FC<LostSearchItemProps> = ({ ad, category, setCateg
                 <span className='lostSearch__item__category__text'>Category:</span>
                 <Tag
                     className='lostSearch__item__category__tag'
-                    onClick={() => setCategory(ad.category_name)}
+                    onClick={() => setCategory && setCategory(ad.category_name)}
                 >
                     {ad.category_name}
                 </Tag>

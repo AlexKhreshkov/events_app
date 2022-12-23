@@ -795,6 +795,9 @@ body[data-theme='ligth'] {
 .profile__header__img {
   margin-right: 10px;
 }
+.profile__header__img img {
+  max-width: 250px;
+}
 
 .profile__header__username {
   font-size: 2rem;
@@ -810,6 +813,7 @@ body[data-theme='ligth'] {
 
 .profile__columns {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .profile__select__content {
@@ -844,7 +848,9 @@ body[data-theme='ligth'] {
 .profile__form label {
   color: var(--colors-text) !important;
 }
-
 .ant-upload div {
-  color: var(--colors-text) !important;
+  color: var(--colors-text);
+}
+.ant-form-item-control-input-content {
+  color: var(--colors-text);
 }

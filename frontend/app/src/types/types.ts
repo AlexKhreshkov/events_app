@@ -1,3 +1,4 @@
+import { UploadFile } from "antd"
 
 export interface IAuthModalState {
     isOpen: boolean
@@ -11,6 +12,14 @@ export interface IUser {
     phone: string,
     email: string,
     image: string,
+}
+export interface IUserPatch {
+    username?: string,
+    first_name?: string,
+    last_name?: string,
+    phone?: string,
+    email?: string,
+    image?: File | string,
 }
 
 export interface ICurrentUser {
@@ -50,7 +59,7 @@ export interface ISignUpResponse {
 export interface IResponseAuthError {
     password?: string,
     username?: string,
-    email?: string [],
+    email?: string[],
     globalError?: string,
     non_field_errors?: string,
 }

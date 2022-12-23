@@ -28,11 +28,11 @@ export const Profile = () => {
     const [currentUserProfile, setCurrentUserProfile] = useState<IUser>()
     const currentUser = useAppSelector(state => state.user.currentUser)
     const users = useAppSelector(state => state.users.users)
-
+    const user = users.find(user => user.id === currentUser.id)
 
     useEffect(() => {
-        setCurrentUserProfile(users.find(user => user.id === currentUser.id))
-    }, [])
+        setCurrentUserProfile(user)
+    }, [user])
 
 
     return (
@@ -54,7 +54,7 @@ export const Profile = () => {
                         </div>
                     </div>
                 </div>
-                <ProfileBody/>
+                <ProfileBody />
             </div>
         </div>
     )

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { IAd } from '../types/types'
+import { RootState } from '.'
+import { IAd, IAdChange } from '../types/types'
 import { ADS_URL } from '../utils/constants'
 
 interface adsState {
@@ -25,7 +26,28 @@ export const fetchAds = createAsyncThunk<IAd[], void, { rejectValue: string }>(
         return response.data
     }
 )
-
+export const changeAd = createAsyncThunk<string, { slug: string, newInfo: IAdChange }, { rejectValue: string, state: RootState }>(
+    'users/updateUserInfo',
+    async function ({ slug, newInfo }, { rejectWithValue, getState, dispatch }) {
+        const authToken = getState().user.authToken
+        const response = await axios.patch(
+            `${ADS_URL}${slug}/`,
+            newInfo,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Accept': 'application/json',
+                    'Authorization': `Token ${authToken}`,
+                },
+            }
+        )
+        if (!response) {
+            return rejectWithValue('Error while updating profile')
+        }
+        // dispatch(updateUserState(response.data))
+        return response.data
+    }
+)
 
 const adsSlice = createSlice({
     name: 'ads',

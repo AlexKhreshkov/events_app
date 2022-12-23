@@ -1,60 +1,113 @@
-import { Button } from 'antd'
+import { Button, Input, message, Switch } from 'antd'
 import { useEffect, useState } from 'react'
-import { IoArrowUndoOutline, IoChatbubbleEllipsesOutline, IoPerson, IoPhonePortraitOutline, IoTimeOutline } from 'react-icons/io5'
+import { IoArrowUndoOutline, IoPerson, IoPhonePortraitOutline, IoTimeOutline } from 'react-icons/io5'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getAdBySlug, getComments } from '../api/getData'
 import { Loader } from '../components/Loader'
-import { Comment } from '../components/pagesComponents/adDetail/Comment'
+import { AdComments } from '../components/pagesComponents/adDetail/AdComments'
 import { PagesTitle } from '../components/PagesTitle'
 import { RigthArea } from '../components/RigthArea'
-import { CommentForm } from '../components/UI/forms/AddComment'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
-import { changeSignUpVisibilityModal } from '../store/authModalSlice'
-import { IAd, IAdAuthor, IComment } from '../types/types'
-import { getTokenFromLocalStorage, reformatDate } from '../utils/utils'
+import { changeAd } from '../store/adsSlice'
+import { updateUserInfoNoImg } from '../store/usersSlice'
+import { IAd, IAdAuthor, IAdChange, IComment } from '../types/types'
+import { reformatDate } from '../utils/utils'
 
 export const AdDetail = () => {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
+    const [ad, setAd] = useState<IAd>()
     const { adSlug } = useParams<{ adSlug: string }>()
     const allUsers = useAppSelector(state => state.users.users)
     const currentUser = useAppSelector(state => state.user.currentUser)
+    const user = allUsers.find(user => user.id === ad?.user_id)
     const [adComments, setAdComments] = useState<IComment[]>([])
-    const [ad, setAd] = useState<IAd>({
-        id: -1,
-        title: '',
-        user_id: -1,
-        phone: '',
-        slug: '',
-        text: '',
-        image: '',
-        category_id: '',
-        category_name: '',
-        category_slug: '',
-        created: '',
-        updated: '',
-    })
-    const adInfo = ad
     const [adAuthor, setAdAuthor] = useState<IAdAuthor>()
     const [isLoading, setLoading] = useState(true)
+    const [isCommentChanging, setCommentChanging] = useState(false)
+    const [newAdInfo, setNewAdInfo] = useState<IAdChange>({
+        first_name: '',
+        last_name: '',
+        phone: '',
+        text: '',
+        title: '',
+    })
+    const [messageApi, contextHolder] = message.useMessage()
+
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Success!',
+        });
+    };
+    const error = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'An uknow error occured',
+        });
+    };
 
     useEffect(() => {
         const getData = async () => {
             const adResponse = await getAdBySlug(adSlug)
             const ad = adResponse.data
-            setAd(ad)
-            setAdAuthor(allUsers.find(user => user.id === ad.user_id))
+            if (ad) {
+                setAd(ad)
+            }
+            const user = allUsers.find(user => user.id === ad.user_id)
+            if (user && ad) {
+                setAdAuthor(user)
+                setNewAdInfo({
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    phone: user.phone,
+                    text: ad.text,
+                    title: ad.title
+                })
+            }
             const commentsResponse = await getComments()
             setAdComments(commentsResponse.data.filter(comment => comment.ad === ad?.id))
+
             setLoading(false)
         }
         getData()
     }, [])
 
+    const changeCommentTextStatus = () => {
+        setCommentChanging(!isCommentChanging)
+    }
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+        setNewAdInfo({ ...newAdInfo, [event.target.name]: event.target.value })
+    }
+    function changeCommentHandler(): void {
+        async function makeRequest() {
+            if (ad && newAdInfo) {
+                const response = await dispatch(
+                    changeAd({ slug: ad.slug, newInfo: newAdInfo })
+                )
+                if (response.meta.requestStatus === 'fulfilled') {
+                    success()
+                    setAd({ ...ad, ...newAdInfo })
+                    if (adAuthor) {
+                        setAdAuthor({ ...adAuthor, ...newAdInfo })
+                    }
+                    if (user) {
+                        dispatch(updateUserInfoNoImg({ id: user?.id, newInfo: newAdInfo }))
+                    }
+                    setCommentChanging(false)
+                }
+                if (response.meta.requestStatus === 'rejected') {
+                    error()
+                }
+            }
+        }
+        makeRequest()
+    }
 
     return (
         <>
+            {contextHolder}
             {isLoading
                 ?
                 <Loader />
@@ -71,7 +124,21 @@ export const AdDetail = () => {
                                 </Button>
                             </div>
                             <div className='adDetail__title'>
-                                {ad?.title}
+                                {isCommentChanging
+                                    ?
+                                    <div className='displayFlex'>
+                                        Title: <Input
+                                            name='title'
+                                            value={newAdInfo.title}
+                                            onChange={e => handleChange(e)}
+                                        />
+                                    </div>
+                                    :
+                                    <>
+                                        {ad?.title}
+
+                                    </>
+                                }
                             </div>
                             <div className="adDetail__body">
                                 <div className="adDetail__imgRow">
@@ -81,66 +148,104 @@ export const AdDetail = () => {
                                     <div className="adDetail__contancts__container">
                                         <div className="adDetail__contancts">
                                             <div className="adDetail__name">
-                                                <IoPerson />
-                                                Contacts: {adAuthor?.first_name} {adAuthor?.last_name}
+                                                {isCommentChanging
+                                                    ?
+                                                    <>
+                                                        <IoPerson />Name:
+                                                        <Input
+                                                            name='first_name'
+                                                            value={newAdInfo.first_name}
+                                                            onChange={e => handleChange(e)}
+                                                        />
+                                                        <IoPerson />Surname:
+                                                        <Input
+                                                            name='last_name'
+                                                            value={newAdInfo.last_name}
+                                                            onChange={e => handleChange(e)}
+                                                        />
+                                                        <IoPhonePortraitOutline /> Phone:
+                                                        <Input
+                                                            name='phone'
+                                                            value={newAdInfo.phone}
+                                                            onChange={e => handleChange(e)}
+                                                        />
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <IoPerson />
+                                                        Contacts:{adAuthor?.first_name} {adAuthor?.last_name}
+                                                        <div className="adDetail__phone">
+                                                            <IoPhonePortraitOutline />
+                                                            Phone: {adAuthor?.phone ? adAuthor?.phone : <span>-</span>}
+                                                        </div>
+                                                    </>
+                                                }
                                             </div>
-                                            <div className="adDetail__phone">
-                                                <IoPhonePortraitOutline />
-                                                Phone: {adAuthor?.phone ? adAuthor?.phone : <span>-</span>}
-                                            </div>
-                                            <div className="adDetail__date">
-                                                <IoTimeOutline />
-                                                Published: {reformatDate(ad?.updated ? ad?.updated : 'F')}
-                                            </div>
+                                            {isCommentChanging
+                                                ?
+                                                <></>
+                                                :
+                                                <div className="adDetail__date">
+                                                    <IoTimeOutline />
+                                                    Published: {reformatDate(ad?.created ? ad?.created : '')}
+                                                </div>
+                                            }
                                             <div className="adDetail__textTittle">
                                                 Description
                                             </div>
                                             <div className="adDetail__text">
-                                                {ad?.text}
+                                                {isCommentChanging
+                                                    ?
+                                                    <>
+                                                        <Input.TextArea
+                                                            style={{ resize: 'none', height: 120, margin: '5px 0' }}
+                                                            name='text'
+                                                            placeholder='Your text...'
+                                                            value={newAdInfo?.text}
+                                                            onChange={e => handleChange(e)}
+                                                            required
+                                                        />
+                                                        <Button
+                                                            type='primary'
+                                                            onClick={() => changeCommentHandler()}
+                                                        >
+                                                            Change
+                                                        </Button>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        {ad?.text}
+                                                    </>
+                                                }
                                             </div>
                                         </div>
+                                        {currentUser.id === adAuthor?.id
+                                            ?
+                                            <div className="adDetail__switch__container">
+                                                <Switch
+                                                    onClick={() => changeCommentTextStatus()}
+                                                    className='adDetail__switch'
+                                                    checked={!isCommentChanging}
+                                                    checkedChildren="CHANGE AD"
+                                                    unCheckedChildren="Close"
+                                                />
+                                            </div>
+                                            :
+                                            <></>
+                                        }
                                     </div>
                                 </div>
                             </div>
-                            <div className="comments">
-                                <div className="comments__count">
-                                    <IoChatbubbleEllipsesOutline />
-                                    Comments: {adComments?.length}
-                                </div>
-                                {currentUser.username && getTokenFromLocalStorage()
-                                    ?
-                                    <></>
-                                    :
-                                    <div className='login-to-comment'>
-                                        <span
-                                            className='warningText cursorPointer'
-                                            onClick={e => dispatch(changeSignUpVisibilityModal(true))}
-                                        >
-                                            SignUp
-                                        </span>
-                                        <span> to add comment</span>
-                                    </div>
-                                }
-                                {adComments?.map(comment =>
-                                    <Comment
-                                        key={comment.id}
-                                        adComments={adComments}
-                                        setAdComments={setAdComments}
-                                        adInfo={adInfo}
-                                        {...comment}
-                                    />
-                                )}
-                                {currentUser.username && getTokenFromLocalStorage()
-                                    ?
-                                    <CommentForm
-                                        ad={ad}
-                                        adComments={adComments}
-                                        setAdComments={setAdComments}
-                                    />
-                                    :
-                                    <></>
-                                }
-                            </div>
+                            {ad
+                                ?
+                                <AdComments
+                                    ad={ad}
+                                    adComments={adComments}
+                                    setAdComments={setAdComments}
+                                />
+                                :
+                                <></>
+                            }
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,6 @@ import {
     Form,
     Input,
     Button,
-    Select,
     message,
 } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
@@ -88,7 +87,7 @@ export const ProfileInfo = () => {
                 layout="horizontal"
                 onSubmitCapture={handleFormSumbit}
                 className='profile__form'
-                style={{color: 'var(----colors-text)'}}
+                style={{ color: 'var(----colors-text)' }}
             >
                 <Form.Item label="New image">
                     <input

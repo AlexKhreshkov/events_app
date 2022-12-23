@@ -13,16 +13,16 @@ export const ProfileSelectContent: FC<ProfileSelectContentProps> = ({ profileCon
             <Select
                 value={profileContentChoise}
                 onChange={setProfileContentChoise}
-                defaultValue="Ads"
+                defaultValue="My profile"
                 style={{ width: 200 }}
                 options={[
                     {
-                        value: 'Ads',
-                        label: 'My Ads',
+                        value: 'My profile',
+                        label: 'My profile',
                     },
                     {
-                        value: 'ProfileInfo',
-                        label: 'Profile Info',
+                        value: 'My ads',
+                        label: 'My ads',
                     },
                 ]}
             />

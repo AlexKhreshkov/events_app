@@ -5,8 +5,7 @@ import { ProfileSelectContent } from './ProfileSelectContent';
 
 export const ProfileBody = () => {
 
-
-    const [profileContentChoise, setProfileContentChoise] = useState('Acds')
+    const [profileContentChoise, setProfileContentChoise] = useState('My profile')
 
     return (
         <div className="profile__body__container">
@@ -17,16 +16,16 @@ export const ProfileBody = () => {
                         setProfileContentChoise={setProfileContentChoise}
                     />
                     <div className="profile__right__content">
-                        {profileContentChoise === 'Ads'
+                        {profileContentChoise === 'My profile'
                             ?
+                            <ProfileInfo />
+                            :
                             <>
                                 <div className="profile__ads__tittle">
                                     Your ads:
                                 </div>
                                 <ProfileAds />
                             </>
-                            :
-                            <ProfileInfo/>
                         }
                     </div>
                 </div>

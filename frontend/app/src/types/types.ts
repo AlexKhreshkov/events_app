@@ -112,6 +112,13 @@ export interface IAd {
     created: string,
     updated: string,
 }
+export interface IAdChange {
+    first_name: string,
+    last_name: string,
+    phone: string,
+    text: string,
+    title: string
+}
 export interface IComment {
     id: number,
     user: number,

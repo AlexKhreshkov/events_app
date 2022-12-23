@@ -49,6 +49,29 @@ export const updateUserInfo = createAsyncThunk<string, { id: number, newInfo: Fo
     }
 )
 
+export const updateUserInfoNoImg = createAsyncThunk<string, { id: number, newInfo: IUserPatch }, { rejectValue: string, state: RootState }>(
+    'users/updateUserInfoNoImg',
+    async function ({ id, newInfo }, { rejectWithValue, getState, dispatch }) {
+        const authToken = getState().user.authToken
+        const response = await axios.patch(
+            `${BASE_URL}/users/update/${id}/`,
+            newInfo,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Accept': 'application/json',
+                    'Authorization': `Token ${authToken}`,
+                },
+            }
+        )
+        if (!response) {
+            return rejectWithValue('Error')
+        }
+        dispatch(updateUserState(response.data))
+        return response.data
+    }
+)
+
 const usersSlice = createSlice({
     name: 'users',
     initialState,
@@ -80,6 +103,7 @@ const usersSlice = createSlice({
             .addCase(updateUserInfo.rejected, (state, action) => {
                 state.loading = false
             })
+
     }
 })
 export const { updateUserState } = usersSlice.actions

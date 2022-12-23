@@ -1,18 +1,4 @@
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import {
-    Button,
-    Checkbox,
-    Col,
-    Form,
-    InputNumber,
-    Radio,
-    Rate,
-    Row,
-    Select,
-    Slider,
-    Switch,
-    Upload,
-} from 'antd';
+import { Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { IoArrowUndoOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +6,6 @@ import { ProfileBody } from '../components/pagesComponents/profile/ProfileBody';
 import { useAppSelector } from '../hooks/useRedux';
 import { IUser } from '../types/types';
 
-const { Option } = Select;
 
 export const Profile = () => {
 
@@ -31,6 +16,8 @@ export const Profile = () => {
     const user = users.find(user => user.id === currentUser.id)
 
     useEffect(() => {
+        if (!user)
+            return navigate('/')
         setCurrentUserProfile(user)
     }, [user])
 
@@ -50,7 +37,7 @@ export const Profile = () => {
                             <img src={currentUserProfile?.image} alt="" />
                         </div>
                         <div className="profile__header__username">
-                            Alex123
+                            {user?.username}
                         </div>
                     </div>
                 </div>

@@ -553,7 +553,9 @@ body[data-theme='ligth'] {
 .adDetail__contancts__container {
   width: 100%;
   margin: 0 0 0 25px;
-}
+  display: flex;
+  flex-direction: column;
+} 
 
 .adDetail__contancts {
   display: flex;
@@ -566,6 +568,16 @@ body[data-theme='ligth'] {
   justify-content: center;
   margin: 5px 0 15px 0;
   text-decoration: underline;
+}
+.adDetail__switch__container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.adDetail__switch {
+  margin-top: auto;
 }
 
 .adDetail__comments {

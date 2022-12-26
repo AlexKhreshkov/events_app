@@ -1,1 +1,1 @@
-# events_app
+# ads app

@@ -39,10 +39,10 @@ export function reformatDate(date: string): string {
     }
     if (diffrenseInHours > 24) {
         const days = Math.floor(diffrenseInHours / 24)
-        const daysAgoText = days === 1 ? 'day ago' : 'days ago'
-        // const hours = Math.floor(diffrenseInHours % 24)
-        // const hoursText = hours === 1 ? 'hour ago' : 'hours ago'
-        return `${days} ${daysAgoText}`
+        const daysAgoText = days === 1 ? 'day' : 'days'
+        const hours = Math.floor(diffrenseInHours % 24)
+        const hoursText = hours === 1 ? 'hour ago' : 'hours ago'
+        return `${days} ${daysAgoText} ${hours}h. ago`
     }
     return `${Math.round(diffrenseInHours)} hours ago`
 }

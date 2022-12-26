@@ -43,6 +43,11 @@ export const LostSearch = () => {
                             value={category}
                             onSelect={chosenSelect => setCategory(chosenSelect)}
                         >
+                            <Option
+                                value={'All'}
+                            >
+                                <>All</>
+                            </Option>
                             {categories.map(category =>
                                 <Option
                                     key={category.slug}
@@ -57,6 +62,7 @@ export const LostSearch = () => {
                             onChange={e => search.setValue(e.target.value)}
                             style={{ width: '70%' }}
                             placeholder="Text (not required)"
+                            allowClear
                         />
                     </Input.Group>
                 </div>
@@ -76,7 +82,7 @@ export const LostSearch = () => {
                                 }
                             />
                             :
-                            <div className='lostSearch__noAds'>No Ads :(</div>
+                            <div className='lostSearch__noAds'>No Ads found...</div>
                         }
                     </div>
                 </div>

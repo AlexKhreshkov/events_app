@@ -14,6 +14,7 @@ export interface IUser {
     image: string,
 }
 export interface IUserPatch {
+    id?: number
     username?: string,
     first_name?: string,
     last_name?: string,
@@ -118,6 +119,12 @@ export interface IAdChange {
     phone: string,
     text: string,
     title: string
+}
+export interface adInfoForm {
+    title: string
+    text: string
+    category: number
+    image?: UploadFile<any> | string
 }
 export interface IComment {
     id: number,

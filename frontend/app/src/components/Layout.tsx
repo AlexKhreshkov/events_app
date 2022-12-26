@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
+import { getAds } from '../api/getData'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { fetchAds } from '../store/adsSlice'
 import { changeLoaderFullSizeVisibility } from '../store/authModalSlice'
@@ -24,6 +25,8 @@ export const Layout = () => {
             await dispatch(fetchCategories())
             await dispatch(fetchAds())
             await dispatch(fetchUsers())
+
+
             if (authToken) {
                 await dispatch(defineCurrentUser())
                 dispatch(changeLoaderFullSizeVisibility(false))

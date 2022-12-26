@@ -26,7 +26,30 @@ export const fetchUsers = createAsyncThunk<IUser[], void, { rejectValue: string 
         return response.data
     }
 )
-export const updateUserInfo = createAsyncThunk<string, { id: number, newInfo: FormData }, { rejectValue: string, state: RootState }>(
+export const updateUserInfoFormData = createAsyncThunk<string, { id: number, newInfo: FormData }, { rejectValue: string, state: RootState }>(
+    'users/updateUserInfo',
+    async function ({ id, newInfo }, { rejectWithValue, getState, dispatch }) {
+        const authToken = getState().user.authToken
+        const response = await axios.patch(
+            `${BASE_URL}/users/update/${id}/`,
+            newInfo,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Accept': 'application/json',
+                    'Authorization': `Token ${authToken}`,
+                },
+            }
+        )
+        if (!response) {
+            return rejectWithValue('Error while updating profile')
+        }
+        dispatch(updateUserState(response.data))
+        return response.data
+    }
+)
+
+export const updateUserInfo = createAsyncThunk<IUser, { id: number, newInfo: IUserPatch }, { rejectValue: string, state: RootState }>(
     'users/updateUserInfo',
     async function ({ id, newInfo }, { rejectWithValue, getState, dispatch }) {
         const authToken = getState().user.authToken
@@ -93,17 +116,16 @@ const usersSlice = createSlice({
                 state.users = action.payload
                 state.loading = false
             })
-            .addCase(updateUserInfo.pending, (state) => {
+            .addCase(updateUserInfoFormData.pending, (state) => {
                 state.loading = true
                 state.error = null
             })
-            .addCase(updateUserInfo.fulfilled, (state) => {
+            .addCase(updateUserInfoFormData.fulfilled, (state) => {
                 state.loading = false
             })
-            .addCase(updateUserInfo.rejected, (state, action) => {
+            .addCase(updateUserInfoFormData.rejected, (state, action) => {
                 state.loading = false
             })
-
     }
 })
 export const { updateUserState } = usersSlice.actions

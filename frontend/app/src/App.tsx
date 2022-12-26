@@ -3,6 +3,7 @@ import './App.css';
 import { Layout } from './components/Layout';
 import { AccountActivation } from './pages/AccountActivation';
 import { AdDetail } from './pages/AdDetail';
+import { CreateNewAdd } from './pages/CreateNewAdd';
 import { Error } from './pages/Error';
 import { Main } from './pages/Main';
 import { Profile } from './pages/Profile';
@@ -14,6 +15,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path='activate/:uid/:token' element={<AccountActivation />} />
         <Route path='password/reset/confirm/:uid/:token' element={<ResetPassword />} />
         <Route path='announcement/:adSlug' element={<AdDetail />} />
+        <Route path='announcement/create' element={<CreateNewAdd />} />
         <Route path='profile' element={<Profile />} />
         <Route path='*' element={<Error />} />
     </Route>

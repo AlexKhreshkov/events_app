@@ -1,10 +1,11 @@
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, filters
 from rest_framework.generics import GenericAPIView
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import Category, User, Ad, Comment
 from app.serializers import CategorySerializer, UserSerializer, AdSerializer, CommentsSerializer, \
-    CommentsChangeSerializer
-from .permissions import IsOwner
+    CommentsChangeSerializer, AdPostSerializer
+from .permissions import IsOwner, IsOwnerUserProfile, IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -23,15 +24,30 @@ class UserRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
 
+class UserUpdateAPIView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated, IsOwnerUserProfile)
+
+
 class AdAPIList(generics.ListAPIView):
-    queryset = Ad.objects.all()
+    queryset = Ad.objects.all().order_by('-id')
     serializer_class = AdSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'text']
 
 
-class AdRetrieveAPIView(generics.RetrieveAPIView):
+class AdCreateAPIView(generics.CreateAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdPostSerializer
+    permission_classes = (IsAuthenticated,)
+
+
+class AdRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = Ad.objects.all()
     lookup_field = 'slug'
     serializer_class = AdSerializer
+    permission_classes = (IsOwnerOrReadOnly,)
 
 
 class CommentsAPIList(generics.ListAPIView):

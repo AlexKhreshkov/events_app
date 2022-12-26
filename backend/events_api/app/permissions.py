@@ -24,3 +24,6 @@ class IsOwnerOrAdmin(permissions.BasePermission):
             return True
         return request.user.is_staff
 
+class IsOwnerUserProfile(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.id == request.user.id

@@ -8,7 +8,7 @@ export function getCategories() {
 }
 
 export function getAds() {
-    return axios.get<IAd[]>(`${ADS_URL}`)
+    return axios.get<IAd[]>(`${ADS_URL}d`)
 }
 
 export function getAdBySlug(slug?: string) {

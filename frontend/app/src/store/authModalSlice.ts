@@ -12,12 +12,12 @@ const initialState = {
     isSignUpSuccessModal: false,
     isEmailConfirmed: false,
     isPasswordResetSuccessModal: false,
-    isSuccessModal: false, 
+    isSuccessModal: false,
     //
     isLoaderFullSize: false,
-    
+
     //USER EMAIL FOR PASSWORD RESET
-    passwordResetEmail: '', 
+    passwordResetEmail: '',
 }
 
 const authModalSlice = createSlice({
@@ -50,7 +50,7 @@ const authModalSlice = createSlice({
         changeSuccsessModalVisibility(state, action: PayloadAction<boolean>) {
             state.isSuccessModal = action.payload
         },
-        
+
         //LOADER
         changeLoaderFullSizeVisibility(state, action: PayloadAction<boolean>) {
             state.isLoaderFullSize = action.payload

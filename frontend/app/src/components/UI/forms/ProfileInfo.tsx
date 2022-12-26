@@ -6,8 +6,7 @@ import {
     message,
 } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
-import { updateUserInfo } from '../../../store/usersSlice';
-import { LoadingModal } from '../modal/LoadingModal';
+import { updateUserInfo, updateUserInfoFormData } from '../../../store/usersSlice';
 import { Loader } from '../../Loader';
 
 interface ProfileFormProps {
@@ -66,7 +65,7 @@ export const ProfileInfo = () => {
         formData.append("last_name", formState.last_name);
 
         async function update() {
-            const response = await dispatch(updateUserInfo({ id: currentUser.id, newInfo: formData }))
+            const response = await dispatch(updateUserInfoFormData({ id: currentUser.id, newInfo: formData}))
             if (response.meta.requestStatus === 'fulfilled') {
                 success()
             }

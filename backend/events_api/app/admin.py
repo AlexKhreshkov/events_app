@@ -9,7 +9,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class AdAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', 'category', 'text', 'image', 'created', 'updated')
+    list_display = ('id', 'title', 'user', 'category', 'text', 'image', 'created', 'updated')
     prepopulated_fields = {"slug": ("title",)}
 
 

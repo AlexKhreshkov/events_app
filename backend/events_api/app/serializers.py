@@ -30,6 +30,12 @@ class AdSerializer(serializers.ModelSerializer):
                   'category_slug', 'text',
                   'image', 'created', 'updated')
 
+class AdPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = ('id', 'title',
+                  'category','text',
+                  'image', 'user')
 
 class CommentsSerializer(serializers.ModelSerializer):
     class Meta:

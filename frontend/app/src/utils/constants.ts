@@ -26,6 +26,7 @@ export const passwordValidationProps = {
     maxLength: MAX_PASSWORD_LENGTH
 }
 
+export const ADS_LIMIT = 6
 export const AD_PATH_NAME = 'announcement'
 
 export const BASE_URL = 'http://127.0.0.1:8000/api/v1'

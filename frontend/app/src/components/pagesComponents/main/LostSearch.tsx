@@ -1,8 +1,9 @@
 import { Input, Select } from 'antd'
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useInput } from '../../../hooks/useInput';
 import { useAppSelector } from '../../../hooks/useRedux';
 import { IAd } from '../../../types/types';
+import { ADS_LIMIT } from '../../../utils/constants';
 import { List } from '../../List';
 import { LostSearchItem } from './LostSearchItem';
 
@@ -13,13 +14,19 @@ export const LostSearch = () => {
     const ads = useAppSelector(state => state.ads.ads)
     const search = useInput()
     const [category, setCategory] = useState('All')
+    const [limitedAds, setLimitedAds] = useState<IAd[]>(ads.slice(0, ADS_LIMIT))
+    const lastElement = useRef<HTMLDivElement | null>(null)
+    const observer = useRef<IntersectionObserver>()
+    let limitedAdsLen = limitedAds.length
+
+    // const [isAdLoading, setAdLoading] = useState(false)
 
     const adsWithCategory = useMemo(() => {
         if (category === 'All') {
-            return ads
+            return limitedAds
         } else
-            return ads.filter(ad => ad.category_name === category)
-    }, [category, ads])
+            return limitedAds.filter(ad => ad.category_name === category)
+    }, [category, limitedAds])
 
     const searchedAds = useMemo(() => {
         return adsWithCategory.filter(ad => {
@@ -28,6 +35,18 @@ export const LostSearch = () => {
         })
     }, [adsWithCategory, search])
 
+
+
+    useEffect(() => {
+        if (observer.current) observer.current.disconnect()
+        var callback = function (entries: any) {
+            if (entries[0].isIntersecting && limitedAdsLen < ads.length) {
+                setLimitedAds([...limitedAds, ...ads.slice(limitedAdsLen, limitedAdsLen + ADS_LIMIT)])
+            }
+        }
+        observer.current = new IntersectionObserver(callback)
+        observer.current.observe(lastElement.current!)
+    }, [limitedAdsLen])
 
     return (
         <div className="content__lostSearch__container">
@@ -85,6 +104,7 @@ export const LostSearch = () => {
                             <div className='lostSearch__noAds'>No Ads found...</div>
                         }
                     </div>
+                    <div ref={lastElement} className='lastElement'></div>
                 </div>
             </div>
         </div>

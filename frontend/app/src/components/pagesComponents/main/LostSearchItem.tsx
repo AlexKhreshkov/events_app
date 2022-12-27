@@ -1,33 +1,48 @@
 import { Button, Tag } from 'antd'
 import React, { FC } from 'react'
+import { IoHeartOutline } from 'react-icons/io5'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { addFavouriteAd } from '../../../store/favouritesAdsSlice'
 import { IAd } from '../../../types/types'
 import { AD_PATH_NAME } from '../../../utils/constants'
 import { reformatDate } from '../../../utils/utils'
 
 interface LostSearchItemProps {
     ad: IAd,
-    category?: string,
     setCategory?: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const LostSearchItem: FC<LostSearchItemProps> = ({ ad, category, setCategory }) => {
+export const LostSearchItem: FC<LostSearchItemProps> = ({ ad, setCategory }) => {
 
     const navigate = useNavigate()
+    const disaptch = useDispatch()
+    const handleAdToFavorite = () => disaptch(addFavouriteAd(ad))
+
     return (
         <div className="lostSearch__item">
             <div className='lostSearch__item__created'>
                 {reformatDate(ad.created)}
             </div>
             <div className="lostSearch__item__category">
-                <span className='lostSearch__item__category__text'>Category:</span>
-                <Tag
+                <div className='lostSearch__item__category__text'>Category:</div>
+                <Button
                     className='lostSearch__item__category__tag'
+                    size='small'
+                    type='dashed'
                     onClick={() => setCategory && setCategory(ad.category_name)}
                 >
                     {ad.category_name}
-                </Tag>
+                </Button>
             </div>
+            <Button
+                className='lostSearch__item__category__tag'
+                size='small'
+                type='default'
+                onClick={handleAdToFavorite}
+            >
+                Save to read later
+            </Button>
             <div className="lostSearch__item__title">
                 {ad.title}
             </div>
@@ -40,6 +55,7 @@ export const LostSearchItem: FC<LostSearchItemProps> = ({ ad, category, setCateg
             >
                 Read more
             </Button>
+
         </div>
     )
 }

@@ -72,7 +72,7 @@ export const AdDetail = () => {
             setLoading(false)
         }
         getData()
-    }, [])
+    }, [adSlug])
 
     const changeCommentTextStatus = () => {
         setCommentChanging(!isCommentChanging)

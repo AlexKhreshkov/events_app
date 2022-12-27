@@ -19,8 +19,6 @@ export const LostSearch = () => {
     const observer = useRef<IntersectionObserver>()
     let limitedAdsLen = limitedAds.length
 
-    // const [isAdLoading, setAdLoading] = useState(false)
-
     const adsWithCategory = useMemo(() => {
         if (category === 'All') {
             return limitedAds
@@ -95,7 +93,6 @@ export const LostSearch = () => {
                                     <LostSearchItem
                                         key={ad.id}
                                         ad={ad}
-                                        category={category}
                                         setCategory={setCategory}
                                     />
                                 }

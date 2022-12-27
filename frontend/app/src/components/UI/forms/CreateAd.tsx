@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { AxiosError } from 'axios';
 import { PlusOutlined } from '@ant-design/icons';
 import {
     Form,
@@ -12,7 +11,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
 import { adInfoForm, IAd } from '../../../types/types';
 import { useNavigate } from 'react-router-dom';
-import { createAd, fetchAds } from '../../../store/adsSlice';
+import { fetchAds } from '../../../store/adsSlice';
 import { updateUserInfo } from '../../../store/usersSlice';
 import axios from 'axios';
 import { ADS_URL } from '../../../utils/constants';
@@ -132,7 +131,6 @@ export const CreateAd = () => {
                     </Form.Item>
                     <Form.Item
                         label="Description"
-                    // rules={[{ required: true, message: 'Description is required' }]}
                     >
                         <TextArea
                             name='text'
@@ -145,7 +143,6 @@ export const CreateAd = () => {
                     </Form.Item>
                     <Form.Item
                         label="Name"
-                    // rules={[{ required: true, message: 'Name is required' }]}
                     >
                         <Input
                             name="last_name"
@@ -156,7 +153,6 @@ export const CreateAd = () => {
                     </Form.Item>
                     <Form.Item
                         label="Surname"
-                    // rules={[{ required: true, message: 'Surname is required' }]}
                     >
                         <Input
                             name="last_name"
@@ -167,7 +163,6 @@ export const CreateAd = () => {
                     </Form.Item>
                     <Form.Item
                         label="Your phone"
-                    // rules={[{ required: true, message: 'Phone is required' }]}
                     >
                         <Input
                             name='phone'

@@ -18,6 +18,9 @@ const initialState = {
 
     //USER EMAIL FOR PASSWORD RESET
     passwordResetEmail: '',
+
+    isFavouritesAds: false,
+    isFavouritesAdsWarning: false
 }
 
 const authModalSlice = createSlice({
@@ -59,6 +62,14 @@ const authModalSlice = createSlice({
         changePasswordResetEmail(state, action: PayloadAction<string>) {
             state.passwordResetEmail = action.payload
         },
+
+        //FAVOURIES ADS
+        changeFavouritesAdsOpen(state, action: PayloadAction<boolean>) {
+            state.isFavouritesAds = action.payload
+        },
+        changeFavouritesAdsWarning(state, action: PayloadAction<boolean>) {
+            state.isFavouritesAdsWarning = action.payload
+        },
     }
 })
 
@@ -75,6 +86,9 @@ export const {
     //
     changeLoaderFullSizeVisibility,
     changePasswordResetEmail,
+    //
+    changeFavouritesAdsOpen,
+    changeFavouritesAdsWarning
 
 } = authModalSlice.actions
 

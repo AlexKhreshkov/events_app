@@ -5,6 +5,7 @@ import categoriesReducer from './categoriesSlice'
 import adsReducer from './adsSlice'
 import usersReducer from './usersSlice'
 import commentsReducer from './commentsSlice'
+import favouritesAdsReducer from './favouritesAdsSlice'
 
 
 const store = configureStore({
@@ -15,6 +16,7 @@ const store = configureStore({
         comments: commentsReducer,
         ads: adsReducer,
         authModal: authModalReduser,
+        favouritesAds: favouritesAdsReducer,
     }
 })
 

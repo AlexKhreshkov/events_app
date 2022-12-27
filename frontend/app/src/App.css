@@ -452,8 +452,6 @@ body[data-theme='ligth'] {
   font-size: 1.5rem;
   align-self: center;
   padding: 4px;
-  border-radius: var(--radius);
-  background-color: var(--colors-bg);
 }
 
 .lostSearch__item__img {
@@ -471,28 +469,21 @@ body[data-theme='ligth'] {
   left: 0px;
 }
 
-.lostSearch__item button {
-  margin: 4px 0 0 0;
-}
-
 .lostSearch__item__category {
+  display: flex;
+  align-items: center;
+  justify-content: left;
   margin: 3px 0 5px 0;
   font-size: 1.3rem;
-}
-
-.lostSearch__item__category span {
-  margin: 0 7px 0 0;
 }
 
 .lostSearch__item__category__tag {
   cursor: pointer;
   color: var(--colors-text);
+  background-color: var(--colors-bg);
+  margin: 0 0 0 5px;
 }
 
-.lostSearch__item__category__tag:hover {
-  padding: 0 20px;
-  border: 1px solid var(--main-blue-color);
-}
 
 .lostSearch__item__title {
   font-size: 20px;

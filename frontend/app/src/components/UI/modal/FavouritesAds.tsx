@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Button, Modal } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
 import { changeFavouritesAdsOpen } from '../../../store/authModalSlice';
 import { List } from '../../List';
 import { IAd } from '../../../types/types';
 import { AdItem } from '../../AdItem';
+
+import { Modal } from 'antd';
+import React from 'react';
 
 export const FavouritesAds: React.FC = () => {
 

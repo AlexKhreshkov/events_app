@@ -1,7 +1,3 @@
-import { Button, Input, message, Switch } from 'antd'
-import { useEffect, useState } from 'react'
-import { IoPerson, IoPhonePortraitOutline, IoTimeOutline } from 'react-icons/io5'
-import { useParams } from 'react-router-dom'
 import { getAdBySlug, getComments } from '../api/getData'
 import { Loader } from '../components/Loader'
 import { AdComments } from '../components/pagesComponents/adDetail/AdComments'
@@ -13,6 +9,11 @@ import { changeAd } from '../store/adsSlice'
 import { updateUserInfoNoImg } from '../store/usersSlice'
 import { IAd, IAdAuthor, IAdChange, IComment } from '../types/types'
 import { reformatDate } from '../utils/utils'
+
+import { useParams } from 'react-router-dom'
+import { IoPerson, IoPhonePortraitOutline, IoTimeOutline } from 'react-icons/io5'
+import { useEffect, useState } from 'react'
+import { Button, Input, Switch, message } from 'antd'
 
 export const AdDetail = () => {
 
@@ -63,7 +64,7 @@ export const AdDetail = () => {
                     last_name: user.last_name,
                     phone: user.phone,
                     text: ad.text,
-                    title: ad.title
+                    title: ad.title,
                 })
             }
             const commentsResponse = await getComments()
@@ -84,7 +85,7 @@ export const AdDetail = () => {
         async function makeRequest() {
             if (ad && newAdInfo) {
                 const response = await dispatch(
-                    changeAd({ slug: ad.slug, newInfo: newAdInfo })
+                    changeAd({ slug: ad.slug, newInfo: newAdInfo }),
                 )
                 if (response.meta.requestStatus === 'fulfilled') {
                     success()
@@ -115,8 +116,8 @@ export const AdDetail = () => {
                 <div className='content__container'>
                     <RigthArea />
                     <PagesTitle />
-                    <div className="content__lostSearch__container">
-                        <div className="content__adDetail">
+                    <div className='content__lostSearch__container'>
+                        <div className='content__adDetail'>
                             <ToMain/>
                             <div className='adDetail__title'>
                                 {isCommentChanging
@@ -135,14 +136,14 @@ export const AdDetail = () => {
                                     </>
                                 }
                             </div>
-                            <div className="adDetail__body">
-                                <div className="adDetail__imgRow">
-                                    <div className="adDetail__img">
-                                        <img src={ad?.image} alt="" />
+                            <div className='adDetail__body'>
+                                <div className='adDetail__imgRow'>
+                                    <div className='adDetail__img'>
+                                        <img src={ad?.image} alt='' />
                                     </div>
-                                    <div className="adDetail__contancts__container">
-                                        <div className="adDetail__contancts">
-                                            <div className="adDetail__name">
+                                    <div className='adDetail__contancts__container'>
+                                        <div className='adDetail__contancts'>
+                                            <div className='adDetail__name'>
                                                 {isCommentChanging
                                                     ?
                                                     <>
@@ -169,7 +170,7 @@ export const AdDetail = () => {
                                                     <>
                                                         <IoPerson />
                                                         Contacts:{adAuthor?.first_name} {adAuthor?.last_name}
-                                                        <div className="adDetail__phone">
+                                                        <div className='adDetail__phone'>
                                                             <IoPhonePortraitOutline />
                                                             Phone: {adAuthor?.phone ? adAuthor?.phone : <span>-</span>}
                                                         </div>
@@ -180,15 +181,15 @@ export const AdDetail = () => {
                                                 ?
                                                 <></>
                                                 :
-                                                <div className="adDetail__date">
+                                                <div className='adDetail__date'>
                                                     <IoTimeOutline />
                                                     Published: {reformatDate(ad?.created ? ad?.created : '')}
                                                 </div>
                                             }
-                                            <div className="adDetail__textTittle">
+                                            <div className='adDetail__textTittle'>
                                                 Description
                                             </div>
-                                            <div className="adDetail__text">
+                                            <div className='adDetail__text'>
                                                 {isCommentChanging
                                                     ?
                                                     <>
@@ -216,13 +217,13 @@ export const AdDetail = () => {
                                         </div>
                                         {currentUser.id === adAuthor?.id
                                             ?
-                                            <div className="adDetail__switch__container">
+                                            <div className='adDetail__switch__container'>
                                                 <Switch
                                                     onClick={() => changeCommentTextStatus()}
                                                     className='adDetail__switch'
                                                     checked={!isCommentChanging}
-                                                    checkedChildren="CHANGE AD"
-                                                    unCheckedChildren="Close"
+                                                    checkedChildren='CHANGE AD'
+                                                    unCheckedChildren='Close'
                                                 />
                                             </div>
                                             :

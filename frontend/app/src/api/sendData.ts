@@ -1,6 +1,7 @@
-import axios from "axios";
-import { IComment } from "../types/types";
-import { ADD_COMMENT_URL, COMMENTS_URL } from "../utils/constants";
+import { IComment } from '../types/types';
+import { ADD_COMMENT_URL, COMMENTS_URL } from '../utils/constants';
+
+import axios from 'axios';
 
 interface ICreateComment {
     name: string,
@@ -22,7 +23,7 @@ export function createComment(comment: ICreateComment) {
             headers: {
                 Authorization: `Token ${comment.authToken}`,
             },
-        }
+        },
     )
 }
 
@@ -32,7 +33,7 @@ export function deleteComment(commentId: number, authToken: string) {
             headers: {
                 Authorization: `Token ${authToken}`,
             },
-        }
+        },
     )
 }
 export function changeComment(newComment: IUpdateComment) {
@@ -42,6 +43,6 @@ export function changeComment(newComment: IUpdateComment) {
             headers: {
                 Authorization: `Token ${newComment.authToken}`,
             },
-        }
+        },
     )
 }

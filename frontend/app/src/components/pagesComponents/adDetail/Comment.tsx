@@ -1,12 +1,12 @@
-import { Button, Input, Switch } from 'antd'
-import React, { FC, useEffect, useState } from 'react'
-import { IoPerson } from 'react-icons/io5'
-import { useParams } from 'react-router-dom'
 import { changeComment, deleteComment } from '../../../api/sendData'
 import { useAppSelector } from '../../../hooks/useRedux'
 import { IAd, IComment, IUser } from '../../../types/types'
 import { getTokenFromLocalStorage, reformatDate } from '../../../utils/utils'
 import { Loader } from '../../Loader'
+
+import { IoPerson } from 'react-icons/io5'
+import React, { FC, useEffect, useState } from 'react'
+import { Button, Input, Switch } from 'antd'
 
 interface CommentProps extends IComment {
     adComments: IComment[]
@@ -16,7 +16,7 @@ interface CommentProps extends IComment {
 
 export const Comment: FC<CommentProps> = (props: CommentProps) => {
 
-    const { id, user, name, text, created, updated, adComments, setAdComments, ad } = props
+    const { id, user, name, text, created, updated, adComments, setAdComments } = props
     const allUsers = useAppSelector(state => state.users.users)
     const currentUser = useAppSelector(state => state.user.currentUser)
     const [commentAuthor, setCommentAuthor] = useState<IUser>()
@@ -60,7 +60,7 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
                 id,
                 name: commentChangeName,
                 text: commentChangeText,
-                authToken: getTokenFromLocalStorage()
+                authToken: getTokenFromLocalStorage(),
             }
             changeComment(changedComment)
                 .catch(error => {
@@ -74,14 +74,14 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
     }
 
     return (
-        <div className="comments__comment">
+        <div className='comments__comment'>
             {isLoading ? <Loader /> : <></>}
-            <div className="comments__comment-author-img">
-                <img src={commentAuthor?.image} alt="author-img" />
+            <div className='comments__comment-author-img'>
+                <img src={commentAuthor?.image} alt='author-img' />
             </div>
-            <div className="comments__comment-content">
-                <div className="comments__comment-head">
-                    <div className="comments__date">
+            <div className='comments__comment-content'>
+                <div className='comments__comment-head'>
+                    <div className='comments__date'>
                         {isCommentUpdated
                             ?
                             <>
@@ -94,7 +94,7 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
                 </div>
                 {isCommentChanging
                     ?
-                    <div className="comments__comment-author-name">
+                    <div className='comments__comment-author-name'>
                         <Input
                             value={commentChangeName}
                             onChange={e => setCommentChangeName(e.target.value)}
@@ -102,7 +102,7 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
                         />
                     </div>
                     :
-                    <div className="comments__comment-author-name displayFlex">
+                    <div className='comments__comment-author-name displayFlex'>
                         <IoPerson />
                         <span>{name}</span>
                     </div>
@@ -134,13 +134,13 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
                             :
                             <></>
                         }
-                        <div className="comments__comment-buttons">
-                            <div className="comments__comment__delete">
+                        <div className='comments__comment-buttons'>
+                            <div className='comments__comment__delete'>
                                 <Switch
                                     onClick={() => changeCommentTextStatus()}
                                     checked={!isCommentChanging}
-                                    checkedChildren="Change comment"
-                                    unCheckedChildren="Close"
+                                    checkedChildren='Change comment'
+                                    unCheckedChildren='Close'
                                 />
                                 <Button
                                     type='primary'

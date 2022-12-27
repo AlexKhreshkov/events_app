@@ -1,8 +1,9 @@
-import React from 'react'
 import { useAppSelector } from '../../../hooks/useRedux'
 import { IAd } from '../../../types/types'
 import { List } from '../../List'
 import { LostSearchItem } from '../main/LostSearchItem'
+
+import React from 'react'
 
 export const ProfileAds = () => {
 
@@ -11,7 +12,7 @@ export const ProfileAds = () => {
     const usersAds = ads.filter(ad => ad.user_id === currentUser.id)
 
     return (
-        <div className="profile__ads">
+        <div className='profile__ads'>
             {usersAds.length
                 ?
                 <List

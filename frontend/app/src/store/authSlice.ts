@@ -1,10 +1,12 @@
-import { useAppSelector, useAppDispatch } from './../hooks/useRedux';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { RootState } from '.';
+
+
 import { ICurrentUser, ISignUpResponse } from '../types/types'
 import { BASE_URL, DELETE_TOKEN_URL } from '../utils/constants'
 import { deleteTokenFromLocalStorage } from '../utils/utils'
-import { RootState } from '.';
+
+import axios from 'axios'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 interface UserState {
     currentUser: ICurrentUser,
@@ -21,7 +23,7 @@ const initialState: UserState = {
     },
     loading: false,
     error: null,
-    authToken: ''
+    authToken: '',
 }
 
 export const defineCurrentUser = createAsyncThunk<ICurrentUser, void, { rejectValue: string, state: RootState }>(
@@ -42,7 +44,7 @@ export const defineCurrentUser = createAsyncThunk<ICurrentUser, void, { rejectVa
             return rejectWithValue('User with this token dosent found')
         }
         return response.data as ICurrentUser
-    }
+    },
 )
 
 
@@ -52,20 +54,20 @@ export const logoutCurrentUser = createAsyncThunk<void, void, { rejectValue: str
         const authToken = getState().user.authToken
         const response = await axios.post(
             `${DELETE_TOKEN_URL}`,
-            ``,
+            '',
             {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'Authorization': `Token ${authToken}`,
                 },
-            }
+            },
         )
         if (!response) {
             return rejectWithValue('Error')
         }
         deleteTokenFromLocalStorage()
-    }
+    },
 )
 
 const authSlice = createSlice({
@@ -80,7 +82,7 @@ const authSlice = createSlice({
         },
         addCurrentUser(state, action) {
             state.currentUser = action.payload
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -103,7 +105,7 @@ const authSlice = createSlice({
                 state.loading = false
             })
 
-    }
+    },
 })
 
 export const { addToken } = authSlice.actions;

@@ -1,6 +1,8 @@
-import { Spin } from 'antd'
-import { useAppSelector } from '../../../hooks/useRedux'
 import cl from './LoadingModal.module.css'
+
+import { useAppSelector } from '../../../hooks/useRedux'
+
+import { Spin } from 'antd'
 
 export const LoadingModal = () => {
 

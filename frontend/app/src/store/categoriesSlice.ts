@@ -1,7 +1,8 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { ICategory, IAd, IUser, IComment } from '../types/types'
+import { ICategory } from '../types/types'
 import { CATEGORIES_URL } from '../utils/constants'
+
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 interface DataState {
     categories: ICategory[],
@@ -23,7 +24,7 @@ export const fetchCategories = createAsyncThunk<ICategory[], void, { rejectValue
             return rejectWithValue('Error')
         }
         return response.data
-    }
+    },
 )
 
 const categoriesSlice = createSlice({
@@ -41,7 +42,7 @@ const categoriesSlice = createSlice({
                 state.categories = action.payload
                 state.loading = false
             })
-    }
+    },
 })
 
 export default categoriesSlice.reducer     

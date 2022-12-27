@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Button } from 'antd'
 import cl from './SignInModal.module.css'
+
 import { AuthErrors, loginValidationProps, passwordValidationProps } from '../../../../utils/constants'
 import { changeResetPasswordVisibilityModal, changeSignInVisibilityModal, changeSignUpVisibilityModal } from '../../../../store/authModalSlice'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
@@ -10,6 +9,9 @@ import { getAuthToken } from '../../../../api/authApi'
 import { addToken, defineCurrentUser } from '../../../../store/authSlice'
 import { AuthInput } from '../../input/AuthInput'
 import { Loader } from '../../../Loader'
+
+import { Button } from 'antd'
+import React, { useEffect, useState } from 'react'
 
 
 export const SignInModal = () => {
@@ -37,7 +39,7 @@ export const SignInModal = () => {
 
     const userAuthData = {
         username: login.value,
-        password: password.value
+        password: password.value,
     }
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -87,7 +89,7 @@ export const SignInModal = () => {
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
             {isLoading ? <Loader /> : <></>}
             <div
-                className="popup__body"
+                className='popup__body'
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
@@ -96,12 +98,12 @@ export const SignInModal = () => {
                     <button
                         type='button'
                         onClick={() => dispatch(changeSignInVisibilityModal(false))}
-                        className="popup__close"
+                        className='popup__close'
                     />
-                    <div className="popup__title">
+                    <div className='popup__title'>
                         <div className={cl.popup__loginTitle}>Sign In</div>
                     </div>
-                    <div className="popup__text">
+                    <div className='popup__text'>
                         <div className={cl.popup__loginContent}>
                             <Button danger type='primary'>With Google</Button>
                             <div className='blackLine'></div>
@@ -205,7 +207,7 @@ export const SignInModal = () => {
                             >
                                 Sign In
                             </Button>
-                            <div className="authSignUpText">
+                            <div className='authSignUpText'>
                                 <div className={cl.authSignInText}>
                                     Don't have an account?
                                     <div
@@ -216,7 +218,7 @@ export const SignInModal = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="authSignUpText">
+                            <div className='authSignUpText'>
                                 <div className={cl.authSignInText}>
                                     Forgot your password?
                                     <div

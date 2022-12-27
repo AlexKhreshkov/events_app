@@ -1,7 +1,8 @@
+import { useAppSelector } from '../hooks/useRedux'
+
 import { Button, message } from 'antd'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAppSelector } from '../hooks/useRedux'
 
 export const RigthArea = () => {
     const currentUser = useAppSelector(state => state.user)
@@ -21,9 +22,9 @@ export const RigthArea = () => {
     }
 
     return (
-        <div className="content__rightArea">
+        <div className='content__rightArea'>
             {contextHolder}
-            <div className="content__makeАdvertising">
+            <div className='content__makeАdvertising'>
                 <Button
                     block
                     size={'large'}

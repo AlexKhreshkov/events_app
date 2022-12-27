@@ -1,4 +1,3 @@
-import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import './App.css';
 import { Layout } from './components/Layout';
 import { AccountActivation } from './pages/AccountActivation';
@@ -9,6 +8,8 @@ import { Main } from './pages/Main';
 import { Profile } from './pages/Profile';
 import { ResetPassword } from './pages/SetNewPassword';
 
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={<Layout />}>
         <Route index element={<Main />} />
@@ -18,7 +19,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path='announcement/create' element={<CreateNewAdd />} />
         <Route path='profile' element={<Profile />} />
         <Route path='*' element={<Error />} />
-    </Route>
+    </Route>,
 ))
 
 function App() {

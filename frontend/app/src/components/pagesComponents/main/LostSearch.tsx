@@ -1,11 +1,13 @@
-import { Input, Select } from 'antd'
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { LostSearchItem } from './LostSearchItem';
+
 import { useInput } from '../../../hooks/useInput';
 import { useAppSelector } from '../../../hooks/useRedux';
 import { IAd } from '../../../types/types';
 import { ADS_LIMIT } from '../../../utils/constants';
 import { List } from '../../List';
-import { LostSearchItem } from './LostSearchItem';
+
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Input, Select } from 'antd'
 
 export const LostSearch = () => {
 
@@ -17,7 +19,7 @@ export const LostSearch = () => {
     const [limitedAds, setLimitedAds] = useState<IAd[]>(ads.slice(0, ADS_LIMIT))
     const lastElement = useRef<HTMLDivElement | null>(null)
     const observer = useRef<IntersectionObserver>()
-    let limitedAdsLen = limitedAds.length
+    const limitedAdsLen = limitedAds.length
 
     const adsWithCategory = useMemo(() => {
         if (category === 'All') {
@@ -47,15 +49,15 @@ export const LostSearch = () => {
     }, [limitedAdsLen])
 
     return (
-        <div className="content__lostSearch__container">
-            <div className="content__lostSearch">
-                <div className="lostSearch__title">
+        <div className='content__lostSearch__container'>
+            <div className='content__lostSearch'>
+                <div className='lostSearch__title'>
                     Search for lost things
                 </div>
-                <div className="lostSearch__inputBlock">
+                <div className='lostSearch__inputBlock'>
                     <Input.Group compact>
                         <Select
-                            defaultValue="All"
+                            defaultValue='All'
                             style={{ width: '30%' }}
                             value={category}
                             onSelect={chosenSelect => setCategory(chosenSelect)}
@@ -71,20 +73,20 @@ export const LostSearch = () => {
                                     value={category.name}
                                 >
                                     {category.name}
-                                </Option>
+                                </Option>,
                             )}
                         </Select>
                         <Input
                             value={search.value}
                             onChange={e => search.setValue(e.target.value)}
                             style={{ width: '70%' }}
-                            placeholder="Text (not required)"
+                            placeholder='Text (not required)'
                             allowClear
                         />
                     </Input.Group>
                 </div>
-                <div className="lostSearch__items__container">
-                    <div className="lostSearch__items">
+                <div className='lostSearch__items__container'>
+                    <div className='lostSearch__items'>
                         {searchedAds.length
                             ?
                             <List

@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { updateUserInfoFormData } from '../../../store/usersSlice';
+import { Loader } from '../../Loader';
+
 import {
+    Button,
     Form,
     Input,
-    Button,
     message,
 } from 'antd';
-import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
-import { updateUserInfo, updateUserInfoFormData } from '../../../store/usersSlice';
-import { Loader } from '../../Loader';
+import React, { useState } from 'react'
 
 interface ProfileFormProps {
     first_name: string
@@ -37,7 +38,7 @@ export const ProfileInfo = () => {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setImageState({
-                image: e.target.files[0]
+                image: e.target.files[0],
             })
         }
     }
@@ -60,9 +61,9 @@ export const ProfileInfo = () => {
     const handleFormSumbit = () => {
         const formData = new FormData()
         if (imageState)
-            formData.append("image", imageState.image)
-        formData.append("first_name", formState.first_name);
-        formData.append("last_name", formState.last_name);
+            formData.append('image', imageState.image)
+        formData.append('first_name', formState.first_name);
+        formData.append('last_name', formState.last_name);
 
         async function update() {
             const response = await dispatch(updateUserInfoFormData({ id: currentUser.id, newInfo: formData}))
@@ -83,28 +84,28 @@ export const ProfileInfo = () => {
             <Form
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 14 }}
-                layout="horizontal"
+                layout='horizontal'
                 onSubmitCapture={handleFormSumbit}
                 className='profile__form'
                 style={{ color: 'var(----colors-text)' }}
             >
-                <Form.Item label="New image">
+                <Form.Item label='New image'>
                     <input
-                        accept="image/jpeg,image/png,image/gif"
+                        accept='image/jpeg,image/png,image/gif'
                         type={'file'}
                         onChange={e => handleImageChange(e)}
                     />
                 </Form.Item>
-                <Form.Item label="name">
+                <Form.Item label='name'>
                     <Input
                         value={formState?.first_name}
                         name='first_name'
                         onChange={e => handleChange(e)}
                     />
                 </Form.Item>
-                <Form.Item label="surname">
+                <Form.Item label='surname'>
                     <Input
-                        name="last_name"
+                        name='last_name'
                         value={formState?.last_name}
                         onChange={e => handleChange(e)}
                     />

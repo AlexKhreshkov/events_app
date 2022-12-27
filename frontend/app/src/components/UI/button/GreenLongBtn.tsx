@@ -1,5 +1,6 @@
-import React, { FC, PropsWithChildren } from 'react'
 import classes from './GreenLongBtn.module.css'
+
+import React, { FC, PropsWithChildren } from 'react'
 
 interface GreenLongBtnProps extends PropsWithChildren {
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void

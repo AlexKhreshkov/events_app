@@ -1,13 +1,15 @@
-import React, { FC, useEffect, useState } from 'react'
+import cl from './NewPasswordModal.module.css'
+
 import { useInput } from '../../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
 import { changeSignInVisibilityModal, changeSuccsessModalVisibility } from '../../../../store/authModalSlice'
 import { AuthErrors, passwordValidationProps } from '../../../../utils/constants'
 import { AuthInput } from '../../input/AuthInput'
-import cl from './NewPasswordModal.module.css'
-import { Button } from 'antd'
 import { IResponseAuthError } from '../../../../types/types'
 import { resetPasswordConfirmation } from '../../../../api/authApi'
+
+import { Button } from 'antd'
+import React, { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface NewPasswordModalProps {
@@ -49,7 +51,7 @@ export const NewPasswordModal: FC<NewPasswordModalProps> = ({ uid, token }) => {
             new_password: password1.value,
             re_new_password: password2.value,
             uid,
-            token
+            token,
         }
         resetPasswordConfirmation(data)
             .catch((error) => setResponseAuthError(error))
@@ -68,7 +70,7 @@ export const NewPasswordModal: FC<NewPasswordModalProps> = ({ uid, token }) => {
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
             <div
-                className="popup__body"
+                className='popup__body'
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
@@ -77,12 +79,12 @@ export const NewPasswordModal: FC<NewPasswordModalProps> = ({ uid, token }) => {
                     <button
                         type='button'
                         onClick={() => dispatch(changeSignInVisibilityModal(false))}
-                        className="popup__close"
+                        className='popup__close'
                     />
-                    <div className="popup__title">
+                    <div className='popup__title'>
                         <div className={cl.popup__loginTitle}>Reset password</div>
                     </div>
-                    <div className="popup__text">
+                    <div className='popup__text'>
                         <div className={cl.popup__loginContent}>
                             <Button danger type='primary'>With Google</Button>
                             <div className='blackLine'></div>

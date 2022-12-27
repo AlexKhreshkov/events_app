@@ -1,14 +1,16 @@
-import { Button } from 'antd'
-import React, { useEffect, useState } from 'react'
+import cl from './SignUpModal.module.css'
+
 import { postSignUpDetails } from '../../../../api/authApi'
 import { useInput } from '../../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
-import { changeSignInVisibilityModal, changeSignUpVisibilityModal, changeSignUpSuccessModalVisibility, changePasswordResetEmail } from '../../../../store/authModalSlice'
+import { changePasswordResetEmail, changeSignInVisibilityModal, changeSignUpSuccessModalVisibility, changeSignUpVisibilityModal } from '../../../../store/authModalSlice'
 import { IResponseAuthError, ISignUpResponse } from '../../../../types/types'
 import { AuthErrors, emailValidationProps, loginValidationProps, passwordValidationProps } from '../../../../utils/constants'
 import { Loader } from '../../../Loader'
 import { AuthInput } from '../../input/AuthInput'
-import cl from './SignUpModal.module.css'
+
+import React, { useEffect, useState } from 'react'
+import { Button } from 'antd'
 
 export const SignUpModal = () => {
 
@@ -27,13 +29,13 @@ export const SignUpModal = () => {
         id: '',
         email: email.value,
         username: login.value,
-        password: password1.value
+        password: password1.value,
     }
     const [responseAuthError, setResponseAuthError] = useState<IResponseAuthError>({})
     const [wasRequest, setWasReqeust] = useState(false)
 
     useEffect(() => {
-        let isDisabled =
+        const isDisabled =
             (email.isDirty && email.isEmtpy)
             ||
             (login.isDirty && (login.isEmtpy || login.lengthError))
@@ -98,7 +100,7 @@ export const SignUpModal = () => {
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
             {isLoading ? <Loader /> : <></>}
             <div
-                className="popup__body"
+                className='popup__body'
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
@@ -107,12 +109,12 @@ export const SignUpModal = () => {
                     <button
                         type='button'
                         onClick={() => dispatch(changeSignUpVisibilityModal(false))}
-                        className="popup__close"
+                        className='popup__close'
                     />
-                    <div className="popup__title">
+                    <div className='popup__title'>
                         <div className={cl.popup__loginTitle}>Sign Up</div>
                     </div>
-                    <div className="popup__text">
+                    <div className='popup__text'>
                         <div className={cl.popup__loginContent}>
                             <Button danger type='primary'>With Google</Button>
                             <div className='blackLine'></div>
@@ -273,7 +275,7 @@ export const SignUpModal = () => {
                             >
                                 Sign Up
                             </Button>
-                            <div className="authSignUpText">
+                            <div className='authSignUpText'>
                                 <div className={cl.authSignUpText}>
                                     Have an account?
                                     <div

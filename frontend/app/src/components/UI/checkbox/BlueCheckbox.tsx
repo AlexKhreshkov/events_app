@@ -1,5 +1,6 @@
-import React, { FC } from 'react'
 import classes from './BlueCheckbox.module.css'
+
+import React, { FC } from 'react'
 
 interface BlueCheckboxProps {
     checked?: boolean

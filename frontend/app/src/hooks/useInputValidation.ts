@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react"
-import { EAvaliableValidators, IValidations } from "../types/types"
+import { EAvaliableValidators, IValidations } from '../types/types'
+
+import { useEffect, useState } from 'react'
 
 export const useInputValidation = (value: string, validations?: IValidations) => {
     const [isEmtpy, setEmpty] = useState<boolean>(true)

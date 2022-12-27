@@ -9,11 +9,11 @@ interface ProfileSelectContentProps {
 
 export const ProfileSelectContent: FC<ProfileSelectContentProps> = ({ profileContentChoise, setProfileContentChoise }) => {
     return (
-        <div className="profile__select__content">
+        <div className='profile__select__content'>
             <Select
                 value={profileContentChoise}
                 onChange={setProfileContentChoise}
-                defaultValue="My profile"
+                defaultValue='My profile'
                 style={{ width: 200 }}
                 options={[
                     {

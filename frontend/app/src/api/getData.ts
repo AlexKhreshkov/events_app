@@ -1,6 +1,7 @@
-import axios from "axios";
-import { IAd, ICategory, IComment, IUser } from "../types/types";
-import { CATEGORIES_URL, ADS_URL, USERS_URL, COMMENTS_URL } from "../utils/constants";
+import { IAd, ICategory, IComment, IUser } from '../types/types';
+import { ADS_URL, CATEGORIES_URL, COMMENTS_URL, USERS_URL } from '../utils/constants';
+
+import axios from 'axios';
 
 
 export function getCategories() {

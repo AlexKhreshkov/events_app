@@ -1,5 +1,6 @@
-import React, { FC } from 'react'
 import classes from './AuthInput.module.css'
+
+import React, { FC } from 'react'
 
 interface AuthInputProps {
     type?: string

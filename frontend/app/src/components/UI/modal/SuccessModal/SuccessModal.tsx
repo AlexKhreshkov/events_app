@@ -1,6 +1,7 @@
+import cl from './SuccessModal.module.css'
+
 import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
 import { changeSuccsessModalVisibility } from '../../../../store/authModalSlice'
-import cl from './SuccessModal.module.css'
 
 export const SuccessModal = () => {
 
@@ -10,7 +11,7 @@ export const SuccessModal = () => {
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
             <div
-                className="popup__body"
+                className='popup__body'
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
@@ -18,7 +19,7 @@ export const SuccessModal = () => {
                     <button
                         type='button'
                         onClick={() => dispatch(changeSuccsessModalVisibility(false))}
-                        className="popup__close"
+                        className='popup__close'
                     />
                     <div className={cl.success__content}>
                         <div className={cl.success__title}>Success!</div>

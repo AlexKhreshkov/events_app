@@ -9,7 +9,7 @@ export const Main = () => {
     return (
         <div className='content__container'>
             <RigthArea />
-            <div className="content__body">
+            <div className='content__body'>
                 <PagesTitle />
                 <LostSearch />
             </div>

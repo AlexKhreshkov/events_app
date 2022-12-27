@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import cl from './ResetPasswordModal.module.css'
+
 import { useInput } from '../../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
-import { changePasswordResetEmail, changeLoaderFullSizeVisibility, changeResetPasswordVisibilityModal, changePasswordResetSuccsessModalVisibility } from '../../../../store/authModalSlice'
+import { changeLoaderFullSizeVisibility, changePasswordResetEmail, changePasswordResetSuccsessModalVisibility, changeResetPasswordVisibilityModal } from '../../../../store/authModalSlice'
 import { AuthErrors, emailValidationProps } from '../../../../utils/constants'
 import { AuthInput } from '../../input/AuthInput'
-import { Button } from 'antd'
 import { resetPassword } from '../../../../api/authApi'
-import cl from './ResetPasswordModal.module.css'
+
+import { Button } from 'antd'
+import React, { useEffect, useState } from 'react'
 
 //RESET PASSWORD FORM WITH EMAIL INPUT
 export const ResetPasswordModal = () => {
@@ -47,7 +49,7 @@ export const ResetPasswordModal = () => {
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
             <div
-                className="popup__body"
+                className='popup__body'
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
@@ -56,16 +58,16 @@ export const ResetPasswordModal = () => {
                     <button
                         type='button'
                         onClick={() => dispatch(changeResetPasswordVisibilityModal(false))}
-                        className="popup__close"
+                        className='popup__close'
                     />
-                    <div className="popup__title">
+                    <div className='popup__title'>
                         <div className={cl.popup__loginTitle}>Reset password</div>
                     </div>
-                    <div className="popup__text">
+                    <div className='popup__text'>
                         <div className={cl.popup__loginContent}>
                             <Button danger type='primary'>Login with google</Button>
                             <div className='blackLine'></div>
-                            <div className="authSignUpText">
+                            <div className='authSignUpText'>
                                 <div className={cl.authEmailText}>
                                     To reset your password enter your email.
                                 </div>

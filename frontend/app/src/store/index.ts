@@ -1,4 +1,3 @@
-import { configureStore } from '@reduxjs/toolkit'
 import authModalReduser from './authModalSlice'
 import authReduser from './authSlice'
 import categoriesReducer from './categoriesSlice'
@@ -6,6 +5,8 @@ import adsReducer from './adsSlice'
 import usersReducer from './usersSlice'
 import commentsReducer from './commentsSlice'
 import favouritesAdsReducer from './favouritesAdsSlice'
+
+import { configureStore } from '@reduxjs/toolkit'
 
 
 const store = configureStore({
@@ -17,7 +18,7 @@ const store = configureStore({
         ads: adsReducer,
         authModal: authModalReduser,
         favouritesAds: favouritesAdsReducer,
-    }
+    },
 })
 
 export default store

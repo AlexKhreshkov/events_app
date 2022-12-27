@@ -1,12 +1,13 @@
-import { Button, Input } from 'antd'
-import React, { FC } from 'react'
-import { useState } from 'react'
 import { createComment } from '../../../api/sendData'
 import { useInput } from '../../../hooks/useInput'
 import { useAppSelector } from '../../../hooks/useRedux'
 import { IAd, IComment } from '../../../types/types'
 import { getTokenFromLocalStorage } from '../../../utils/utils'
 import { Loader } from '../../Loader'
+
+import { useState } from 'react'
+import React, { FC } from 'react'
+import { Button, Input } from 'antd'
 
 interface CommentFormProps {
     ad: IAd,
@@ -20,7 +21,6 @@ export const CommentForm: FC<CommentFormProps> = ({ ad, adComments, setAdComment
     const name = useInput(currentUser.username)
     const text = useInput('')
     const [isLoading, setLoading] = useState(false)
-    const [error, setError] = useState('')
 
 
     function sumbitCommentForm(event: React.FormEvent<HTMLFormElement>) {
@@ -30,14 +30,14 @@ export const CommentForm: FC<CommentFormProps> = ({ ad, adComments, setAdComment
             ad: ad.id,
             name: name.value,
             text: text.value,
-            authToken: getTokenFromLocalStorage()
+            authToken: getTokenFromLocalStorage(),
         }
         setLoading(true)
         createComment(comment)
-            .catch(error => {
-                setError(error.response.data)
-                throw error
-            })
+            // .catch(error => {
+            //     setError(error.response.data)
+            //     throw error
+            // })
             .then(commentResponse => {
                 setAdComments([...adComments, commentResponse.data])
                 name.setValue(currentUser.username)
@@ -47,17 +47,17 @@ export const CommentForm: FC<CommentFormProps> = ({ ad, adComments, setAdComment
     }
 
     return (
-        <div className="comments__add-comment">
+        <div className='comments__add-comment'>
             {isLoading ? <Loader /> : <></>}
-            <div className="comments__add-comment-wrapp">
+            <div className='comments__add-comment-wrapp'>
                 <form onSubmit={e => sumbitCommentForm(e)}>
-                    <div className="comments__add-comment-title">
+                    <div className='comments__add-comment-title'>
                         Add your comment
                     </div>
-                    <div className="comments__add-comment-author-name">
+                    <div className='comments__add-comment-author-name'>
                         Your name:
                     </div>
-                    <div className="comments__add-comment-inputs">
+                    <div className='comments__add-comment-inputs'>
                         <Input
                             style={{ margin: '0 0 20px 0' }}
                             value={name.value}
@@ -65,8 +65,8 @@ export const CommentForm: FC<CommentFormProps> = ({ ad, adComments, setAdComment
                             required
                         />
                     </div>
-                    <div className="comments__add-comment-subtitle">
-                        <div className="comments__add-comment-your-comment">Your comment</div>
+                    <div className='comments__add-comment-subtitle'>
+                        <div className='comments__add-comment-your-comment'>Your comment</div>
                     </div>
                     <Input.TextArea
                         style={{ resize: 'none', height: 120, margin: '20px 0' }}

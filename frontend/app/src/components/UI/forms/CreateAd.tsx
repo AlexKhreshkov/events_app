@@ -1,21 +1,22 @@
-import { useEffect, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { IAd, adInfoForm } from '../../../types/types';
+import { fetchAds } from '../../../store/adsSlice';
+import { updateUserInfo } from '../../../store/usersSlice';
+import { ADS_URL } from '../../../utils/constants';
+import { getTokenFromLocalStorage } from '../../../utils/utils';
+
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import {
+    Button,
     Form,
     Input,
-    Button,
     Select,
     Upload,
     message,
 } from 'antd';
-import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
-import { adInfoForm, IAd } from '../../../types/types';
-import { useNavigate } from 'react-router-dom';
-import { fetchAds } from '../../../store/adsSlice';
-import { updateUserInfo } from '../../../store/usersSlice';
-import axios from 'axios';
-import { ADS_URL } from '../../../utils/constants';
-import { getTokenFromLocalStorage } from '../../../utils/utils';
+import { PlusOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
 
 const { TextArea } = Input;
 
@@ -57,7 +58,7 @@ export const CreateAd = () => {
     const error = () => {
         messageApi.open({
             type: 'error',
-            content: `Failed to create ad`
+            content: 'Failed to create ad',
         });
     };
     async function sumbitFormHandler() {
@@ -72,7 +73,7 @@ export const CreateAd = () => {
                         'Accept': 'application/json',
                         'Authorization': `Token ${authToken}`,
                     },
-                }
+                },
             )
             await dispatch(fetchAds())
             setAdInfoForm({ text: '', category: 1, title: '' })
@@ -97,14 +98,14 @@ export const CreateAd = () => {
                 <Form
                     labelCol={{ span: 6 }}
                     wrapperCol={{ span: 14 }}
-                    layout="horizontal"
+                    layout='horizontal'
                     onFinish={() => sumbitFormHandler()}
                 >
                     <Form.Item
                         label='Title'
                     >
                         <Input
-                            name="title"
+                            name='title'
                             value={adInfoForm.title}
                             onChange={e => titleHandler(e)}
                             status={createAdErr?.title ? 'error' : ''}
@@ -112,7 +113,7 @@ export const CreateAd = () => {
                         />
                     </Form.Item>
                     <Form.Item
-                        label="Category"
+                        label='Category'
                     >
                         <Select
                             defaultValue={1}
@@ -125,12 +126,12 @@ export const CreateAd = () => {
                                     value={cat.id}
                                 >
                                     {cat.name}
-                                </Select.Option>
+                                </Select.Option>,
                             )}
                         </Select>
                     </Form.Item>
                     <Form.Item
-                        label="Description"
+                        label='Description'
                     >
                         <TextArea
                             name='text'
@@ -142,27 +143,27 @@ export const CreateAd = () => {
                         />
                     </Form.Item>
                     <Form.Item
-                        label="Name"
+                        label='Name'
                     >
                         <Input
-                            name="last_name"
+                            name='last_name'
                             value={userProfileInfo.first_name}
                             onChange={e => setUserProfileInfo({ ...userProfileInfo, first_name: e.target.value })}
                             required
                         />
                     </Form.Item>
                     <Form.Item
-                        label="Surname"
+                        label='Surname'
                     >
                         <Input
-                            name="last_name"
+                            name='last_name'
                             value={userProfileInfo.last_name}
                             onChange={e => setUserProfileInfo({ ...userProfileInfo, last_name: e.target.value })}
                             required
                         />
                     </Form.Item>
                     <Form.Item
-                        label="Your phone"
+                        label='Your phone'
                     >
                         <Input
                             name='phone'
@@ -171,11 +172,11 @@ export const CreateAd = () => {
                             required
                         />
                     </Form.Item>
-                    <Form.Item label="Upload" valuePropName="fileList">
+                    <Form.Item label='Upload' valuePropName='fileList'>
                         <Upload
                             beforeUpload={() => false}
                             onChange={e => setAdInfoForm({ ...adInfoForm, image: e.file })}
-                            listType="picture-card"
+                            listType='picture-card'
                         >
                             <div>
                                 <PlusOutlined />

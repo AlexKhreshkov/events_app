@@ -1,0 +1,46 @@
+{
+    "extends": [
+        "react-app",
+        "react-app/jest"
+    ],
+    "rules": {
+        "no-unused-vars": "warn",
+        "no-console": "warn",
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "jsx-quotes": ["error", "prefer-single"],
+        "prefer-const": "error",
+        "indent": [
+            "error",
+            4
+        ],
+        // "max-len": [
+        //     "error",
+        //     {
+        //         "code": 120
+        //     }
+        // ],
+        "comma-dangle": [
+            "error",
+            "always-multiline"
+        ],
+        "import/order": [
+            "warn",
+            {
+                "groups": [
+                    "index",
+                    "sibling",
+                    "parent",
+                    "internal",
+                    "external",
+                    "builtin",
+                    "object",
+                    "type"
+                ],
+                "newlines-between": "always-and-inside-groups"
+            }
+        ]
+    }
+}

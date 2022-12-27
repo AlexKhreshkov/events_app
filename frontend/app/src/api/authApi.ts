@@ -1,6 +1,7 @@
-import axios from "axios";
-import { IActivateAccount, IAuthToken, IResponseAuthToken, IResponseStatus, ISignInInfo, ISignUpInfo, ISignUpResponse, IResetPasswordConfirmation } from "../types/types";
-import { ACTIVATE_ACCOUNT_URL, BASE_URL, DELETE_TOKEN_URL, REGISTER_USER_URL, RESET_PASSWORD_CONFIRMATION_URL, RESET_PASSWORD_URL } from "../utils/constants";
+import { IActivateAccount, IResetPasswordConfirmation, IResponseAuthToken, ISignInInfo, ISignUpInfo } from '../types/types';
+import { ACTIVATE_ACCOUNT_URL, DELETE_TOKEN_URL, REGISTER_USER_URL, RESET_PASSWORD_CONFIRMATION_URL, RESET_PASSWORD_URL } from '../utils/constants';
+
+import axios from 'axios';
 
 // {
 //     "email": "",
@@ -22,7 +23,7 @@ export function postSignUpDetails(authInfo: ISignUpInfo) {
 }
 export function signIn(authInfo: ISignInInfo) {
     return axios.post<IResponseAuthToken>(
-        `http://127.0.0.1:8000/auth/token/login/`,
+        'http://127.0.0.1:8000/auth/token/login/',
         { ...authInfo },
         {
             headers: {
@@ -34,7 +35,7 @@ export function signIn(authInfo: ISignInInfo) {
 }
 export function getAuthToken(authInfo: ISignInInfo) {
     return axios.post<IResponseAuthToken>(
-        `http://127.0.0.1:8000/auth/token/login/`,
+        'http://127.0.0.1:8000/auth/token/login/',
         { ...authInfo },
         {
             headers: {

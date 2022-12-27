@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IAd } from "../types/types";
+import { IAd } from '../types/types';
+
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface favouritesAdsState {
     favouritesAds: IAd[],

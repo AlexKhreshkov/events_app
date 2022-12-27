@@ -1,16 +1,17 @@
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import { activeAccount } from '../api/authApi'
 import { LoadingModal } from '../components/UI/modal/LoadingModal'
 import { useAppDispatch } from '../hooks/useRedux'
 import { changeEmailConfirmedSuccessModalVisibility } from '../store/authModalSlice'
 import { IAccountActivationError } from '../types/types'
 
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+
 export const AccountActivation = () => {
 
 
     const dispatch = useAppDispatch()
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const { uid, token } = useParams<{ uid: string, token: string }>()
     const [activatonError, setActivationError] = useState<IAccountActivationError>({})
 

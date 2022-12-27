@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
-import { getAds } from '../api/getData'
+import { Footer } from './Footer'
+import { Loader } from './Loader'
+import { Navigation } from './Navigation'
+
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { fetchAds } from '../store/adsSlice'
 import { changeLoaderFullSizeVisibility } from '../store/authModalSlice'
@@ -8,9 +9,9 @@ import { addToken, defineCurrentUser } from '../store/authSlice'
 import { fetchCategories } from '../store/categoriesSlice'
 import { fetchUsers } from '../store/usersSlice'
 import { getTokenFromLocalStorage } from '../utils/utils'
-import { Footer } from './Footer'
-import { Loader } from './Loader'
-import { Navigation } from './Navigation'
+
+import { Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export const Layout = () => {
 
@@ -25,8 +26,6 @@ export const Layout = () => {
             await dispatch(fetchCategories())
             await dispatch(fetchAds())
             await dispatch(fetchUsers())
-
-
             if (authToken) {
                 await dispatch(defineCurrentUser())
                 dispatch(changeLoaderFullSizeVisibility(false))

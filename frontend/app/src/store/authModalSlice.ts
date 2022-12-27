@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 //MODALS_STATE
 const initialState = {
@@ -20,7 +20,7 @@ const initialState = {
     passwordResetEmail: '',
 
     isFavouritesAds: false,
-    isFavouritesAdsWarning: false
+    isFavouritesAdsWarning: false,
 }
 
 const authModalSlice = createSlice({
@@ -70,7 +70,7 @@ const authModalSlice = createSlice({
         changeFavouritesAdsWarning(state, action: PayloadAction<boolean>) {
             state.isFavouritesAdsWarning = action.payload
         },
-    }
+    },
 })
 
 export const {
@@ -88,7 +88,7 @@ export const {
     changePasswordResetEmail,
     //
     changeFavouritesAdsOpen,
-    changeFavouritesAdsWarning
+    changeFavouritesAdsWarning,
 
 } = authModalSlice.actions
 

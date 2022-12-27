@@ -1,8 +1,10 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
 import { RootState } from '.'
+
 import { IUser, IUserPatch } from '../types/types'
 import { BASE_URL, USERS_URL } from '../utils/constants'
+
+import axios from 'axios'
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 interface UsersState {
     users: IUser[],
@@ -24,7 +26,7 @@ export const fetchUsers = createAsyncThunk<IUser[], void, { rejectValue: string 
             return rejectWithValue('Error')
         }
         return response.data
-    }
+    },
 )
 export const updateUserInfoFormData = createAsyncThunk<string, { id: number, newInfo: FormData }, { rejectValue: string, state: RootState }>(
     'users/updateUserInfo',
@@ -39,14 +41,14 @@ export const updateUserInfoFormData = createAsyncThunk<string, { id: number, new
                     'Accept': 'application/json',
                     'Authorization': `Token ${authToken}`,
                 },
-            }
+            },
         )
         if (!response) {
             return rejectWithValue('Error while updating profile')
         }
         dispatch(updateUserState(response.data))
         return response.data
-    }
+    },
 )
 
 export const updateUserInfo = createAsyncThunk<IUser, { id: number, newInfo: IUserPatch }, { rejectValue: string, state: RootState }>(
@@ -62,14 +64,14 @@ export const updateUserInfo = createAsyncThunk<IUser, { id: number, newInfo: IUs
                     'Accept': 'application/json',
                     'Authorization': `Token ${authToken}`,
                 },
-            }
+            },
         )
         if (!response) {
             return rejectWithValue('Error while updating profile')
         }
         dispatch(updateUserState(response.data))
         return response.data
-    }
+    },
 )
 
 export const updateUserInfoNoImg = createAsyncThunk<string, { id: number, newInfo: IUserPatch }, { rejectValue: string, state: RootState }>(
@@ -85,14 +87,14 @@ export const updateUserInfoNoImg = createAsyncThunk<string, { id: number, newInf
                     'Accept': 'application/json',
                     'Authorization': `Token ${authToken}`,
                 },
-            }
+            },
         )
         if (!response) {
             return rejectWithValue('Error')
         }
         dispatch(updateUserState(response.data))
         return response.data
-    }
+    },
 )
 
 const usersSlice = createSlice({
@@ -126,7 +128,7 @@ const usersSlice = createSlice({
             .addCase(updateUserInfoFormData.rejected, (state, action) => {
                 state.loading = false
             })
-    }
+    },
 })
 export const { updateUserState } = usersSlice.actions
 export default usersSlice.reducer     

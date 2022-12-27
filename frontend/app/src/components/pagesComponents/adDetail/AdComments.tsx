@@ -1,11 +1,13 @@
-import { FC } from "react"
-import { IoChatbubbleEllipsesOutline } from "react-icons/io5"
-import { useAppDispatch, useAppSelector } from "../../../hooks/useRedux"
-import { changeSignUpVisibilityModal } from "../../../store/authModalSlice"
-import { IAd, IComment } from "../../../types/types"
-import { getTokenFromLocalStorage } from "../../../utils/utils"
-import { CommentForm } from "../../UI/forms/AddComment"
 import { Comment } from './Comment'
+
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux'
+import { changeSignUpVisibilityModal } from '../../../store/authModalSlice'
+import { IAd, IComment } from '../../../types/types'
+import { getTokenFromLocalStorage } from '../../../utils/utils'
+import { CommentForm } from '../../UI/forms/AddComment'
+
+import { IoChatbubbleEllipsesOutline } from 'react-icons/io5'
+import { FC } from 'react'
 
 interface AdCommentsProps {
     ad: IAd
@@ -19,8 +21,8 @@ export const AdComments: FC<AdCommentsProps> = ({ad, adComments, setAdComments }
     const dispatch = useAppDispatch()
 
     return (
-        <div className="comments">
-            <div className="comments__count">
+        <div className='comments'>
+            <div className='comments__count'>
                 <IoChatbubbleEllipsesOutline />
                 Comments: {adComments?.length}
             </div>
@@ -45,7 +47,7 @@ export const AdComments: FC<AdCommentsProps> = ({ad, adComments, setAdComments }
                     setAdComments={setAdComments}
                     adInfo={ad}
                     {...comment}
-                />
+                />,
             )}
             {currentUser.username && getTokenFromLocalStorage()
                 ?

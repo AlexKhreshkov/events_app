@@ -1,18 +1,20 @@
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import { IoPersonOutline, IoHeartOutline, IoExitOutline, IoMoonOutline, IoMoon } from "react-icons/io5";
 import { SignInModal } from './UI/modal/DataInputModal/SignInModal';
-import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { changeFavouritesAdsOpen, changeSignInVisibilityModal } from '../store/authModalSlice';
 import { SignUpModal } from './UI/modal/DataInputModal/SignUpModal';
-import { Spin } from 'antd';
 import { ResetPasswordModal } from './UI/modal/DataInputModal/ResetPasswordModal';
 import { ResetPasswordSuccessModal } from './UI/modal/SuccessModal/ResetPasswordSentSuccessModal';
 import { LoadingModal } from './UI/modal/LoadingModal';
 import { SignUpSuccessModal } from './UI/modal/SuccessModal/SignUpSuccessModal';
 import { EmailConfirmedSuccessModal } from './UI/modal/SuccessModal/EmailConfirmedSuccessModal';
-import { logoutCurrentUser } from '../store/authSlice';
 import { FavouritesAds } from './UI/modal/FavouritesAds';
+
+import { logoutCurrentUser } from '../store/authSlice';
+import { changeFavouritesAdsOpen, changeSignInVisibilityModal } from '../store/authModalSlice';
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+
+import { Spin } from 'antd';
+import { IoExitOutline, IoHeartOutline, IoMoon, IoMoonOutline, IoPersonOutline } from 'react-icons/io5';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react'
 
 export const Navigation = () => {
 
@@ -54,19 +56,19 @@ export const Navigation = () => {
     return (
         <>
             <div className='nav__container'>
-                <div className="nav">
+                <div className='nav'>
                     <Link to='/'>
-                        <div className="nav__title">FindMe</div>
+                        <div className='nav__title'>FindMe</div>
                     </Link>
                     {isNavLoading
                         ?
-                        <div className="nav__items">
+                        <div className='nav__items'>
                             <Spin />
                         </div>
                         :
-                        <div className="nav__items">
+                        <div className='nav__items'>
                             <div
-                                className="nav__item"
+                                className='nav__item'
                                 onClick={() => changeTheme()}
                             >
                                 {
@@ -79,11 +81,11 @@ export const Navigation = () => {
                             </div>
                             <div
                                 onClick={handleLike}
-                                className="nav__item liked"
+                                className='nav__item liked'
                             >
                                 <IoHeartOutline />
                                 <div
-                                    className="liked_count"
+                                    className='liked_count'
                                 >
                                     {favouritesAds?.length ? favouritesAds?.length : <></>}
                                 </div>
@@ -91,17 +93,17 @@ export const Navigation = () => {
                             {currentUser.username && authToken
                                 ?
                                 <>
-                                    <div className="nav__item">
-                                        <div className="">{currentUser.username}</div>
+                                    <div className='nav__item'>
+                                        <div className=''>{currentUser.username}</div>
                                     </div>
                                     <div
-                                        className="nav__item"
+                                        className='nav__item'
                                         onClick={e => navigate('/profile')}
                                     >
                                         <IoPersonOutline />
                                     </div>
                                     <div
-                                        className="nav__item"
+                                        className='nav__item'
                                         onClick={() => signOut()}
                                     >
                                         <IoExitOutline />
@@ -110,7 +112,7 @@ export const Navigation = () => {
                                 :
                                 <>
                                     <div
-                                        className="nav__item"
+                                        className='nav__item'
                                         onClick={handlerAuthModal}
                                     >
                                         <IoPersonOutline />

@@ -1,6 +1,8 @@
-import { useState } from "react"
-import { IValidations } from "../types/types"
-import { useInputValidation } from "./useInputValidation"
+import { useInputValidation } from './useInputValidation'
+
+import { IValidations } from '../types/types'
+
+import { useState } from 'react'
 
 
 export const useInput = (initialValue?: string, validations?: IValidations) => {
@@ -17,6 +19,6 @@ export const useInput = (initialValue?: string, validations?: IValidations) => {
     }
 
     return {
-        value, onChange, onBlur, setValue, setDirty, isDirty, ...valid
+        value, onChange, onBlur, setValue, setDirty, isDirty, ...valid,
     }
 }

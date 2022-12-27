@@ -1,12 +1,12 @@
-import { Button, Tag } from 'antd'
-import React, { FC } from 'react'
-import { IoHeartOutline } from 'react-icons/io5'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { addFavouriteAd } from '../../../store/favouritesAdsSlice'
 import { IAd } from '../../../types/types'
 import { AD_PATH_NAME } from '../../../utils/constants'
 import { reformatDate } from '../../../utils/utils'
+
+import { Button } from 'antd'
+import React, { FC } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 interface LostSearchItemProps {
     ad: IAd,
@@ -20,11 +20,11 @@ export const LostSearchItem: FC<LostSearchItemProps> = ({ ad, setCategory }) => 
     const handleAdToFavorite = () => disaptch(addFavouriteAd(ad))
 
     return (
-        <div className="lostSearch__item">
+        <div className='lostSearch__item'>
             <div className='lostSearch__item__created'>
                 {reformatDate(ad.created)}
             </div>
-            <div className="lostSearch__item__category">
+            <div className='lostSearch__item__category'>
                 <div className='lostSearch__item__category__text'>Category:</div>
                 <Button
                     className='lostSearch__item__category__tag'
@@ -43,11 +43,11 @@ export const LostSearchItem: FC<LostSearchItemProps> = ({ ad, setCategory }) => 
             >
                 Save to read later
             </Button>
-            <div className="lostSearch__item__title">
+            <div className='lostSearch__item__title'>
                 {ad.title}
             </div>
-            <div className="lostSearch__item__img">
-                <img src={ad.image} alt="" />
+            <div className='lostSearch__item__img'>
+                <img src={ad.image} alt='' />
             </div>
             <Button
                 type='primary'

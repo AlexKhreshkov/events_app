@@ -9,7 +9,7 @@ export function getTokenFromLocalStorage(): string {
 }
 export function reformatDateFullDate(date: string): string {
     //DATE EXAMPLE 2022-12-15T10:05:07.105521Z
-    const dateSlice = 19
+    const dateSlice = 19    
     const readableDate = date.slice(0, dateSlice).replace('T', ':')
     //2022-12-19:21:02:26
     return readableDate
@@ -25,10 +25,10 @@ export function reformatDate(date: string): string {
     const diffrenseInMinutes = diffrenseInMilliseconds / minute
     const diffrenseInHours = diffrenseInMilliseconds / hour
     if (diffrenseInMinutes < 1) {
-        return `Now`
+        return 'Now'
     }
     if (diffrenseInMinutes === 60) {
-        return `1 hour ago`
+        return '1 hour ago'
     }
     if (diffrenseInHours < 1) {
         const minutesAgo = 60 * diffrenseInHours

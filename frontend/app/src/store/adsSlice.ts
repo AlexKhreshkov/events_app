@@ -1,8 +1,10 @@
-import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit'
-import axios from 'axios'
 import { RootState } from '.'
-import { adInfoForm, IAd, IAdChange } from '../types/types'
+
+import { IAd, IAdChange, adInfoForm } from '../types/types'
 import { ADS_URL } from '../utils/constants'
+
+import axios from 'axios'
+import { AnyAction, PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 
 interface adsState {
@@ -19,17 +21,17 @@ const initialState: adsState = {
 
 export const fetchAds = createAsyncThunk<IAd[], void>(
     'ads/fetchAds',
-    async function (_,) {
+    async function (_) {
         const response = await axios.get<IAd[]>(`${ADS_URL}`)
         return response.data
-    }
+    },
 )
 export const fetchAd = createAsyncThunk<IAd, { slug: string }>(
     'ads/fetchAd',
     async function (slug) {
         const response = await axios.get<IAd>(`${ADS_URL}${slug}`)
         return response.data
-    }
+    },
 )
 export const changeAd = createAsyncThunk<IAd, { slug: string, newInfo: IAdChange }, { rejectWithValue: string, state: RootState }>(
     'users/updateUserInfo',
@@ -44,10 +46,10 @@ export const changeAd = createAsyncThunk<IAd, { slug: string, newInfo: IAdChange
                     'Accept': 'application/json',
                     'Authorization': `Token ${authToken}`,
                 },
-            }
+            },
         )
         return response.data
-    }
+    },
 )
 
 export const createAd = createAsyncThunk<IAd, { newInfo: adInfoForm }, { rejectWithValue: string, state: RootState }>(
@@ -66,13 +68,13 @@ export const createAd = createAsyncThunk<IAd, { newInfo: adInfoForm }, { rejectW
                         'Accept': 'application/json',
                         'Authorization': `Token ${authToken}`,
                     },
-                }
+                },
             )
             return response.data
         } catch (error) {
             return rejectWithValue('Failed to create ad');
         }
-    }
+    },
 );
 
 
@@ -104,7 +106,7 @@ const adsSlice = createSlice({
                 state.error = action.payload
                 state.loading = false
             })
-    }
+    },
 })
 
 export default adsSlice.reducer

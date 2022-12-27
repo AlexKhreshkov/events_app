@@ -1,4 +1,4 @@
-import { UploadFile } from "antd"
+import { UploadFile } from 'antd'
 
 export interface IAuthModalState {
     isOpen: boolean

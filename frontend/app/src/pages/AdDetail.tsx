@@ -1,12 +1,13 @@
 import { Button, Input, message, Switch } from 'antd'
 import { useEffect, useState } from 'react'
-import { IoArrowUndoOutline, IoPerson, IoPhonePortraitOutline, IoTimeOutline } from 'react-icons/io5'
-import { useNavigate, useParams } from 'react-router-dom'
+import { IoPerson, IoPhonePortraitOutline, IoTimeOutline } from 'react-icons/io5'
+import { useParams } from 'react-router-dom'
 import { getAdBySlug, getComments } from '../api/getData'
 import { Loader } from '../components/Loader'
 import { AdComments } from '../components/pagesComponents/adDetail/AdComments'
 import { PagesTitle } from '../components/PagesTitle'
 import { RigthArea } from '../components/RigthArea'
+import { ToMain } from '../components/UI/button/ToMain'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { changeAd } from '../store/adsSlice'
 import { updateUserInfoNoImg } from '../store/usersSlice'
@@ -15,7 +16,6 @@ import { reformatDate } from '../utils/utils'
 
 export const AdDetail = () => {
 
-    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const [ad, setAd] = useState<IAd>()
     const { adSlug } = useParams<{ adSlug: string }>()
@@ -117,12 +117,7 @@ export const AdDetail = () => {
                     <PagesTitle />
                     <div className="content__lostSearch__container">
                         <div className="content__adDetail">
-                            <div className='back'>
-                                <Button onClick={e => navigate(-1)} type={'primary'}>
-                                    <IoArrowUndoOutline />
-                                    Back
-                                </Button>
-                            </div>
+                            <ToMain/>
                             <div className='adDetail__title'>
                                 {isCommentChanging
                                     ?

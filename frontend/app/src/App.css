@@ -166,6 +166,8 @@ body[data-theme='ligth'] {
   color: var(--colors-text);
   font-size: 1.5rem;
   box-shadow: var(--shadow);
+  position: fixed;
+  z-index: 1000;
 }
 
 .nav {
@@ -318,6 +320,7 @@ body[data-theme='ligth'] {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
+  margin-top: 50px;
 }
 
 .content__rightArea {
@@ -877,7 +880,7 @@ body[data-theme='ligth'] {
 
 .createAd__title {
   font-size: 2rem;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .createAd__body {

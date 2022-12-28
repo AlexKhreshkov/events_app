@@ -6,15 +6,14 @@ import { IAccountActivationError } from '../types/types'
 
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { ROUTES_PATH } from '../utils/constants'
 
 export const AccountActivation = () => {
-
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const { uid, token } = useParams<{ uid: string, token: string }>()
     const [activatonError, setActivationError] = useState<IAccountActivationError>({})
-
 
     useEffect(() => {
         activeAccount({ uid, token })
@@ -23,7 +22,7 @@ export const AccountActivation = () => {
                 throw error
             })
             .then(() => {
-                navigate('/')
+                navigate(`${ROUTES_PATH.Main}`)
             })
             .then(() => setTimeout(() => dispatch(changeEmailConfirmedSuccessModalVisibility(true)), 1000))
     }, [])

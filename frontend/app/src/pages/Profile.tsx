@@ -5,6 +5,7 @@ import { IUser } from '../types/types';
 
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { ROUTES_PATH } from '../utils/constants';
 
 export const Profile = () => {
 
@@ -16,7 +17,7 @@ export const Profile = () => {
 
     useEffect(() => {
         if (!user)
-            return navigate('/')
+            return navigate(`${ROUTES_PATH.Main}`)
         setCurrentUserProfile(user)
     }, [user])
 

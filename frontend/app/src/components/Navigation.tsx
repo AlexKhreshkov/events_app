@@ -15,6 +15,7 @@ import { Spin } from 'antd';
 import { IoExitOutline, IoHeartOutline, IoMoon, IoMoonOutline, IoPersonOutline } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react'
+import { ROUTES_PATH } from '../utils/constants';
 
 export const Navigation = () => {
 
@@ -49,15 +50,16 @@ export const Navigation = () => {
         logout()
     }
 
-
     const handleLike = () => dispatch(changeFavouritesAdsOpen(true))
     const handlerAuthModal = () => dispatch(changeSignInVisibilityModal(!isOpen))
+    const goToProfile = () => navigate(`${ROUTES_PATH.Profile}`)
+    
 
     return (
         <>
             <div className='nav__container'>
                 <div className='nav'>
-                    <Link to='/'>
+                    <Link to={ROUTES_PATH.Main}>
                         <div className='nav__title'>FindMe</div>
                     </Link>
                     {isNavLoading
@@ -98,7 +100,7 @@ export const Navigation = () => {
                                     </div>
                                     <div
                                         className='nav__item'
-                                        onClick={e => navigate('/profile')}
+                                        onClick={() => goToProfile()}
                                     >
                                         <IoPersonOutline />
                                     </div>

@@ -8,16 +8,18 @@ import { Main } from './pages/Main';
 import { Profile } from './pages/Profile';
 import { ResetPassword } from './pages/SetNewPassword';
 
+import { ROUTES_PATH } from './utils/constants';
+
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 
 const router = createBrowserRouter(createRoutesFromElements(
-    <Route path='/' element={<Layout />}>
+    <Route path={ROUTES_PATH.Main} element={<Layout />}>
         <Route index element={<Main />} />
-        <Route path='activate/:uid/:token' element={<AccountActivation />} />
-        <Route path='password/reset/confirm/:uid/:token' element={<ResetPassword />} />
-        <Route path='announcement/:adSlug' element={<AdDetail />} />
-        <Route path='announcement/create' element={<CreateNewAdd />} />
-        <Route path='profile' element={<Profile />} />
+        <Route path={ROUTES_PATH.AccountActivation} element={<AccountActivation />} />
+        <Route path={ROUTES_PATH.ResetPassword} element={<ResetPassword />} />
+        <Route path={ROUTES_PATH.AdDetail} element={<AdDetail />} />
+        <Route path={ROUTES_PATH.CreateAd} element={<CreateNewAdd />} />
+        <Route path={ROUTES_PATH.Profile} element={<Profile />} />
         <Route path='*' element={<Error />} />
     </Route>,
 ))

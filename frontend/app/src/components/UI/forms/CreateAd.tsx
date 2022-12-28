@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
 import { IAd, adInfoForm } from '../../../types/types';
 import { fetchAds } from '../../../store/adsSlice';
 import { updateUserInfo } from '../../../store/usersSlice';
-import { ADS_URL } from '../../../utils/constants';
+import { ADS_URL, ROUTES_PATH } from '../../../utils/constants';
 import { getTokenFromLocalStorage } from '../../../utils/utils';
 
 import axios from 'axios';
@@ -80,7 +80,7 @@ export const CreateAd = () => {
             if (userProfileInfo) {
                 dispatch(updateUserInfo({ id: currentUser.id, newInfo: userProfileInfo }))
             }
-            navigate('/')
+            navigate(`${ROUTES_PATH.Main}`)
         }
         catch (err) {
             if (axios.isAxiosError(err)) {

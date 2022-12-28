@@ -3,7 +3,7 @@ import cl from './NewPasswordModal.module.css'
 import { useInput } from '../../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
 import { changeSignInVisibilityModal, changeSuccsessModalVisibility } from '../../../../store/authModalSlice'
-import { AuthErrors, passwordValidationProps } from '../../../../utils/constants'
+import { AuthErrors, passwordValidationProps, ROUTES_PATH } from '../../../../utils/constants'
 import { AuthInput } from '../../input/AuthInput'
 import { IResponseAuthError } from '../../../../types/types'
 import { resetPasswordConfirmation } from '../../../../api/authApi'
@@ -56,7 +56,7 @@ export const NewPasswordModal: FC<NewPasswordModalProps> = ({ uid, token }) => {
         resetPasswordConfirmation(data)
             .catch((error) => setResponseAuthError(error))
             .then(() => dispatch(changeSuccsessModalVisibility(true)))
-            .then(() => navigate('/'))
+            .then(() => navigate(`${ROUTES_PATH.Main}`))
     }
 
     const changeVisibilityHandler1 = () => {

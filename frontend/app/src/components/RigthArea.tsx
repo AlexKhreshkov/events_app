@@ -1,7 +1,8 @@
 import { useAppSelector } from '../hooks/useRedux'
 
+import { ROUTES_PATH } from '../utils/constants'
+
 import { Button, message } from 'antd'
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export const RigthArea = () => {
@@ -15,7 +16,7 @@ export const RigthArea = () => {
 
     const handleClick = () => {
         if (currentUser.currentUser.username && currentUser.authToken) {
-            navigate('/announcement/create')
+            navigate(`${ROUTES_PATH.CreateAd}`)
         } else {
             info()
         }

@@ -8,10 +8,13 @@ import { List } from '../../List';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Input, Select } from 'antd'
+import { useDispatch } from 'react-redux';
+import { Loader } from '../../Loader';
 
 export const LostSearch = () => {
 
     const { Option } = Select
+    const dispatch = useDispatch()
     const categories = useAppSelector(state => state.categories.categories)
     const ads = useAppSelector(state => state.ads.ads)
     const search = useInput()
@@ -20,6 +23,9 @@ export const LostSearch = () => {
     const lastElement = useRef<HTMLDivElement | null>(null)
     const observer = useRef<IntersectionObserver>()
     const limitedAdsLen = limitedAds.length
+    const [isExtraEdsLoading, setExtraAdsLoading] = useState(false)
+
+    console.log(category)
 
     const adsWithCategory = useMemo(() => {
         if (category === 'All') {
@@ -36,20 +42,28 @@ export const LostSearch = () => {
     }, [adsWithCategory, search])
 
 
-
+    //add ADS_LIMIT ads when scroll to the end of page
     useEffect(() => {
         if (observer.current) observer.current.disconnect()
-        var callback = function (entries: any) {
+        const callback = function (entries: any) {
+            //LOADER EMULATION(IN CASE IT WAS REQUEST TO THE SERVER)
             if (entries[0].isIntersecting && limitedAdsLen < ads.length) {
-                setLimitedAds([...limitedAds, ...ads.slice(limitedAdsLen, limitedAdsLen + ADS_LIMIT)])
+                setExtraAdsLoading(true)
+                setTimeout(() => {
+                    setLimitedAds([...limitedAds, ...ads.slice(limitedAdsLen, limitedAdsLen + ADS_LIMIT)])
+                    setExtraAdsLoading(false)
+                }, 1000)
             }
         }
         observer.current = new IntersectionObserver(callback)
-        observer.current.observe(lastElement.current!)
-    }, [limitedAdsLen])
+        const lastElem = lastElement.current
+        if (lastElem)
+            observer.current.observe(lastElem)
+    }, [limitedAdsLen, category])
 
     return (
         <div className='content__lostSearch__container'>
+            {isExtraEdsLoading && <Loader />}
             <div className='content__lostSearch'>
                 <div className='lostSearch__title'>
                     Search for lost things
@@ -103,7 +117,12 @@ export const LostSearch = () => {
                             <div className='lostSearch__noAds'>No Ads found...</div>
                         }
                     </div>
-                    <div ref={lastElement} className='lastElement'></div>
+                    {category === 'All'
+                        ?
+                        <div ref={lastElement} className='lastElement'></div>
+                        :
+                        <></>
+                    }
                 </div>
             </div>
         </div>

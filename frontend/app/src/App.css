@@ -167,7 +167,7 @@ body[data-theme='ligth'] {
   font-size: 1.5rem;
   box-shadow: var(--shadow);
   position: fixed;
-  z-index: 1000;
+  z-index: 99;
 }
 
 .nav {

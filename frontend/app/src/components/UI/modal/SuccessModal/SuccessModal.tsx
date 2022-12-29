@@ -7,18 +7,24 @@ export const SuccessModal = () => {
 
     const isOpen = useAppSelector(state => state.authModal.isSuccessModal)
     const dispatch = useAppDispatch()
+    const onClose = () => dispatch(changeSuccsessModalVisibility(false))
 
     return (
-        <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
+        <div
+            id='popup'
+            className={isOpen ? 'popup popupAcitve' : 'popup'}
+        >
             <div
                 className='popup__body'
+                onClick={onClose}
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
+                    onClick={e => e.stopPropagation()}
                 >
                     <button
                         type='button'
-                        onClick={() => dispatch(changeSuccsessModalVisibility(false))}
+                        onClick={onClose}
                         className='popup__close'
                     />
                     <div className={cl.success__content}>

@@ -23,7 +23,7 @@ const MONTH_NAMES = [
     'July', 'August', 'September', 'October', 'November', 'December',
 ];
 
-function getFormattedDate(dateTimestamp: string, prefomattedDate = '', hideYear = '') {
+function getFormattedDate(dateTimestamp: string, prefomattedDate = '', hideYear = ''): string {
     const dateInMs = Date.parse(dateTimestamp)
     const date = new Date(dateInMs)
     const day = date.getDate();
@@ -54,7 +54,7 @@ function getFormattedDate(dateTimestamp: string, prefomattedDate = '', hideYear 
 }
 
 // --- Main function
-export function reformatDate(dateParam: string) {
+export function reformatDate(dateParam: string): string {
     if (!dateParam) {
         return 'INVALID DATE';
     }
@@ -67,7 +67,6 @@ export function reformatDate(dateParam: string) {
     const isToday = today.toDateString() === date.toDateString();
     const isYesterday = yesterday.toDateString() === date.toDateString();
     const isThisYear = today.getFullYear() === date.getFullYear();
-
 
     if (seconds < 5) {
         return 'now';

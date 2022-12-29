@@ -66,6 +66,7 @@ export const SignUpModal = () => {
         dispatch(changeSignUpVisibilityModal(false))
     }
 
+    const onClose = () => dispatch(changeSignUpVisibilityModal(false))
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -101,10 +102,12 @@ export const SignUpModal = () => {
             {isLoading ? <Loader /> : <></>}
             <div
                 className='popup__body'
+                onClick={onClose}
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
                     onSubmit={(event) => formSubmitHandler(event)}
+                    onClick={e => e.stopPropagation()}
                 >
                     <button
                         type='button'

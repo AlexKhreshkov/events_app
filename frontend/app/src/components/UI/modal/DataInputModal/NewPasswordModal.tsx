@@ -2,7 +2,7 @@ import cl from './NewPasswordModal.module.css'
 
 import { useInput } from '../../../../hooks/useInput'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux'
-import { changeSignInVisibilityModal, changeSuccsessModalVisibility } from '../../../../store/authModalSlice'
+import { changeNewPasswordVisibilityModal, changeSignInVisibilityModal, changeSuccsessModalVisibility } from '../../../../store/authModalSlice'
 import { AuthErrors, passwordValidationProps, ROUTES_PATH } from '../../../../utils/constants'
 import { AuthInput } from '../../input/AuthInput'
 import { IResponseAuthError } from '../../../../types/types'
@@ -65,16 +65,18 @@ export const NewPasswordModal: FC<NewPasswordModalProps> = ({ uid, token }) => {
     const changeVisibilityHandler2 = () => {
         setPassword2Visible(!isPassword2Visible)
     }
-
+    const onClose = () => dispatch(changeNewPasswordVisibilityModal(false))
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
             <div
                 className='popup__body'
+                onClick={onClose}
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
                     onSubmit={(event) => formSubmitHandler(event)}
+                    onClick={e => e.preventDefault()}
                 >
                     <button
                         type='button'

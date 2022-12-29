@@ -11,14 +11,17 @@ export const ResetPasswordSuccessModal = ({ customEmail }: ResetPasswordSuccessM
 
     const isOpen = useAppSelector(state => state.authModal.isPasswordResetSuccessModal)
     const dispatch = useAppDispatch()
+    const onClose = () => dispatch(changePasswordResetSuccsessModalVisibility(false))
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
             <div
                 className='popup__body'
+                onClick={onClose}
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
+                    onClick={e => e.preventDefault()}
                 >
                     <button
                         type='button'

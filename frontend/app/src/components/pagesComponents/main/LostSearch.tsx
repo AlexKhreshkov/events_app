@@ -6,15 +6,14 @@ import { IAd } from '../../../types/types';
 import { ADS_LIMIT } from '../../../utils/constants';
 import { List } from '../../List';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Input, Select } from 'antd'
-import { useDispatch } from 'react-redux';
 import { Loader } from '../../Loader';
+
+import { Input, Select } from 'antd';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export const LostSearch = () => {
 
     const { Option } = Select
-    const dispatch = useDispatch()
     const categories = useAppSelector(state => state.categories.categories)
     const ads = useAppSelector(state => state.ads.ads)
     const search = useInput()
@@ -24,8 +23,6 @@ export const LostSearch = () => {
     const observer = useRef<IntersectionObserver>()
     const limitedAdsLen = limitedAds.length
     const [isExtraEdsLoading, setExtraAdsLoading] = useState(false)
-
-    console.log(category)
 
     const adsWithCategory = useMemo(() => {
         if (category === 'All') {
@@ -119,7 +116,12 @@ export const LostSearch = () => {
                     </div>
                     {category === 'All'
                         ?
-                        <div ref={lastElement} className='lastElement'></div>
+                        <div
+                            ref={lastElement}
+                            className='lastElement'
+                            data-testid='lastElement'
+                        >
+                        </div>
                         :
                         <></>
                     }

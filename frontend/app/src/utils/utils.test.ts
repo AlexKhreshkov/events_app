@@ -10,5 +10,3 @@ describe('reformatDateFullDate', () => {
             .toBe('WRONG DATE')
     })
 })
-// describe('reformatDate', () => {
-// })

@@ -83,17 +83,19 @@ export const SignInModal = () => {
         dispatch(changeResetPasswordVisibilityModal(true))
     }
 
-
+    const onClose = () => dispatch(changeSignInVisibilityModal(false))
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
             {isLoading ? <Loader /> : <></>}
             <div
                 className='popup__body'
+                onClick={onClose}
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
                     onSubmit={(event) => formSubmitHandler(event)}
+                    onClick={e => e.stopPropagation()}
                 >
                     <button
                         type='button'

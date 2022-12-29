@@ -8,15 +8,18 @@ export const EmailConfirmedSuccessModal = () => {
 
     const isOpen = useAppSelector(state => state.authModal.isEmailConfirmed)
     const dispatch = useAppDispatch()
+    const onClose = () => dispatch(changeEmailConfirmedSuccessModalVisibility(false))
 
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
             <div
                 className='popup__body'
+                onClick={onClose}
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
+                    onClick={e => e.preventDefault()}
                 >
                     <button
                         type='button'

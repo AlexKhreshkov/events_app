@@ -3,9 +3,10 @@ import { ToMain } from '../components/UI/button/ToMain';
 import { useAppSelector } from '../hooks/useRedux';
 import { IUser } from '../types/types';
 
+import { ROUTES_PATH } from '../utils/constants';
+
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { ROUTES_PATH } from '../utils/constants';
 
 export const Profile = () => {
 

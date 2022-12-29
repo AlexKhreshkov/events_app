@@ -1,5 +1,5 @@
 import { IComment } from '../types/types'
-import { ADD_COMMENT_URL, COMMENTS_URL } from '../utils/constants'
+import { COMMENTS_URL } from '../utils/constants'
 
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
@@ -20,9 +20,6 @@ export const fetchComments = createAsyncThunk<IComment[], void, { rejectValue: s
     'comments/fetchComments',
     async function (_, { rejectWithValue }) {
         const response = await axios.get<IComment[]>(`${COMMENTS_URL}`)
-        if (!response) {
-            return rejectWithValue('Error')
-        }
         return response.data
     },
 )

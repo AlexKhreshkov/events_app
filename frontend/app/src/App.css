@@ -573,6 +573,10 @@ body[data-theme='ligth'] {
   align-items: flex-end;
 }
 
+.adDetail__switchBtn {
+  margin-left: 5px;
+}
+
 .adDetail__switch {
   margin-top: auto;
 }

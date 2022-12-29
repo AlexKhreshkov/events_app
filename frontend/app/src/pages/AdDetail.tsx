@@ -5,19 +5,25 @@ import { PagesTitle } from '../components/PagesTitle'
 import { RigthArea } from '../components/RigthArea'
 import { ToMain } from '../components/UI/button/ToMain'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
-import { changeAd } from '../store/adsSlice'
+import { changeAd, deleteAd } from '../store/adsSlice'
 import { updateUserInfoNoImg } from '../store/usersSlice'
 import { IAd, IAdAuthor, IAdChange, IComment } from '../types/types'
 import { reformatDate } from '../utils/utils'
 
-import { useParams } from 'react-router-dom'
+import { ROUTES_PATH } from '../utils/constants'
+
+import { changeSuccsessModalVisibility } from '../store/authModalSlice'
+
+import { useNavigate, useParams } from 'react-router-dom'
 import { IoPerson, IoPhonePortraitOutline, IoTimeOutline } from 'react-icons/io5'
 import { useEffect, useState } from 'react'
 import { Button, Input, Switch, message } from 'antd'
 
+
 export const AdDetail = () => {
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const [ad, setAd] = useState<IAd>()
     const { adSlug } = useParams<{ adSlug: string }>()
     const allUsers = useAppSelector(state => state.users.users)
@@ -45,7 +51,7 @@ export const AdDetail = () => {
     const error = () => {
         messageApi.open({
             type: 'error',
-            content: 'An uknow error occured',
+            content: 'error',
         });
     };
 
@@ -69,18 +75,28 @@ export const AdDetail = () => {
             }
             const commentsResponse = await getComments()
             setAdComments(commentsResponse.data.filter(comment => comment.ad === ad?.id))
-
             setLoading(false)
         }
         getData()
     }, [adSlug])
 
-    const changeCommentTextStatus = () => {
-        setCommentChanging(!isCommentChanging)
-    }
+    const changeCommentTextStatus = () => setCommentChanging(!isCommentChanging)
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setNewAdInfo({ ...newAdInfo, [event.target.name]: event.target.value })
     }
+
+    const handleDelete = async () => {
+        const response = await dispatch(deleteAd(ad?.slug ? ad?.slug : ''))
+        if (response.meta.requestStatus === 'fulfilled') {
+            setTimeout(() => {
+                dispatch(changeSuccsessModalVisibility(true))
+            }, 500)
+            return navigate(`${ROUTES_PATH.Main}`)
+        }
+        messageApi.error(response.payload)
+    }
+
     function changeCommentHandler(): void {
         async function makeRequest() {
             if (ad && newAdInfo) {
@@ -118,7 +134,7 @@ export const AdDetail = () => {
                     <PagesTitle />
                     <div className='content__lostSearch__container'>
                         <div className='content__adDetail'>
-                            <ToMain/>
+                            <ToMain />
                             <div className='adDetail__title'>
                                 {isCommentChanging
                                     ?
@@ -225,6 +241,15 @@ export const AdDetail = () => {
                                                     checkedChildren='CHANGE AD'
                                                     unCheckedChildren='Close'
                                                 />
+                                                <Button
+                                                    className='adDetail__switchBtn'
+                                                    type='primary'
+                                                    size='small'
+                                                    danger
+                                                    onClick={handleDelete}
+                                                >
+                                                    DELETE
+                                                </Button>
                                             </div>
                                             :
                                             <></>

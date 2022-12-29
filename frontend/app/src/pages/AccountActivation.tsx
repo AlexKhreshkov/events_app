@@ -4,9 +4,10 @@ import { useAppDispatch } from '../hooks/useRedux'
 import { changeEmailConfirmedSuccessModalVisibility } from '../store/authModalSlice'
 import { IAccountActivationError } from '../types/types'
 
+import { ROUTES_PATH } from '../utils/constants'
+
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { ROUTES_PATH } from '../utils/constants'
 
 export const AccountActivation = () => {
 

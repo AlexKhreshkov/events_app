@@ -26,7 +26,6 @@ const favouritesAdsSlice = createSlice({
             }
         },
         deleteFavouriteAd(state, action: PayloadAction<number>) {
-            console.log(action.payload)
             const newFavouritesAds = state.favouritesAds.filter(ad => ad.id !== action.payload)
             state.favouritesAds = newFavouritesAds
         },

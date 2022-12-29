@@ -11,11 +11,12 @@ import { logoutCurrentUser } from '../store/authSlice';
 import { changeFavouritesAdsOpen, changeSignInVisibilityModal } from '../store/authModalSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 
+import { ROUTES_PATH } from '../utils/constants';
+
 import { Spin } from 'antd';
 import { IoExitOutline, IoHeartOutline, IoMoon, IoMoonOutline, IoPersonOutline } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react'
-import { ROUTES_PATH } from '../utils/constants';
 
 export const Navigation = () => {
 

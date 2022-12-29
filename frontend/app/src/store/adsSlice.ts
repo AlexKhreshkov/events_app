@@ -4,7 +4,7 @@ import { IAd, IAdChange, adInfoForm } from '../types/types'
 import { ADS_URL } from '../utils/constants'
 
 import axios from 'axios'
-import { AnyAction, PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 
 interface adsState {
@@ -38,7 +38,7 @@ export const changeAd = createAsyncThunk<IAd, { slug: string, newInfo: IAdChange
     async function ({ slug, newInfo }, { rejectWithValue, getState }) {
         const authToken = getState().user.authToken
         const response = await axios.patch<IAd>(
-            `${ADS_URL}${slug}/d`,
+            `${ADS_URL}${slug}/`,
             newInfo,
             {
                 headers: {
@@ -72,12 +72,31 @@ export const createAd = createAsyncThunk<IAd, { newInfo: adInfoForm }, { rejectW
             )
             return response.data
         } catch (error) {
-            return rejectWithValue('Failed to create ad');
+            return rejectWithValue('Failed to create ad')
         }
     },
-);
+)
 
-
+export const deleteAd = createAsyncThunk<string, string, { rejectValue: string, state: RootState }>(
+    'comments/deleteAd',
+    async function (adSlug, { rejectWithValue, getState }) {
+        const authToken = getState().user.authToken
+        try {
+            await axios.delete(`${ADS_URL}${adSlug}/`,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Accept': 'application/json',
+                        'Authorization': `Token ${authToken}`,
+                    },
+                },
+            )
+            return adSlug
+        } catch (error) {
+            return rejectWithValue('Failed to delete ad')
+        }
+    },
+)
 
 const adsSlice = createSlice({
     name: 'ads',
@@ -105,6 +124,15 @@ const adsSlice = createSlice({
             .addCase(createAd.rejected, (state, action: PayloadAction<any>) => {
                 state.error = action.payload
                 state.loading = false
+            })
+            .addCase(deleteAd.fulfilled, (state, action: PayloadAction<any>) => {
+                // const newComments = state.comments.filter(comment => comment.id !== action.payload)
+                state.ads = state.ads.filter(ad => ad.slug !== action.payload)
+                state.loading = false
+            })
+            .addCase(deleteAd.rejected, (state, action: PayloadAction<any>) => {
+                state.loading = false
+                state.error = action.payload
             })
     },
 })

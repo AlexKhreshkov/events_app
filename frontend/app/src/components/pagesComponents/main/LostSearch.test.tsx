@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
 import { LostSearch } from './LostSearch';
+
+import { render, screen } from '@testing-library/react';
 
 test('renders learn react link', () => {
     render(<LostSearch />);

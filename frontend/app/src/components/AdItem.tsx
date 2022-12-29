@@ -22,7 +22,6 @@ export const AdItem: FC<AdItemProps> = ({ ad }) => {
         dispatch(changeFavouritesAdsOpen(false))
         navigate(`${AD_PATH_NAME}/${ad.slug}`)
     }
-
     return (
         <div style={{ justifyContent: 'center', display: 'flex' }}>
             <hr />

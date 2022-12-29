@@ -27,8 +27,6 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
     const [commentDate, setCommentDate] = useState('')
     const [isCommentUpdated, setCommentUpdated] = useState(false)
 
-
-
     useEffect(() => {
         setCommentAuthor(allUsers.find(usr => usr.id === user))
         if (created === updated) {
@@ -37,8 +35,6 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
             setCommentDate(reformatDate(updated))
             setCommentUpdated(true)
         }
-
-
     }, [])
 
     const deleteCommentHandler = () => {

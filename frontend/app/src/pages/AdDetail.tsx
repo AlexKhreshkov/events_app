@@ -7,7 +7,7 @@ import { ToMain } from '../components/UI/button/ToMain'
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { changeAd, deleteAd } from '../store/adsSlice'
 import { updateUserInfoNoImg } from '../store/usersSlice'
-import { IAd, IAdAuthor, IAdChange, IComment } from '../types/types'
+import { IAd, IAdAuthor, IAdChange, IChangeAdResponseError, IComment } from '../types/types'
 import { reformatDate } from '../utils/utils'
 
 import { ROUTES_PATH } from '../utils/constants'
@@ -18,6 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { IoPerson, IoPhonePortraitOutline, IoTimeOutline } from 'react-icons/io5'
 import { useEffect, useState } from 'react'
 import { Button, Input, Switch, message } from 'antd'
+import { AdTitle } from '../components/pagesComponents/adDetail/AdTitle'
 
 
 export const AdDetail = () => {
@@ -32,7 +33,7 @@ export const AdDetail = () => {
     const [adComments, setAdComments] = useState<IComment[]>([])
     const [adAuthor, setAdAuthor] = useState<IAdAuthor>()
     const [isLoading, setLoading] = useState(true)
-    const [isCommentChanging, setCommentChanging] = useState(false)
+    const [isAdChanging, setAdChanging] = useState(false)
     const [newAdInfo, setNewAdInfo] = useState<IAdChange>({
         first_name: '',
         last_name: '',
@@ -46,12 +47,6 @@ export const AdDetail = () => {
         messageApi.open({
             type: 'success',
             content: 'Success!',
-        });
-    };
-    const error = () => {
-        messageApi.open({
-            type: 'error',
-            content: 'error',
         });
     };
 
@@ -78,9 +73,9 @@ export const AdDetail = () => {
             setLoading(false)
         }
         getData()
-    }, [adSlug])
+    }, [adSlug, allUsers])
 
-    const changeCommentTextStatus = () => setCommentChanging(!isCommentChanging)
+    const changeAdTextStatus = () => setAdChanging(!isAdChanging)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setNewAdInfo({ ...newAdInfo, [event.target.name]: event.target.value })
@@ -97,29 +92,40 @@ export const AdDetail = () => {
         messageApi.error(response.payload)
     }
 
-    function changeCommentHandler(): void {
-        async function makeRequest() {
-            if (ad && newAdInfo) {
-                const response = await dispatch(
-                    changeAd({ slug: ad.slug, newInfo: newAdInfo }),
-                )
-                if (response.meta.requestStatus === 'fulfilled') {
-                    success()
-                    setAd({ ...ad, ...newAdInfo })
-                    if (adAuthor) {
-                        setAdAuthor({ ...adAuthor, ...newAdInfo })
-                    }
-                    if (user) {
-                        dispatch(updateUserInfoNoImg({ id: user?.id, newInfo: newAdInfo }))
-                    }
-                    setCommentChanging(false)
+    function isReadOnlyInfo(item: any): item is IChangeAdResponseError {
+        return 'title' in item || 'phone' in item || 'text' in item || 'slug' in item
+    }
+
+    const changeAdHandler = async () => {
+        if (ad && newAdInfo) {
+            const response = await dispatch(changeAd({ slug: ad.slug, newInfo: newAdInfo }))
+            if (response.meta.requestStatus === 'fulfilled') {
+                setAd({ ...ad, ...newAdInfo })
+                if (adAuthor) {
+                    setAdAuthor({ ...adAuthor, ...newAdInfo })
                 }
-                if (response.meta.requestStatus === 'rejected') {
-                    error()
+                if (user) {
+                    dispatch(updateUserInfoNoImg({ id: user?.id, newInfo: newAdInfo }))
+                }
+                setAdChanging(false)
+                navigate(`/announcement/${newAdInfo.title}`)
+                success()
+            }
+            if (response.meta.requestStatus === 'rejected') {
+                const adFieldError = response.payload
+                let errorString = ''
+                if (isReadOnlyInfo(adFieldError)) {
+                    for (const key in adFieldError) {
+                        errorString += adFieldError[key as keyof IChangeAdResponseError]
+                    }
+                    messageApi.error(errorString)
                 }
             }
         }
-        makeRequest()
+    }
+
+    if (!ad) {
+        return <div>No ad</div>
     }
 
     return (
@@ -135,23 +141,12 @@ export const AdDetail = () => {
                     <div className='content__lostSearch__container'>
                         <div className='content__adDetail'>
                             <ToMain />
-                            <div className='adDetail__title'>
-                                {isCommentChanging
-                                    ?
-                                    <div className='displayFlex'>
-                                        Title: <Input
-                                            name='title'
-                                            value={newAdInfo.title}
-                                            onChange={e => handleChange(e)}
-                                        />
-                                    </div>
-                                    :
-                                    <>
-                                        {ad?.title}
-
-                                    </>
-                                }
-                            </div>
+                            <AdTitle
+                                ad={ad}
+                                handleChange={handleChange}
+                                isCommentChanging={isAdChanging}
+                                newAdInfoTitle={newAdInfo.title}
+                            />
                             <div className='adDetail__body'>
                                 <div className='adDetail__imgRow'>
                                     <div className='adDetail__img'>
@@ -160,7 +155,7 @@ export const AdDetail = () => {
                                     <div className='adDetail__contancts__container'>
                                         <div className='adDetail__contancts'>
                                             <div className='adDetail__name'>
-                                                {isCommentChanging
+                                                {isAdChanging
                                                     ?
                                                     <>
                                                         <IoPerson />Name:
@@ -193,7 +188,7 @@ export const AdDetail = () => {
                                                     </>
                                                 }
                                             </div>
-                                            {isCommentChanging
+                                            {isAdChanging
                                                 ?
                                                 <></>
                                                 :
@@ -206,7 +201,7 @@ export const AdDetail = () => {
                                                 Description
                                             </div>
                                             <div className='adDetail__text'>
-                                                {isCommentChanging
+                                                {isAdChanging
                                                     ?
                                                     <>
                                                         <Input.TextArea
@@ -219,7 +214,7 @@ export const AdDetail = () => {
                                                         />
                                                         <Button
                                                             type='primary'
-                                                            onClick={() => changeCommentHandler()}
+                                                            onClick={changeAdHandler}
                                                         >
                                                             Change
                                                         </Button>
@@ -235,9 +230,9 @@ export const AdDetail = () => {
                                             ?
                                             <div className='adDetail__switch__container'>
                                                 <Switch
-                                                    onClick={() => changeCommentTextStatus()}
+                                                    onClick={() => changeAdTextStatus()}
                                                     className='adDetail__switch'
-                                                    checked={!isCommentChanging}
+                                                    checked={!isAdChanging}
                                                     checkedChildren='CHANGE AD'
                                                     unCheckedChildren='Close'
                                                 />

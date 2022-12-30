@@ -1,9 +1,9 @@
 import { RootState } from '.'
 
-import { IAd, IAdChange, adInfoForm } from '../types/types'
+import { IAd, IAdChange, adInfoForm, IChangeAdResponseError } from '../types/types'
 import { ADS_URL } from '../utils/constants'
 
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 
@@ -11,12 +11,14 @@ interface adsState {
     ads: IAd[],
     loading: boolean,
     error: string | null
+    adFieldError: IChangeAdResponseError | null
 }
 
 const initialState: adsState = {
     ads: [],
     loading: false,
     error: null,
+    adFieldError: null,
 }
 
 export const fetchAds = createAsyncThunk<IAd[], void>(
@@ -33,27 +35,35 @@ export const fetchAd = createAsyncThunk<IAd, { slug: string }>(
         return response.data
     },
 )
-export const changeAd = createAsyncThunk<IAd, { slug: string, newInfo: IAdChange }, { rejectWithValue: string, state: RootState }>(
-    'users/updateUserInfo',
+export const changeAd = createAsyncThunk<IAd, { slug: string, newInfo: IAdChange }, { rejectWithValue: string | IChangeAdResponseError, state: RootState }>(
+    'ads/changeAd',
     async function ({ slug, newInfo }, { rejectWithValue, getState }) {
         const authToken = getState().user.authToken
-        const response = await axios.patch<IAd>(
-            `${ADS_URL}${slug}/`,
-            newInfo,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Accept': 'application/json',
-                    'Authorization': `Token ${authToken}`,
+        try {
+            const response = await axios.patch<IAd>(
+                `${ADS_URL}${slug}/`,
+                newInfo,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Accept': 'application/json',
+                        'Authorization': `Token ${authToken}`,
+                    },
                 },
-            },
-        )
-        return response.data
+            )
+            return response.data
+        } catch (error) {
+            const err = error as AxiosError
+            if (err.response?.data) {
+                return rejectWithValue(err.response.data)
+            }
+            return rejectWithValue('Failed to change ad')
+        }
     },
 )
 
-export const createAd = createAsyncThunk<IAd, { newInfo: adInfoForm }, { rejectWithValue: string, state: RootState }>(
-    'users/createAd',
+export const createAd = createAsyncThunk<IAd, { newInfo: adInfoForm }, { rejectWithValue: string | IChangeAdResponseError, state: RootState }>(
+    'ads/createAd',
     async (data, { rejectWithValue, getState }) => {
         const authToken = getState().user.authToken
         const currentUserId = getState().user.currentUser.id
@@ -78,7 +88,7 @@ export const createAd = createAsyncThunk<IAd, { newInfo: adInfoForm }, { rejectW
 )
 
 export const deleteAd = createAsyncThunk<string, string, { rejectValue: string, state: RootState }>(
-    'comments/deleteAd',
+    'ads/deleteAd',
     async function (adSlug, { rejectWithValue, getState }) {
         const authToken = getState().user.authToken
         try {
@@ -125,8 +135,15 @@ const adsSlice = createSlice({
                 state.error = action.payload
                 state.loading = false
             })
+            .addCase(changeAd.pending, (state) => {
+                state.loading = true
+                state.error = null
+            })
+            .addCase(changeAd.rejected, (state, action: PayloadAction<any>) => {
+                state.adFieldError = action.payload
+                state.loading = false
+            })
             .addCase(deleteAd.fulfilled, (state, action: PayloadAction<any>) => {
-                // const newComments = state.comments.filter(comment => comment.id !== action.payload)
                 state.ads = state.ads.filter(ad => ad.slug !== action.payload)
                 state.loading = false
             })

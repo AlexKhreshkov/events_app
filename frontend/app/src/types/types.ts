@@ -143,3 +143,17 @@ export interface IAdAuthor {
     phone: string,
     image: string,
 }
+export interface IChangeAdResponseError {
+    id?: number[],
+    title?: string[],
+    user_id?: number[],
+    phone?: string[],
+    slug?: string[],
+    text?: string[],
+    image?: string[],
+    category_id?: string[],
+    category_name?: string[],
+    category_slug?: string[],
+    created?: string[],
+    updated?: string[],
+}

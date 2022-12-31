@@ -6,6 +6,7 @@ import { LoadingModal } from './UI/modal/LoadingModal';
 import { SignUpSuccessModal } from './UI/modal/SuccessModal/SignUpSuccessModal';
 import { EmailConfirmedSuccessModal } from './UI/modal/SuccessModal/EmailConfirmedSuccessModal';
 import { FavouritesAds } from './UI/modal/FavouritesAds';
+import { Loader } from './Loader';
 
 import { logoutCurrentUser } from '../store/authSlice';
 import { changeFavouritesAdsOpen, changeSignInVisibilityModal } from '../store/authModalSlice';
@@ -16,7 +17,6 @@ import { ROUTES_PATH } from '../utils/constants';
 import { IoExitOutline, IoHeartOutline, IoMoon, IoMoonOutline, IoPersonOutline } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react'
-import { Loader } from './Loader';
 
 export const Navigation = () => {
 
@@ -62,7 +62,7 @@ export const Navigation = () => {
                 {isNavLoading && <Loader />}
                 <nav className='nav'>
                     <Link to={ROUTES_PATH.Main}>
-                        <div className='nav__title'>FindMe</div>
+                        <div className='nav__title'>FindLost</div>
                     </Link>
                     <div className='toggleBtn' onClick={handleToggle}>
                         <span className='bar'></span>

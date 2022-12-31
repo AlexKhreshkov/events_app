@@ -66,35 +66,33 @@ export const LostSearch = () => {
                     Search for lost things
                 </div>
                 <div className='lostSearch__inputBlock'>
-                    <Input.Group compact>
-                        <Select
-                            defaultValue='All'
-                            style={{ width: '30%' }}
-                            value={category}
-                            onSelect={chosenSelect => setCategory(chosenSelect)}
+                    <Select
+                        className='lostSearch__select'
+                        defaultValue='All'
+                        value={category}
+                        onSelect={chosenSelect => setCategory(chosenSelect)}
+                    >
+                        <Option
+                            value={'All'}
                         >
+                            <>All</>
+                        </Option>
+                        {categories.map(category =>
                             <Option
-                                value={'All'}
+                                key={category.slug}
+                                value={category.name}
                             >
-                                <>All</>
-                            </Option>
-                            {categories.map(category =>
-                                <Option
-                                    key={category.slug}
-                                    value={category.name}
-                                >
-                                    {category.name}
-                                </Option>,
-                            )}
-                        </Select>
-                        <Input
-                            value={search.value}
-                            onChange={e => search.setValue(e.target.value)}
-                            style={{ width: '70%' }}
-                            placeholder='Text (not required)'
-                            allowClear
-                        />
-                    </Input.Group>
+                                {category.name}
+                            </Option>,
+                        )}
+                    </Select>
+                    <Input
+                        value={search.value}
+                        onChange={e => search.setValue(e.target.value)}
+                        className='lostSearch__input'
+                        placeholder='Text (not required)'
+                        allowClear
+                    />
                 </div>
                 <div className='lostSearch__items__container'>
                     <div className='lostSearch__items'>

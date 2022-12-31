@@ -1,3 +1,5 @@
+import { Error } from './Error'
+
 import { getAdBySlug, getComments } from '../api/getData'
 import { Loader } from '../components/Loader'
 import { AdComments } from '../components/pagesComponents/adDetail/AdComments'
@@ -14,11 +16,12 @@ import { ROUTES_PATH } from '../utils/constants'
 
 import { changeSuccsessModalVisibility } from '../store/authModalSlice'
 
+import { AdTitle } from '../components/pagesComponents/adDetail/AdTitle'
+
 import { useNavigate, useParams } from 'react-router-dom'
 import { IoPerson, IoPhonePortraitOutline, IoTimeOutline } from 'react-icons/io5'
 import { useEffect, useState } from 'react'
 import { Button, Input, Switch, message } from 'antd'
-import { AdTitle } from '../components/pagesComponents/adDetail/AdTitle'
 
 
 export const AdDetail = () => {
@@ -42,6 +45,7 @@ export const AdDetail = () => {
         title: '',
     })
     const [messageApi, contextHolder] = message.useMessage()
+    const [adDetailError, setAdDetailError] = useState(false)
 
     const success = () => {
         messageApi.open({
@@ -52,25 +56,27 @@ export const AdDetail = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const adResponse = await getAdBySlug(adSlug)
-            const ad = adResponse.data
-            if (ad) {
+            try {
+                const adResponse = await getAdBySlug(adSlug)
+                const ad = adResponse.data
                 setAd(ad)
+                const user = allUsers.find(user => user.id === ad.user_id)
+                if (user && ad) {
+                    setAdAuthor(user)
+                    setNewAdInfo({
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        phone: user.phone,
+                        text: ad.text,
+                        title: ad.title,
+                    })
+                }
+                const commentsResponse = await getComments()
+                setAdComments(commentsResponse.data.filter(comment => comment.ad === ad?.id))
+                setLoading(false)
+            } catch (error) {
+                setAdDetailError(true)
             }
-            const user = allUsers.find(user => user.id === ad.user_id)
-            if (user && ad) {
-                setAdAuthor(user)
-                setNewAdInfo({
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    phone: user.phone,
-                    text: ad.text,
-                    title: ad.title,
-                })
-            }
-            const commentsResponse = await getComments()
-            setAdComments(commentsResponse.data.filter(comment => comment.ad === ad?.id))
-            setLoading(false)
         }
         getData()
     }, [adSlug, allUsers])
@@ -122,6 +128,10 @@ export const AdDetail = () => {
                 }
             }
         }
+    }
+
+    if (adDetailError) {
+        return <Error />
     }
 
     if (!ad) {

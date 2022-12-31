@@ -98,7 +98,7 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
                         />
                     </div>
                     :
-                    <div className='comments__comment-author-name displayFlex'>
+                    <div className='comments__comment-author-name'>
                         <IoPerson />
                         <span>{name}</span>
                     </div>
@@ -114,7 +114,7 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
                         required
                     />
                     :
-                    <div>{commentChangeText}</div>
+                    <div className='comments__comment__text'>{commentChangeText}</div>
                 }
                 {commentAuthor?.id === currentUser.id && getTokenFromLocalStorage()
                     ?

@@ -158,121 +158,119 @@ export const AdDetail = () => {
                                 newAdInfoTitle={newAdInfo.title}
                             />
                             <div className='adDetail__body'>
-                                <div className='adDetail__imgRow'>
-                                    <div className='adDetail__img'>
-                                        <img src={ad?.image} alt='' />
-                                    </div>
-                                    <div className='adDetail__contancts__container'>
-                                        <div className='adDetail__contancts'>
-                                            <div className='adDetail__name'>
-                                                {isAdChanging
-                                                    ?
-                                                    <>
-                                                        <IoPerson />Name:
-                                                        <Input
-                                                            name='first_name'
-                                                            value={newAdInfo.first_name}
-                                                            onChange={e => handleChange(e)}
-                                                        />
-                                                        <IoPerson />Surname:
-                                                        <Input
-                                                            name='last_name'
-                                                            value={newAdInfo.last_name}
-                                                            onChange={e => handleChange(e)}
-                                                        />
-                                                        <IoPhonePortraitOutline /> Phone:
-                                                        <Input
-                                                            name='phone'
-                                                            value={newAdInfo.phone}
-                                                            onChange={e => handleChange(e)}
-                                                        />
-                                                    </>
-                                                    :
-                                                    <>
-                                                        <IoPerson />
-                                                        Contacts:{adAuthor?.first_name} {adAuthor?.last_name}
-                                                        <div className='adDetail__phone'>
-                                                            <IoPhonePortraitOutline />
-                                                            Phone: {adAuthor?.phone ? adAuthor?.phone : <span>-</span>}
-                                                        </div>
-                                                    </>
-                                                }
-                                            </div>
+                                <div className='adDetail__img'>
+                                    <img src={ad?.image} alt='' />
+                                </div>
+                                <div className='adDetail__contancts__container'>
+                                    <div className='adDetail__contancts'>
+                                        <div className='adDetail__name'>
                                             {isAdChanging
                                                 ?
-                                                <></>
+                                                <>
+                                                    <IoPerson />Name:
+                                                    <Input
+                                                        name='first_name'
+                                                        value={newAdInfo.first_name}
+                                                        onChange={e => handleChange(e)}
+                                                    />
+                                                    <IoPerson />Surname:
+                                                    <Input
+                                                        name='last_name'
+                                                        value={newAdInfo.last_name}
+                                                        onChange={e => handleChange(e)}
+                                                    />
+                                                    <IoPhonePortraitOutline />:
+                                                    <Input
+                                                        name='phone'
+                                                        value={newAdInfo.phone}
+                                                        onChange={e => handleChange(e)}
+                                                    />
+                                                </>
                                                 :
-                                                <div className='adDetail__date'>
-                                                    <IoTimeOutline />
-                                                    Published: {reformatDate(ad?.created ? ad?.created : '')}
-                                                </div>
+                                                <>
+                                                    <IoPerson />
+                                                    {adAuthor?.first_name} {adAuthor?.last_name}
+                                                    <div className='adDetail__phone'>
+                                                        <IoPhonePortraitOutline />
+                                                        : {adAuthor?.phone ? adAuthor?.phone : <span>-</span>}
+                                                    </div>
+                                                </>
                                             }
-                                            <div className='adDetail__textTittle'>
-                                                Description
-                                            </div>
-                                            <div className='adDetail__text'>
-                                                {isAdChanging
-                                                    ?
-                                                    <>
-                                                        <Input.TextArea
-                                                            style={{ resize: 'none', height: 120, margin: '5px 0' }}
-                                                            name='text'
-                                                            placeholder='Your text...'
-                                                            value={newAdInfo?.text}
-                                                            onChange={e => handleChange(e)}
-                                                            required
-                                                        />
-                                                        <Button
-                                                            type='primary'
-                                                            onClick={changeAdHandler}
-                                                        >
-                                                            Change
-                                                        </Button>
-                                                    </>
-                                                    :
-                                                    <>
-                                                        {ad?.text}
-                                                    </>
-                                                }
-                                            </div>
                                         </div>
-                                        {currentUser.id === adAuthor?.id
+                                        {isAdChanging
                                             ?
-                                            <div className='adDetail__switch__container'>
-                                                <Switch
-                                                    onClick={() => changeAdTextStatus()}
-                                                    className='adDetail__switch'
-                                                    checked={!isAdChanging}
-                                                    checkedChildren='CHANGE AD'
-                                                    unCheckedChildren='Close'
-                                                />
-                                                <Button
-                                                    className='adDetail__switchBtn'
-                                                    type='primary'
-                                                    size='small'
-                                                    danger
-                                                    onClick={handleDelete}
-                                                >
-                                                    DELETE
-                                                </Button>
-                                            </div>
-                                            :
                                             <></>
+                                            :
+                                            <div className='adDetail__date'>
+                                                <IoTimeOutline />
+                                                {reformatDate(ad?.created ? ad?.created : '')}
+                                            </div>
                                         }
+                                        <div className='adDetail__textTittle'>
+                                            Description
+                                        </div>
+                                        <div className='adDetail__text'>
+                                            {isAdChanging
+                                                ?
+                                                <>
+                                                    <Input.TextArea
+                                                        style={{ resize: 'none', height: 120, margin: '5px 0' }}
+                                                        name='text'
+                                                        placeholder='Your text...'
+                                                        value={newAdInfo?.text}
+                                                        onChange={e => handleChange(e)}
+                                                        required
+                                                    />
+                                                    <Button
+                                                        type='primary'
+                                                        onClick={changeAdHandler}
+                                                    >
+                                                        Change
+                                                    </Button>
+                                                </>
+                                                :
+                                                <>
+                                                    {ad?.text}
+                                                </>
+                                            }
+                                        </div>
                                     </div>
+                                    {currentUser.id === adAuthor?.id
+                                        ?
+                                        <div className='adDetail__switch__container'>
+                                            <Switch
+                                                onClick={() => changeAdTextStatus()}
+                                                className='adDetail__switch'
+                                                checked={!isAdChanging}
+                                                checkedChildren='CHANGE AD'
+                                                unCheckedChildren='Close'
+                                            />
+                                            <Button
+                                                className='adDetail__switchBtn'
+                                                type='primary'
+                                                size='small'
+                                                danger
+                                                onClick={handleDelete}
+                                            >
+                                                DELETE
+                                            </Button>
+                                        </div>
+                                        :
+                                        <></>
+                                    }
                                 </div>
                             </div>
-                            {ad
-                                ?
-                                <AdComments
-                                    ad={ad}
-                                    adComments={adComments}
-                                    setAdComments={setAdComments}
-                                />
-                                :
-                                <></>
-                            }
                         </div>
+                        {ad
+                            ?
+                            <AdComments
+                                ad={ad}
+                                adComments={adComments}
+                                setAdComments={setAdComments}
+                            />
+                            :
+                            <></>
+                        }
                     </div>
                 </div>
             }

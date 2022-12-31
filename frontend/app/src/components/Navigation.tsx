@@ -62,7 +62,7 @@ export const Navigation = () => {
                 {isNavLoading && <Loader />}
                 <nav className='nav'>
                     <Link to={ROUTES_PATH.Main}>
-                        <div className='nav__title'>FindLost</div>
+                        <div className='nav__title'>FindLoss</div>
                     </Link>
                     <div className='toggleBtn' onClick={handleToggle}>
                         <span className='bar'></span>
@@ -70,9 +70,7 @@ export const Navigation = () => {
                         <span className='bar'></span>
                     </div>
                     <ul className={isToggle ? 'nav__items toggleActive' : 'nav__items'}>
-                        <li
-                            onClick={() => changeTheme()}
-                        >
+                        <li onClick={() => changeTheme()}>
                             {
                                 theme === 'ligth'
                                     ?
@@ -86,9 +84,7 @@ export const Navigation = () => {
                             className='nav__item liked'
                         >
                             <IoHeartOutline />
-                            <div
-                                className='liked_count'
-                            >
+                            <div className='liked_count'>
                                 {favouritesAds?.length ? favouritesAds?.length : <></>}
                             </div>
                         </li>

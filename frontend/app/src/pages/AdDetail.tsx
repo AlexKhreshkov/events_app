@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/useRedux'
 import { changeAd, deleteAd } from '../store/adsSlice'
 import { updateUserInfoNoImg } from '../store/usersSlice'
 import { IAd, IAdAuthor, IAdChange, IChangeAdResponseError, IComment } from '../types/types'
-import { reformatDate } from '../utils/utils'
+import { reformatDate, slugify } from '../utils/utils'
 
 import { ROUTES_PATH } from '../utils/constants'
 
@@ -79,7 +79,7 @@ export const AdDetail = () => {
             }
         }
         getData()
-    }, [adSlug, allUsers])
+    }, [])
 
     const changeAdTextStatus = () => setAdChanging(!isAdChanging)
 
@@ -114,9 +114,10 @@ export const AdDetail = () => {
                     dispatch(updateUserInfoNoImg({ id: user?.id, newInfo: newAdInfo }))
                 }
                 setAdChanging(false)
-                navigate(`/announcement/${newAdInfo.title}`)
+                navigate(`/announcement/${slugify(newAdInfo.title)}`)
                 success()
             }
+            setAd({ ...ad, ...newAdInfo })
             if (response.meta.requestStatus === 'rejected') {
                 const adFieldError = response.payload
                 let errorString = ''

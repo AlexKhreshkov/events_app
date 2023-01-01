@@ -3,8 +3,9 @@ import { IAd } from '../../../types/types'
 import { List } from '../../List'
 import { LostSearchItem } from '../main/LostSearchItem'
 
-import React from 'react'
 import { AdItem } from '../../AdItem'
+
+import React from 'react'
 
 export const ProfileAds = () => {
 

@@ -86,3 +86,11 @@ export function reformatDate(dateParam: string): string {
 
     return getFormattedDate(date.toISOString()); // 10. January 2017. at 10:20
 }
+
+export const slugify = (str: string) =>
+    str
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '');

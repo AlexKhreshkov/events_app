@@ -24,6 +24,7 @@ export const LostSearch = () => {
     const limitedAdsLen = limitedAds.length
     const [isExtraEdsLoading, setExtraAdsLoading] = useState(false)
 
+
     const adsWithCategory = useMemo(() => {
         if (category === 'All') {
             return limitedAds

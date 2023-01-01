@@ -4,11 +4,13 @@ import { IAd } from '../types/types'
 import { AD_PATH_NAME } from '../utils/constants'
 import { reformatDate } from '../utils/utils'
 
+import { deleteAd } from '../store/adsSlice'
+
+import { useAppDispatch } from '../hooks/useRedux'
+
 import { useNavigate } from 'react-router-dom'
 import { FC } from 'react'
 import { Button, message } from 'antd'
-import { deleteAd } from '../store/adsSlice'
-import { useAppDispatch } from '../hooks/useRedux'
 
 interface AdItemProps {
     ad: IAd,
@@ -36,6 +38,7 @@ export const AdItem: FC<AdItemProps> = ({ ad, isDeleteBtn = false, isRemoveFromS
 
     return (
         <div style={{ justifyContent: 'center', display: 'flex' }}>
+            {contextHolder}
             <hr />
             <div className='savedAd'>
                 <div className='lostSearch__item__created'>

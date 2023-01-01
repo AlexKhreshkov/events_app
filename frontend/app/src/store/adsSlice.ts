@@ -139,6 +139,13 @@ const adsSlice = createSlice({
                 state.loading = true
                 state.error = null
             })
+            .addCase(changeAd.fulfilled, (state, action: PayloadAction<IAd>) => {
+                state.loading = false
+                const adIndex = state.ads.findIndex(ad => ad.id === action.payload.id)
+                state.ads[adIndex] = action.payload
+                state.error = null
+
+            })
             .addCase(changeAd.rejected, (state, action: PayloadAction<any>) => {
                 state.adFieldError = action.payload
                 state.loading = false

@@ -29,6 +29,7 @@ export const FavouritesAds: React.FC = () => {
                     items={favouritesAds}
                     renderItem={(ad: IAd) =>
                         <AdItem
+                            isRemoveFromSaved={true}
                             key={ad.id}
                             ad={ad}
                         />

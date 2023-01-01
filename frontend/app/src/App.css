@@ -554,9 +554,19 @@ body[data-theme='ligth'] {
     border-radius: var(--radius);
 }
 
+.savedAd {
+    margin: 0px 15px 0px 15px;
+    flex: 0 0 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: var(--radius);
+    color: var(--colors-text);
+}
+
 @media (max-width: 1024px) {
     .lostSearch__item {
-        flex: 0 0 100%;
+        flex: 0 0 80%;
     }
 }
 
@@ -943,6 +953,7 @@ body[data-theme='ligth'] {
 
 .profile__container {
     width: 80%;
+    margin-top: 50px;
 }
 
 .profile__content {
@@ -969,7 +980,13 @@ body[data-theme='ligth'] {
 }
 
 .profile__header__img img {
-    max-width: 250px;
+    max-width: 200px;
+}
+
+@media (max-width: 500px) {
+    .profile__header__img img {
+        max-width: 100px;
+    }
 }
 
 .profile__header__username {
@@ -991,7 +1008,7 @@ body[data-theme='ligth'] {
 
 .profile__select__content {
     min-width: 20%;
-    margin: 0 10px 0 0;
+    margin: 0 10px 10px 0;
 }
 
 .profile__right__content {
@@ -1000,7 +1017,6 @@ body[data-theme='ligth'] {
     flex: 1 1 auto;
     align-items: center;
     color: var(--colors-text);
-    background: var(--profile-content-color);
 }
 
 .profile__right__content form {
@@ -1012,10 +1028,17 @@ body[data-theme='ligth'] {
     margin: 5px 0 0 0;
 }
 
+@media (max-width: 1024px) {
+    .profile__columns {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 .profile__ads {
     width: 100%;
     position: relative;
-    padding: 0 30% 0 30%;
+    text-align: center;
 }
 
 .profile__form label {

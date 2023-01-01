@@ -4,6 +4,7 @@ import { List } from '../../List'
 import { LostSearchItem } from '../main/LostSearchItem'
 
 import React from 'react'
+import { AdItem } from '../../AdItem'
 
 export const ProfileAds = () => {
 
@@ -18,9 +19,10 @@ export const ProfileAds = () => {
                 <List
                     items={usersAds}
                     renderItem={(ad: IAd) =>
-                        <LostSearchItem
+                        <AdItem
                             key={ad.id}
                             ad={ad}
+                            isDeleteBtn={true}
                         />
                     }
                 />

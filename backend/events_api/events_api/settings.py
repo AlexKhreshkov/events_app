@@ -9,9 +9,10 @@ environ.Env.read_env()
 
 SECRET_KEY = env('SECRET_KEY')
 
+# DEBUG = env('IS_DEBUG')
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',

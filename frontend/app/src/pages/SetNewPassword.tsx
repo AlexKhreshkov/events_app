@@ -11,11 +11,17 @@ export const ResetPassword = () => {
     const { uid, token } = useParams<{ uid: string, token: string }>()
 
     useEffect(() => {
-        dispatch(changeNewPasswordVisibilityModal(true))
+        setTimeout(() => dispatch(changeNewPasswordVisibilityModal(true)), 700)
     }, [])
 
     return (
         <>
+            <h1
+                onClick={() => dispatch(changeNewPasswordVisibilityModal(true))}
+                className='resetPasswordTitle'
+            >
+                Reset Password
+            </h1>
             <NewPasswordModal uid={uid} token={token} />
         </>
     )

@@ -6,7 +6,6 @@ import { ADS_URL } from '../utils/constants'
 import axios, { AxiosError } from 'axios'
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-
 interface adsState {
     ads: IAd[],
     loading: boolean,
@@ -162,7 +161,3 @@ const adsSlice = createSlice({
 })
 
 export default adsSlice.reducer
-
-// function isError(action: AnyAction) {
-//     return action.type.endsWith('rejected')
-// }

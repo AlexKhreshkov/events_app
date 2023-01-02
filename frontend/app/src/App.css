@@ -564,7 +564,7 @@ body[data-theme='ligth'] {
     color: var(--colors-text);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
     .lostSearch__item {
         flex: 0 0 80%;
     }
@@ -748,8 +748,13 @@ body[data-theme='ligth'] {
     display: flex;
     background-color: var(--colors-bg);
     padding: 5px;
-    border: 1px solid var(--colors-text);
-    border-radius: var(--radius);
+    border-bottom: 1px solid var(--colors-text);
+    margin: 0 0 10px 0;
+}
+
+.comments__comment {
+    border-top: 1px solid var(--colors-text);
+    border-bottom: 1px solid var(--colors-text);
 }
 
 .comments__comment__text {
@@ -1081,4 +1086,12 @@ body[data-theme='ligth'] {
     width: 100%;
     height: 10px;
     background-color: var(--colors-bg);
+}
+
+.resetPasswordTitle {
+    margin-top: 30vh;
+    text-align: center;
+    font-size: 3rem;
+    cursor: pointer;
+    text-decoration: underline;
 }

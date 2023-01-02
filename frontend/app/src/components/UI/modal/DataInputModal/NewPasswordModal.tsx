@@ -55,8 +55,8 @@ export const NewPasswordModal: FC<NewPasswordModalProps> = ({ uid, token }) => {
         }
         resetPasswordConfirmation(data)
             .catch((error) => setResponseAuthError(error))
-            .then(() => dispatch(changeSuccsessModalVisibility(true)))
             .then(() => navigate(`${ROUTES_PATH.Main}`))
+            .then(() => setTimeout(() => dispatch(changeSuccsessModalVisibility(true)), 1000))
     }
 
     const changeVisibilityHandler1 = () => {
@@ -65,18 +65,16 @@ export const NewPasswordModal: FC<NewPasswordModalProps> = ({ uid, token }) => {
     const changeVisibilityHandler2 = () => {
         setPassword2Visible(!isPassword2Visible)
     }
-    const onClose = () => dispatch(changeNewPasswordVisibilityModal(false))
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
             <div
                 className='popup__body'
-                onClick={onClose}
             >
                 <form
                     className={isOpen ? 'popup__content popup__contentActive' : 'popup__content'}
                     onSubmit={(event) => formSubmitHandler(event)}
-                    onClick={e => e.preventDefault()}
+                    onClick={e => e.stopPropagation()}
                 >
                     <button
                         type='button'
@@ -90,7 +88,7 @@ export const NewPasswordModal: FC<NewPasswordModalProps> = ({ uid, token }) => {
                         <div className={cl.popup__loginContent}>
                             <Button danger type='primary'>With Google</Button>
                             <div className='blackLine'></div>
-                            <div className={cl.login__title}>Password</div>
+                            <div className={cl.login__title}>New password</div>
                             <div className={cl.authFieldErrorContainer}>
                                 {password1.isDirty && password1.isEmtpy
                                     ?

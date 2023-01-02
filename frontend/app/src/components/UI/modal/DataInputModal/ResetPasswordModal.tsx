@@ -7,6 +7,8 @@ import { AuthErrors, emailValidationProps } from '../../../../utils/constants'
 import { AuthInput } from '../../input/AuthInput'
 import { resetPassword } from '../../../../api/authApi'
 
+import { Loader } from '../../../Loader'
+
 import { Button } from 'antd'
 import React, { useEffect, useState } from 'react'
 
@@ -20,6 +22,7 @@ export const ResetPasswordModal = () => {
     const [isBtnDisabled, setBtnDisabled] = useState<boolean>(false)
     const [responseAuthError, setResponseAuthError] = useState('')
     const [wasRequest, setWasReqeust] = useState(false)
+    const [isLoading, setLoading] = useState(false)
 
     useEffect(() => {
         const isDisabled =
@@ -34,7 +37,7 @@ export const ResetPasswordModal = () => {
 
     const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        dispatch(changeLoaderFullSizeVisibility(true))
+        setLoading(true)
         resetPassword(email.value)
             .catch(error => setResponseAuthError(error.response.data))
             .then(() => {
@@ -42,13 +45,14 @@ export const ResetPasswordModal = () => {
                 dispatch(changePasswordResetSuccsessModalVisibility(true))
             })
             .then(() => dispatch(changeResetPasswordVisibilityModal(false)))
-            .finally(() => dispatch(changeLoaderFullSizeVisibility(false)))
+            .finally(() => setLoading(false))
     }
 
     const onClose = () => dispatch(changeResetPasswordVisibilityModal(false))
 
     return (
         <div id='popup' className={isOpen ? 'popup popupAcitve' : 'popup'}>
+            {isLoading && <Loader />}
             <div
                 className='popup__body'
                 onClick={onClose}

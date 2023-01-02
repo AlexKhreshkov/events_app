@@ -43,7 +43,7 @@ class AdCreateAPIView(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
 
 
-class AdRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+class AdRetrieveUpdateAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Ad.objects.all()
     lookup_field = 'slug'
     serializer_class = AdSerializer
